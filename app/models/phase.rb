@@ -28,4 +28,8 @@ class Phase < StaticAssociation
   def financial_year
     "FY #{starts_on.strftime('%Y')}/#{ends_on.strftime('%y')}"
   end
+
+  def type
+    LoanTypes::EFG
+  end
 end

@@ -67,6 +67,10 @@
         <td><%= @loan_report.loan_types.map(&:name).to_sentence %></td>
       </tr>
     <% end %>
+    <tr>
+      <td>Phase(s)</td>
+      <td><%= @loan_report.phases.map(&:name).to_sentence %></td>
+    </tr>
   </tbody>
 </table>
 
@@ -92,6 +96,10 @@
 
     <% @loan_report.loan_types.each do |type| %>
       <%= hidden_field_tag 'loan_report[loan_types][]', type.id %>
+    <% end %>
+
+    <% @loan_report.phases.each do |phase| %>
+      <%= hidden_field_tag 'loan_report[phases][]', phase.id %>
     <% end %>
 
     <div class="form-actions">

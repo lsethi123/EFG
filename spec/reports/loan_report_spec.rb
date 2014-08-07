@@ -17,8 +17,11 @@ describe LoanReport do
   end
 
   describe "#loans" do
-    let!(:loan1) { FactoryGirl.create(:loan) }
-    let!(:loan2) { FactoryGirl.create(:loan) }
+    let!(:phase_1_lending_limit) { FactoryGirl.create(:lending_limit, :phase_1) }
+    let!(:phase_6_lending_limit) { FactoryGirl.create(:lending_limit, :phase_6) }
+
+    let!(:loan1) { FactoryGirl.create(:loan, lending_limit: phase_1_lending_limit) }
+    let!(:loan2) { FactoryGirl.create(:loan, lending_limit: phase_6_lending_limit) }
     let(:loan_report) { LoanReport.new }
 
     it "returns all loans when matching the default report criteria" do
@@ -44,6 +47,17 @@ describe LoanReport do
 
       loan_report.loan_types = [LoanTypes::NEW_SFLG]
       loan_report.loans.should == [sflg_loan]
+    end
+
+    it "returns loans filtered by phase" do
+      loan_report.phases = [Phase.find(6)]
+      loan_report.loans.should == [loan2]
+    end
+
+    it "filters the correct phase when EFG is selected" do
+      loan_report.loan_types = [LoanTypes::EFG]
+      loan_report.phases = [Phase.find(6)]
+      loan_report.loans.should == [loan2]
     end
 
     it "returns loans with a facility letter date after a specified date" do

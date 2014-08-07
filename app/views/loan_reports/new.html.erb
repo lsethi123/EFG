@@ -37,8 +37,10 @@
   <% end %>
 
   <% if @loan_report.has_loan_type_selection? %>
-    <%= f.input :loan_types, as: :check_boxes, collection: LoanTypes::ALL %>
+    <%= f.input :loan_types, as: :check_boxes, collection: LoanTypes::ALL, checked: ->(value) { @loan_report.loan_types.include?(value) } %>
   <% end %>
+
+  <%= f.input :phases, as: :check_boxes, collection: Phase.all, checked: ->(value) { @loan_report.phases.include?(value) } %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>

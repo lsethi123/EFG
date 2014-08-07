@@ -1,5 +1,10 @@
 class LoanReport
-  attr_accessor :states, :loan_types, :lender_ids, :created_by_id,
+  def initialize
+    @loan_types = []
+    @phases = []
+  end
+
+  attr_accessor :states, :loan_types, :phases, :lender_ids, :created_by_id,
               :facility_letter_start_date, :facility_letter_end_date,
               :created_at_start_date, :created_at_end_date,
               :last_modified_start_date, :last_modified_end_date
@@ -31,7 +36,6 @@ class LoanReport
     # Lending Limit attributes
     loans = loans.select('lending_limits.phase_id AS lending_limit_phase_id')
     loans = loans.select('lending_limits.name AS lending_limit_name')
-    loans = loans.joins('LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id')
 
     # User attributes
     loans = loans.select('created_by_user.username AS created_by_username')
@@ -61,9 +65,12 @@ class LoanReport
   private
   def scope
     scope = Loan.scoped
+
+    scope = scope.joins('LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id')
+
     scope = scope.where('loans.state IN (?)', states) if states.present?
 
-    if loan_types.present?
+    if loan_types.any? || phases.any?
       # Tried to use Arel here, but it was segfaulting. Falling back to string
       # concatination - what web developers do best...
       #
@@ -72,8 +79,24 @@ class LoanReport
       #   condition = (loans[:loan_scheme].eq(type.scheme).and(loans[:loan_source].eq(type.source)))
       #   condition.to_sql
       # end
-      type_condition = ->(type) { "(loans.loan_scheme = '#{type.scheme}' AND loans.loan_source = '#{type.source}')" }
-      scope = scope.where(loan_types.map(&type_condition).join(' OR '))
+
+      # If we have any phases we need to retrive a subset of EFG loans rather
+      # than all EFG loans.
+      if phases.any?
+        loan_types.delete(LoanTypes::EFG)
+      end
+
+      conditions = []
+
+      loan_types.each do |type|
+        conditions << "(loans.loan_scheme = '#{type.scheme}' AND loans.loan_source = '#{type.source}')"
+      end
+
+      phases.each do |phase|
+        conditions << "(loans.loan_scheme = '#{phase.type.scheme}' AND loans.loan_source = '#{phase.type.source}' AND lending_limits.phase_id = #{phase.id})"
+      end
+
+      scope = scope.where(conditions.join(' OR '))
     end
 
     scope = scope.where('loans.lender_id IN (?)', lender_ids) if lender_ids.present?

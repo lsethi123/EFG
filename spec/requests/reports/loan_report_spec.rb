@@ -69,7 +69,6 @@ describe 'Loan report' do
   end
 
   context "as a CFE user" do
-
     let!(:loan3) { FactoryGirl.create(:loan) }
 
     let!(:current_user) { FactoryGirl.create(:cfe_user) }
@@ -112,6 +111,27 @@ describe 'Loan report' do
       # 2 errors - no lender selected, no loan type selected
       page.should have_css('label[for=loan_report_lender_ids] + .controls .help-inline')
       page.should have_css('input[name="loan_report[loan_types][]"] + .help-inline')
+    end
+
+    it "should allow filtering by phase" do
+      phase_1_lending_limit = FactoryGirl.create(:lending_limit, :phase_1)
+      phase_6_lending_limit = FactoryGirl.create(:lending_limit, :phase_6)
+
+      loan1.update_attribute(:lending_limit_id, phase_1_lending_limit.id)
+      loan2.update_attribute(:lending_limit_id, phase_1_lending_limit.id)
+      loan3.update_attribute(:lending_limit_id, phase_6_lending_limit.id)
+
+      within('.control-group.lender_select') do
+        check 'All'
+      end
+      check 'EFG'
+      select 'All states', from: 'loan_report[states][]'
+
+      check 'Phase 6'
+
+      click_button "Submit"
+
+      page.should have_content "Data extract found 1 row"
     end
 
   end

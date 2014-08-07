@@ -54,7 +54,8 @@ class LoanReportPresenter
 
     LoanReport.new.tap do |report|
       report.states = self.states
-      report.loan_types = self.loan_types
+      report.loan_types = self.loan_types.dup
+      report.phases = self.phases
       report.lender_ids = filter_lender_ids(self.lender_ids)
       report.created_by_id = self.created_by_id
       report.facility_letter_start_date = self.facility_letter_start_date
@@ -76,7 +77,7 @@ class LoanReportPresenter
 
   # Form Attributes
   attr_accessor :created_by_id
-  attr_reader :lender_ids, :loan_types, :states
+  attr_reader :lender_ids, :states
 
   def allowed_lenders
     user.lenders
@@ -86,9 +87,20 @@ class LoanReportPresenter
     @lender_ids = filter_lender_ids(lender_ids)
   end
 
+  def loan_types
+    @loan_types || []
+  end
+
   def loan_types=(type_ids)
-    type_ids = filter_blank_multi_select(type_ids) || []
     @loan_types = type_ids.map {|id| LOAN_TYPES_BY_ID[id]}.compact
+  end
+
+  def phases
+    @phases || []
+  end
+
+  def phases=(phase_ids)
+    @phases = phase_ids.map {|id| Phase.find(id.to_i) }.compact
   end
 
   def states=(states)
