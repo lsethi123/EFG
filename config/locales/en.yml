@@ -27,6 +27,8 @@ en:
               must_not_be_zero: "cannot be zero"
               must_match_repayment_frequency: "must be a multiple of %{months_per_repayment_period} to match the loan's repayment frequency"
               must_have_a_positive_repayment_duration_at_next_premium: "must ensure a valid loan term at the next premium collection quarter"
+            initial_capital_repayment_holiday:
+              must_be_gt_zero: "must be greater than zero"
             lump_sum_repayment:
               required: "can't be blank"
               must_be_gt_zero: "can't be negative"
