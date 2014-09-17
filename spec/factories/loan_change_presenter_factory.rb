@@ -12,6 +12,10 @@ FactoryGirl.define do
       new(loan, created_by)
     end
 
+    factory :capital_repayment_holiday_loan_change, class: CapitalRepaymentHolidayLoanChange do
+      initial_capital_repayment_holiday 6
+    end
+
     factory :lump_sum_repayment_loan_change, class: LumpSumRepaymentLoanChange do
       lump_sum_repayment Money.new(1_000_00)
     end
