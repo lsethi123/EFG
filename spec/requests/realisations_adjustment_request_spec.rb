@@ -17,10 +17,10 @@ describe 'making a realisation adjustment' do
     visit loan_path(loan)
     click_link 'Make a Realisation Adjustment'
 
-    fill_in 'Amount', with: '1,000.00'
+    fill_in 'Amount', with: '1000.00'
     fill_in 'Date', with: '19/09/2014'
     fill_in 'Notes', with: 'Joe Bloggs informed us that this needed updating.'
-    click_button 'Create Realisation Adjustment'
+    click_button 'Submit'
 
     click_link 'Loan Details'
     page.should have_detail_row('Cumulative Value of All Pre-Claim Limit Realisations', '£10,000.00')
