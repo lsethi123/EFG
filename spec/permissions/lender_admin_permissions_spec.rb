@@ -25,6 +25,10 @@ describe LenderAdminPermissions do
     it { refute user.can_create?(RealisationStatement) }
   end
 
+  context 'realisation adjustments' do
+    it { refute user.can_create?(RealisationAdjustment) }
+  end
+
   context 'remove guarantee' do
     it { refute user.can_view?(LoanRemoveGuarantee) }
     it { refute user.can_create?(LoanRemoveGuarantee) }

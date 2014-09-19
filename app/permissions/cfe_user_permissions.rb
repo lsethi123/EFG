@@ -5,6 +5,7 @@ module CfeUserPermissions
       DataCorrection,
       Invoice,
       LoanRemoveGuarantee,
+      RealisationAdjustment,
       RealisationStatement,
       LoanReport,
       LoanAuditReport

@@ -25,6 +25,10 @@ describe CfeUserPermissions do
     it { assert user.can_create?(RealisationStatement) }
   end
 
+  context 'realisation adjustments' do
+    it { assert user.can_create?(RealisationAdjustment) }
+  end
+
   context 'remove guarantee' do
     it { assert user.can_view?(LoanRemoveGuarantee) }
     it { assert user.can_create?(LoanRemoveGuarantee) }
