@@ -461,6 +461,20 @@ ActiveRecord::Schema.define(version: 20150119155829) do
   add_index "premium_schedules", ["legacy_loan_id"], name: "index_premium_schedules_on_legacy_loan_id", using: :btree
   add_index "premium_schedules", ["loan_id", "seq"], name: "index_premium_schedules_on_loan_id_and_seq", unique: true, using: :btree
 
+  create_table "realisation_adjustments", force: true do |t|
+    t.integer  "loan_id",       null: false
+    t.integer  "amount",        null: false
+    t.date     "date",          null: false
+    t.text     "notes"
+    t.integer  "created_by_id", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "realisation_adjustments", ["created_by_id"], name: "index_realisation_adjustments_on_created_by_id", using: :btree
+  add_index "realisation_adjustments", ["date"], name: "index_realisation_adjustments_on_date", using: :btree
+  add_index "realisation_adjustments", ["loan_id"], name: "index_realisation_adjustments_on_loan_id", using: :btree
+
   create_table "realisation_statements", force: true do |t|
     t.integer  "lender_id"
     t.integer  "created_by_id"
