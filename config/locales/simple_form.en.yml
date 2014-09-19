@@ -161,7 +161,7 @@ en:
 
       loan_recovery:
         recovery_on: 'Last amount recovered on'
-        cumulative_unrealised_recoveries_amount: 'Total value of recoveries'
+        cumulative_unrealised_recoveries_amount: 'Cumulative Value of Unrealised Recoveries'
 
       loan_realise:
         realised_money_date: Most Recent Realisation Date
