@@ -167,6 +167,7 @@ en:
         realised_money_date: Most Recent Realisation Date
         cumulative_pre_claim_limit_realised_amount: Cumulative Value of All Pre-Claim Limit Realisations
         cumulative_post_claim_limit_realised_amount: Cumulative Value of All Post-Claim Limit Realisations
+        cumulative_realisation_adjustments_amount: Cumulative Value of Realisation Adjustments
         cumulative_realised_amount: Cumulative Value of All Realisations
         last_realisation_amount: Most Recent Realisation Amount
 

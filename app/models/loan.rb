@@ -56,6 +56,7 @@ class Loan < ActiveRecord::Base
   has_many :loan_realisations_post_claim_limit, -> { where(post_claim_limit: true) }, class_name: 'LoanRealisation', foreign_key: 'realised_loan_id'
   has_many :loan_realisations_pre_claim_limit, -> { where(post_claim_limit: false) }, class_name: 'LoanRealisation', foreign_key: 'realised_loan_id'
   has_many :recoveries
+  has_many :realisation_adjustments
   has_many :loan_securities
   has_many :ineligibility_reasons, class_name: 'LoanIneligibilityReason'
   has_many :state_changes, -> { order(:modified_at) }, class_name: 'LoanStateChange'
@@ -170,7 +171,7 @@ class Loan < ActiveRecord::Base
   end
 
   def cumulative_realised_amount
-    Money.new(loan_realisations.sum(:realised_amount))
+    Money.new(loan_realisations.sum(:realised_amount)) - cumulative_realisation_adjustments_amount
   end
 
   def cumulative_pre_claim_limit_realised_amount
@@ -179,6 +180,14 @@ class Loan < ActiveRecord::Base
 
   def cumulative_post_claim_limit_realised_amount
     sum_realised_amount(loan_realisations_post_claim_limit)
+  end
+
+  def cumulative_realisation_adjustments_amount
+    if realisation_adjustments.any?
+      realisation_adjustments.map(&:amount).sum
+    else
+      Money.new(0)
+    end
   end
 
   def cumulative_unrealised_recoveries_amount
