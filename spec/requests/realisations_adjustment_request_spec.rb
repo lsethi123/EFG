@@ -1,11 +1,5 @@
 require 'spec_helper'
 
-RSpec::Matchers.define :have_detail_row do |name, value|
-  match do |page|
-    expect(page).to have_xpath("//tr[th[text()='#{name}']][td[text()='#{value}']]")
-  end
-end
-
 describe 'making a realisation adjustment' do
   let(:current_user) { FactoryGirl.create(:cfe_user) }
   before { login_as(current_user, scope: :user) }
