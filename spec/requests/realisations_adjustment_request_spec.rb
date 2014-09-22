@@ -28,6 +28,15 @@ describe 'making a realisation adjustment' do
     page.should have_detail_row('Cumulative Value of All Realisations', '£9,000.00')
   end
 
-  # TODO: Non-realised loan doesn't have a button.
-  # TODO: Validations fail test.
+  it "does not continue with invalid values" do
+    visit new_loan_realisation_adjustment_path(loan)
+
+    loan.state.should == Loan::Realised
+    expect {
+      click_button 'Submit'
+      loan.reload
+    }.to_not change(loan, :state)
+
+    current_path.should == "/loans/#{loan.id}/realisation_adjustments"
+  end
 end
