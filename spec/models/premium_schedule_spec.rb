@@ -137,21 +137,21 @@ describe PremiumSchedule do
       fourth_draw_months
     ).each do |attr|
       it "does not require #{attr} if not set" do
-        premium_schedule.initial_capital_repayment_holiday = nil
+        premium_schedule.send("#{attr}=", nil)
         premium_schedule.should be_valid
       end
 
       it "requires #{attr} to be 0 or greater if set" do
-        premium_schedule.initial_capital_repayment_holiday = -1
+        premium_schedule.send("#{attr}=", -1)
         premium_schedule.should_not be_valid
-        premium_schedule.initial_capital_repayment_holiday = 0
+        premium_schedule.send("#{attr}=", 0)
         premium_schedule.should be_valid
       end
 
       it "requires #{attr} to be 120 or less if set" do
-        premium_schedule.initial_capital_repayment_holiday = 121
+        premium_schedule.send("#{attr}=", 121)
         premium_schedule.should_not be_valid
-        premium_schedule.initial_capital_repayment_holiday = 120
+        premium_schedule.send("#{attr}=", 120)
         premium_schedule.should be_valid
       end
     end
