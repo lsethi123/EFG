@@ -131,7 +131,6 @@ describe PremiumSchedule do
     end
 
     %w(
-      initial_capital_repayment_holiday
       second_draw_months
       third_draw_months
       fourth_draw_months
@@ -221,6 +220,33 @@ describe PremiumSchedule do
         loan.amount = 10_000_00
         rescheduled_premium_schedule.initial_draw_amount = 10_00
         rescheduled_premium_schedule.should be_valid
+      end
+    end
+
+    context '#initial_capital_repayment_holiday' do
+      it 'can be blank' do
+        premium_schedule.initial_capital_repayment_holiday = ''
+        expect(premium_schedule).to be_valid
+      end
+
+      it 'can be zero' do
+        premium_schedule.initial_capital_repayment_holiday = 0
+        expect(premium_schedule).to be_valid
+      end
+
+      it 'cannot be less than zero' do
+        premium_schedule.initial_capital_repayment_holiday = -1
+        expect(premium_schedule).to_not be_valid
+      end
+
+      it 'cannot be as long as the loan duration' do
+        premium_schedule.repayment_duration = 24
+
+        premium_schedule.initial_capital_repayment_holiday = 24
+        expect(premium_schedule).to_not be_valid
+
+        premium_schedule.initial_capital_repayment_holiday = 23
+        expect(premium_schedule).to be_valid
       end
     end
   end

@@ -191,7 +191,7 @@ en:
               must_be_positive: 'must be more than £0.00'
               invalid: 'must be less than £9,999,999.99'
             initial_capital_repayment_holiday:
-              invalid: 'must be between 0 and 120'
+              must_be_lt_loan_duration: "must be less than the loan's term"
             second_draw_months:
               invalid: 'must be between 0 and 120'
             third_draw_months:
