@@ -1,4 +1,7 @@
 class LumpSumRepaymentLoanChange < LoanChangePresenter
+  include CapitalRepyamentHolidayFields
+  include TrancheDrawdownsFields
+
   attr_reader :lump_sum_repayment
   attr_accessible :lump_sum_repayment
 

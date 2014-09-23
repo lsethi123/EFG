@@ -1,4 +1,31 @@
 class LoanChangePresenter
+  module CapitalRepyamentHolidayFields
+    extend ActiveSupport::Concern
+
+    included do
+      delegate :initial_capital_repayment_holiday, :initial_capital_repayment_holiday=, to: :premium_schedule
+
+      attr_accessible  :initial_capital_repayment_holiday
+    end
+  end
+
+  module TrancheDrawdownsFields
+    extend ActiveSupport::Concern
+
+    included do
+      delegate :second_draw_amount, :second_draw_amount=, to: :premium_schedule
+      delegate :second_draw_months, :second_draw_months=, to: :premium_schedule
+      delegate :third_draw_amount, :third_draw_amount=, to: :premium_schedule
+      delegate :third_draw_months, :third_draw_months=, to: :premium_schedule
+      delegate :fourth_draw_amount, :fourth_draw_amount=, to: :premium_schedule
+      delegate :fourth_draw_months, :fourth_draw_months=, to: :premium_schedule
+
+      attr_accessible :second_draw_amount, :second_draw_months,
+        :third_draw_amount, :third_draw_months, :fourth_draw_amount,
+        :fourth_draw_months
+    end
+  end
+
   extend  ActiveModel::Callbacks
   extend  ActiveModel::Naming
   include ActiveModel::Conversion
@@ -12,20 +39,11 @@ class LoanChangePresenter
   define_model_callbacks :save
 
   attr_reader :created_by, :date_of_change, :loan
-  attr_accessible :date_of_change, :initial_draw_amount, :second_draw_amount,
-    :second_draw_months, :third_draw_amount, :third_draw_months,
-    :fourth_draw_amount, :fourth_draw_months, :initial_capital_repayment_holiday
+  attr_accessible :date_of_change, :initial_draw_amount
 
   validates :date_of_change, presence: true
 
   delegate :initial_draw_amount, :initial_draw_amount=, to: :premium_schedule
-  delegate :initial_capital_repayment_holiday, :initial_capital_repayment_holiday=, to: :premium_schedule
-  delegate :second_draw_amount, :second_draw_amount=, to: :premium_schedule
-  delegate :second_draw_months, :second_draw_months=, to: :premium_schedule
-  delegate :third_draw_amount, :third_draw_amount=, to: :premium_schedule
-  delegate :third_draw_months, :third_draw_months=, to: :premium_schedule
-  delegate :fourth_draw_amount, :fourth_draw_amount=, to: :premium_schedule
-  delegate :fourth_draw_months, :fourth_draw_months=, to: :premium_schedule
 
   def initialize(loan, created_by)
     @loan = loan
