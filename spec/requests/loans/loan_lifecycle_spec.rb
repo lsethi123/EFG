@@ -36,7 +36,7 @@ describe 'Loan lifecycle' do
         # Before offering facility in Phase 6, premium schedule must be generated
         click_link "Generate Premium Schedule"
         page.fill_in 'premium_schedule_initial_draw_year', with: Date.current.year
-        page.fill_in 'premium_schedule_initial_draw_amount', with: Loan.last.amount.to_s
+        page.fill_in 'premium_schedule_initial_draw_amount', with: (loan.amount - Money.new(1_000_00)).to_s
         click_button 'Submit'
 
         loan_lifecycle_steps_from_offered(loan)
