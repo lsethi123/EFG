@@ -3,6 +3,23 @@ require 'spec_helper'
 describe ReprofileDrawsLoanChange do
   it_behaves_like 'LoanChangePresenter'
 
+  describe '#initialize' do
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+    let(:presenter) { FactoryGirl.build(:reprofile_draws_loan_change, loan: loan) }
+
+    context 'when the full amount has been drawn' do
+      before do
+        loan.initial_draw_change.update_column(:amount_drawn, loan.amount.cents)
+      end
+
+      it 'is not allowed' do
+        expect {
+          presenter
+        }.to raise_error(ReprofileDrawsLoanChange::LoanAlreadyFullyDrawnError)
+      end
+    end
+  end
+
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60) }
