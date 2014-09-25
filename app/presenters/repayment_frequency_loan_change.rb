@@ -1,7 +1,4 @@
 class RepaymentFrequencyLoanChange < LoanChangePresenter
-  include CapitalRepyamentHolidayFields
-  include TrancheDrawdownsFields
-
   ValidRepaymentFrequencies = [
     RepaymentFrequency::Annually,
     RepaymentFrequency::SixMonthly,

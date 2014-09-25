@@ -1,7 +1,4 @@
 class RepaymentDurationLoanChange < LoanChangePresenter
-  include CapitalRepyamentHolidayFields
-  include TrancheDrawdownsFields
-
   attr_reader :added_months, :repayment_duration
   attr_accessible :added_months
 
