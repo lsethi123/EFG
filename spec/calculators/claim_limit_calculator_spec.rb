@@ -38,4 +38,28 @@ describe ClaimLimitCalculator do
     end
   end
 
+  describe "#pre_claim_realisations_amount" do
+    let(:calculator) { ClaimLimitCalculator.new(lender) }
+    before { calculator.stub(:phase).and_return(lending_limit.phase) }
+
+    let!(:loan1) { FactoryGirl.create(:loan, :realised, lender: lender, lending_limit: lending_limit) }
+    let!(:loan2) { FactoryGirl.create(:loan, :realised, lender: lender, lending_limit: lending_limit) }
+    before { LoanRealisation.delete_all }
+
+    let!(:realisation_1) { FactoryGirl.create(:loan_realisation, realised_loan: loan1, realised_amount: Money.new(10_00)) }
+    let!(:realisation_2) { FactoryGirl.create(:loan_realisation, realised_loan: loan1, realised_amount: Money.new(20_00)) }
+    let!(:realisation_3) { FactoryGirl.create(:loan_realisation, realised_loan: loan2, realised_amount: Money.new(50_00)) }
+
+    it "sums the pre-claim realisations" do
+      calculator.pre_claim_realisations_amount.should == Money.new(80_00)
+    end
+
+    context "with realisation adjustments" do
+      let!(:realisation_adjustment) { FactoryGirl.create(:realisation_adjustment, loan: loan1, amount: Money.new(25_00)) }
+
+      it "subtracts any realisation adjustments" do
+        calculator.pre_claim_realisations_amount.should == Money.new(55_00)
+      end
+    end
+  end
 end
