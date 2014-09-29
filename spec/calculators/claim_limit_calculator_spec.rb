@@ -61,5 +61,13 @@ describe ClaimLimitCalculator do
         calculator.pre_claim_realisations_amount.should == Money.new(55_00)
       end
     end
+
+    context "with post-claim limit realisations" do
+      let!(:post_claim_realisation) { FactoryGirl.create(:loan_realisation, :post, realised_loan: loan1, realised_amount: Money.new(5_00)) }
+
+      it "ignores post-claim limit realisations" do
+        calculator.pre_claim_realisations_amount.should == Money.new(80_00)
+      end
+    end
   end
 end
