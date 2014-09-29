@@ -11,6 +11,7 @@ class Lender < ActiveRecord::Base
   has_many :active_lending_limits, -> { where(active: true) }, class_name: 'LendingLimit'
   has_many :lender_users
   has_many :loans
+  has_many :realisation_adjustments, through: :loans
   has_many :users, -> { where(type: %w(LenderAdmin LenderUser)) }, class_name: 'User'
 
   attr_accessible :can_use_add_cap, :name,
