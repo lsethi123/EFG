@@ -82,7 +82,7 @@ class ClaimLimitCalculator
 
       realisation_adjustments_amount = lender.realisation_adjustments.sum(:amount)
 
-      Money.new(pre_claim_realisations_amount - realisation_adjustments_amount)
+      Money.new(pre_claim_realisations_amount) - Money.new(realisation_adjustments_amount)
     end
   end
 
