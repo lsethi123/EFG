@@ -518,6 +518,15 @@ ActiveRecord::Schema.define(version: 20150119155829) do
 
   add_index "sic_codes", ["code"], name: "index_sic_codes_on_code", unique: true, using: :btree
 
+  create_table "sub_lenders", force: true do |t|
+    t.integer  "lender_id",  null: false
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sub_lenders", ["lender_id"], name: "index_sub_lenders_on_lender_id", using: :btree
+
   create_table "user_audits", force: true do |t|
     t.integer  "user_id"
     t.string   "legacy_id"
