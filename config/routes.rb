@@ -30,6 +30,8 @@ EFG::Application.routes.draw do
       end
     end
 
+    resources :sub_lenders, except: [:show]
+
     with_options only: [:index, :show, :new, :create, :edit, :update] do
       %w(lender_admins lender_users).each do |resource|
         resources resource do
