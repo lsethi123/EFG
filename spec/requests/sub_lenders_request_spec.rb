@@ -22,7 +22,8 @@ describe 'Sub-lenders' do
 
       click_button 'Create Sub-lender'
 
-      current_path.should == lender_sub_lender_path(lender)
+      page.should have_content("can't be blank")
+      lender.sub_lenders.count.should be_zero
     end
 
     it 'adds sub-lender' do
