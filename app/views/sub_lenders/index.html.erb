@@ -1,0 +1,33 @@
+<%= breadcrumbs(
+  link_to('Lenders', lenders_path),
+  h(@lender.name)
+) %>
+
+<div class="page-header">
+  <h1>View Sub-lender</h1>
+</div>
+
+<div class="actions">
+  <%= link_to %{<i class="icon-plus"></i> New Sub-lender}.html_safe, new_lender_sub_lender_path(@lender), class: 'btn' %>
+</div>
+
+<% unless @sub_lenders.empty? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Sub-lender Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @sub_lenders.each do |sub_lender| %>
+        <tr>
+          <td><%= link_to sub_lender.name, edit_lender_sub_lender_path(@lender, sub_lender) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>
+    There are no sub-lenders for <%= @lender.name %>. <%= link_to "Add one now", new_lender_sub_lender_path(@lender) %>.
+  </p>
+<% end %>
