@@ -1,0 +1,9 @@
+<%= simple_form_for [@lender, @sub_lender], html: { class: 'form-horizontal form-sub-lender' } do |f| %>
+
+  <%= f.input :name %>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: 'btn btn-primary', value: @sub_lender.new_record? ? 'Create Sub-lender' : 'Update Sub-lender', data: { 'disable-with' => 'Submitting...' } %>
+  </div>
+
+<% end %>
