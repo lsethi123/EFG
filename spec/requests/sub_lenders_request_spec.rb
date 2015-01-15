@@ -22,7 +22,7 @@ describe 'Sub-lenders' do
 
       click_button 'Create Sub-lender'
 
-      current_path.should == lender_lender_sub_lenders_path(lender)
+      current_path.should == lender_sub_lender_path(lender)
     end
 
     it 'adds sub-lender' do
@@ -32,8 +32,14 @@ describe 'Sub-lenders' do
 
       current_path.should == lender_sub_lenders_path(lender)
 
-      lender.reload
-      lender.sub_lenders.collect(&:name).should include('EMCA')
+      sub_lender = lender.sub_lenders.last
+      sub_lender.name.should == 'EMCA'
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::SubLenderCreated
+      admin_audit.auditable.should == sub_lender
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -60,7 +66,13 @@ describe 'Sub-lenders' do
       current_path.should == lender_sub_lenders_path(lender)
 
       sub_lender.reload
-      sub_lender.name.should eql('Foo')
+      sub_lender.name.should == 'Foo'
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::SubLenderEdited
+      admin_audit.auditable.should == sub_lender
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
