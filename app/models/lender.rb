@@ -12,6 +12,7 @@ class Lender < ActiveRecord::Base
   has_many :lender_users
   has_many :loans
   has_many :users, -> { where(type: %w(LenderAdmin LenderUser)) }, class_name: 'User'
+  has_many :sub_lenders
 
   attr_accessible :can_use_add_cap, :name,
     :organisation_reference_code, :primary_contact_email,
