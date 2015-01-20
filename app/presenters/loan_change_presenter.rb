@@ -1,5 +1,5 @@
 class LoanChangePresenter
-  module CapitalRepyamentHolidayFields
+  module CapitalRepaymentHolidayFields
     extend ActiveSupport::Concern
 
     included do
