@@ -1,10 +1,10 @@
 <%= breadcrumbs_for_loan(
   @loan,
-  link_to('Change Facility', loan_loan_changes_path(@loan))
+  link_to('Change Loan', loan_loan_changes_path(@loan))
 ) %>
 
 <div class="page-header">
-  <h1>Change Facility</h1>
+  <h1><%= params[:type].titleize %></h1>
 </div>
 
 <p><span class="label label-info">INFORMATION</span> A new Premium Schedule will be generated from the information entered here.</p>
