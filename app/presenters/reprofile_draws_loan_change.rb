@@ -1,5 +1,4 @@
 class ReprofileDrawsLoanChange < LoanChangePresenter
-  include CapitalRepyamentHolidayFields
   include TrancheDrawdownsFields
 
   before_save :update_loan_change
