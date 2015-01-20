@@ -1,5 +1,5 @@
 class CapitalRepaymentHolidayLoanChange < LoanChangePresenter
-  include CapitalRepyamentHolidayFields
+  include CapitalRepaymentHolidayFields
 
   validate :validate_capital_repayment_holiday
   before_save :update_loan_change
