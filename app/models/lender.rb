@@ -65,6 +65,10 @@ class Lender < ActiveRecord::Base
     LenderLogo.new(organisation_reference_code)
   end
 
+  def sub_lender_names
+    @sub_lender_names ||= sub_lenders.map(&:name)
+  end
+
   private
     def current_lending_limit_allocation_for_type(type)
       Money.new(current_lending_limits.where(allocation_type_id: type.id).sum(:allocation))
