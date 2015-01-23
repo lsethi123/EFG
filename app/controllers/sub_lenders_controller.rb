@@ -1,6 +1,11 @@
 class SubLendersController < ApplicationController
   include AuditableController
 
+  before_filter :verify_create_permission, only: [:new, :create]
+  before_filter :verify_update_permission, only: [:edit, :update]
+  before_filter :verify_destroy_permission, only: [:destroy]
+  before_filter :verify_view_permission, only: [:index]
+
   before_filter :load_lender
 
   def index
@@ -51,6 +56,22 @@ class SubLendersController < ApplicationController
 
   def load_lender
     @lender = Lender.find(params[:lender_id])
+  end
+
+  def verify_create_permission
+    enforce_create_permission(SubLender)
+  end
+
+  def verify_update_permission
+    enforce_update_permission(SubLender)
+  end
+
+  def verify_view_permission
+    enforce_view_permission(SubLender)
+  end
+
+  def verify_destroy_permission
+    enforce_destroy_permission(SubLender)
   end
 
 end

@@ -255,4 +255,11 @@ describe CfeAdminPermissions do
     it { refute user.can_update?(AgreedDraw) }
     it { refute user.can_view?(AgreedDraw) }
   end
+
+  context 'SubLender' do
+    it { assert user.can_create?(SubLender) }
+    it { assert user.can_update?(SubLender) }
+    it { assert user.can_view?(SubLender) }
+    it { assert user.can_destroy?(SubLender) }
+  end
 end
