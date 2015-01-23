@@ -33,16 +33,18 @@ class TransferredLoanEntry
   attribute :repayment_duration
   attribute :repayment_frequency_id
   attribute :state_aid
+  attribute :sub_lender
   attribute :generic1
   attribute :generic2
   attribute :generic3
   attribute :generic4
   attribute :generic5
 
+  delegate :sub_lender_names, to: :lender
+
   validates_presence_of :amount, :repayment_duration, :repayment_frequency_id
-
+  validates_inclusion_of :sub_lender, in: :sub_lender_names, if: -> { sub_lender_names.present? }
   validate :repayment_frequency_allowed
-
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
