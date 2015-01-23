@@ -3,9 +3,9 @@ require 'spec_helper'
 describe 'Sub Lender Data Correction' do
   include DataCorrectionSpecHelper
 
-  context "lender has sub-lenders" do
+  let!(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender) }
 
-    let!(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender) }
+  context "lender has sub-lenders" do
     let!(:sub_lender) { FactoryGirl.create(:sub_lender, lender: loan.lender) }
     let!(:old_value) { loan.sub_lender }
     let!(:new_value) { sub_lender.name }
@@ -30,6 +30,13 @@ describe 'Sub Lender Data Correction' do
       loan.reload
       loan.sub_lender.should == new_value
       loan.modified_by.should == current_user
+    end
+  end
+
+  context "lender has no sub-lenders and loan has no existing sub-lender" do
+    it "does not show link to Sub-lender data correction" do
+      visit_data_corrections
+      page.should_not have_css('a', text: 'Sub-lender')
     end
   end
 end
