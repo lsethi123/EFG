@@ -93,6 +93,7 @@
     <%= f.input :would_you_lend, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :collateral_exhausted, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :not_insolvent, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input(:sub_lender, as: :select, collection: @loan_entry.sub_lender_names) if @loan_entry.sub_lender_required?%>
     <%= f.input :generic1, as: :string %>
     <%= f.input :generic2, as: :string %>
     <%= f.input :generic3, as: :string %>

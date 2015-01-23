@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150119155829) do
+ActiveRecord::Schema.define(version: 20150123115521) do
 
   create_table "admin_audits", force: true do |t|
     t.string   "auditable_type",        null: false
@@ -401,6 +401,7 @@ ActiveRecord::Schema.define(version: 20150119155829) do
     t.boolean  "not_insolvent"
     t.decimal  "euro_conversion_rate",                           precision: 17, scale: 14
     t.integer  "loan_sub_category_id"
+    t.string   "sub_lender"
   end
 
   add_index "loans", ["legacy_id"], name: "index_loans_on_legacy_id", unique: true, using: :btree
