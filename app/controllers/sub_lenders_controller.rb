@@ -41,6 +41,12 @@ class SubLendersController < ApplicationController
     end
   end
 
+  def destroy
+    @sub_lender = @lender.sub_lenders.find(params[:id])
+    @sub_lender.destroy
+    redirect_to lender_sub_lenders_url(@lender)
+  end
+
   private
 
   def load_lender
