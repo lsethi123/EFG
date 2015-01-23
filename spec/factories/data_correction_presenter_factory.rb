@@ -46,5 +46,9 @@ FactoryGirl.define do
     factory :sortcode_data_correction, class: SortcodeDataCorrection do
       sortcode '123456'
     end
+
+    factory :sub_lender_data_correction, class: SubLenderDataCorrection do
+      sub_lender 'ACME sub lender'
+    end
   end
 end

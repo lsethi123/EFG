@@ -18,6 +18,7 @@ class ChangeType < StaticAssociation
     { id: 'g', name: 'Trading Date' },
     { id: 'h', name: 'Company Registration' },
     { id: 'i', name: 'Generic Fields' },
+    { id: 'j', name: 'Sub-lender' },
   ]
 
   BusinessName = find('1')
@@ -38,4 +39,5 @@ class ChangeType < StaticAssociation
   TradingDate = find('g')
   CompanyRegistration = find('h')
   GenericFields = find('i')
+  SubLender = find('j')
 end
