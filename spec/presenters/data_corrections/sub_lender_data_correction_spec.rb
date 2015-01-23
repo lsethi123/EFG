@@ -22,4 +22,14 @@ describe SubLenderDataCorrection do
       data_correction.should have(1).error_on(:sub_lender)
     end
   end
+
+  context "when lender has no sub-lenders" do
+    let!(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender) }
+
+    it "must have a blank sub_lender" do
+      data_correction.sub_lender = 'ACME Sub-lender'
+      data_correction.should_not be_valid
+      data_correction.should have(1).error_on(:sub_lender)
+    end
+  end
 end
