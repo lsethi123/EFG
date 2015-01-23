@@ -306,6 +306,10 @@ class Loan < ActiveRecord::Base
     end
   end
 
+  def sub_lender_names
+    lender.sub_lenders.map(&:name)
+  end
+
   private
 
   def set_reference

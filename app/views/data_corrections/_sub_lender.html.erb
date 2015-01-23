@@ -1,0 +1,2 @@
+<%= simple_form_row 'Sub-lender', @loan.sub_lender %>
+<%= f.input :sub_lender, label: 'New Sub-lender', as: :select, collection: @loan.sub_lender_names %>
