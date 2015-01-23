@@ -24,6 +24,23 @@ class SubLendersController < ApplicationController
     end
   end
 
+  def edit
+    @sub_lender = @lender.sub_lenders.find(params[:id])
+  end
+
+  def update
+    @sub_lender = @lender.sub_lenders.find(params[:id])
+    @sub_lender.attributes = params[:sub_lender].slice(:name)
+
+    save = -> { @sub_lender.save }
+
+    if audit(AdminAudit::SubLenderEdited, @sub_lender, &save)
+      redirect_to lender_sub_lenders_url(@lender)
+    else
+      render :edit
+    end
+  end
+
   private
 
   def load_lender

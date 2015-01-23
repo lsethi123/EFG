@@ -9,11 +9,11 @@ describe 'Sub-lenders' do
   before do
     visit root_path
     click_link 'Manage Lenders'
-    click_link 'Sub-lenders'
   end
 
   describe 'creating new sub-lenders' do
     before do
+      click_link 'Sub-lenders'
       click_link 'New Sub-lender'
     end
 
@@ -48,6 +48,7 @@ describe 'Sub-lenders' do
     let!(:sub_lender) { FactoryGirl.create(:sub_lender, lender: lender, name: 'EMCA') }
 
     before do
+      click_link 'Sub-lenders'
       click_link 'EMCA'
     end
 
@@ -56,7 +57,8 @@ describe 'Sub-lenders' do
 
       click_button 'Update Sub-lender'
 
-      current_path.should == lender_sub_lender_path(sub_lender)
+      page.should have_content("can't be blank")
+      lender.sub_lenders.first.name.should == 'EMCA'
     end
 
     it 'changes the sub-lender' do

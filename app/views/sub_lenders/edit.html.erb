@@ -1,0 +1,11 @@
+<%= breadcrumbs(
+  link_to('Lenders', lenders_path),
+  h(@lender.name),
+  link_to('Sub-lenders', lender_sub_lenders_path(@lender))
+) %>
+
+<div class="page-header">
+  <h1>Edit Sub-lender for <%= @lender.name %></h1>
+</div>
+
+<%= render 'form' %>
