@@ -187,6 +187,27 @@ describe 'loan entry' do
     end
   end
 
+  context "when sub lenders exist for the lender" do
+    let!(:sub_lender) { FactoryGirl.create(:sub_lender, lender: lender, name: "ACME sublender")}
+
+    it "should require the selection of a sub-lender" do
+      visit new_loan_entry_path(loan)
+
+      fill_in_valid_loan_entry_details_phase_5(loan)
+
+      click_button 'Submit'
+
+      page.should have_content("a sub-lender must be chosen")
+      select "ACME sublender", from: "Sub-lender"
+
+      click_button "Submit"
+      current_path.should == complete_loan_entry_path(loan)
+
+      loan.reload
+      loan.sub_lender.should == "ACME sublender"
+    end
+  end
+
   context "with loan in sector with reduced state aid threshold" do
     let(:sic_code) { SicCode.find_by_code!(loan.sic_code) }
 

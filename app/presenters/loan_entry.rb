@@ -54,6 +54,7 @@ class LoanEntry
   attribute :invoice_discount_limit
   attribute :debtor_book_coverage
   attribute :debtor_book_topup
+  attribute :sub_lender
 
   delegate :calculate_state_aid, :reason, :sic, to: :loan
 
@@ -67,6 +68,7 @@ class LoanEntry
   validate :repayment_frequency_allowed
   validate :company_turnover_is_allowed, if: :turnover
   validates_acceptance_of :state_aid_is_valid, allow_nil: false, accept: true
+  validates_presence_of :sub_lender, if: :sub_lender_required?
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
@@ -90,6 +92,14 @@ class LoanEntry
 
   def total_prepayment
     (debtor_book_coverage || 0) + (debtor_book_topup || 0)
+  end
+
+  def sub_lender_required?
+    sub_lender_names.present?
+  end
+
+  def sub_lender_names
+    lender.sub_lenders.map(&:name)
   end
 
   private
