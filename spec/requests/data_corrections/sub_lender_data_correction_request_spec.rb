@@ -7,15 +7,20 @@ describe 'Sub Lender Data Correction' do
 
   context "lender has sub-lenders" do
     let!(:sub_lender) { FactoryGirl.create(:sub_lender, lender: loan.lender) }
-    let!(:old_value) { loan.sub_lender }
+    let!(:old_value) { "old sub-lender" }
     let!(:new_value) { sub_lender.name }
 
     before do
+      loan.update_column(:sub_lender, old_value)
       visit_data_corrections
       click_link "Sub-lender"
     end
 
     it do
+      click_button 'Submit'
+      page.should have_content "old sub-lender"
+      page.should have_content "a sub-lender must be chosen"
+
       select new_value, from: 'data_correction_sub_lender'
       click_button 'Submit'
 
