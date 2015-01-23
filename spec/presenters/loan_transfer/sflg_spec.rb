@@ -4,7 +4,7 @@ describe LoanTransfer::Sflg do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
 
   let!(:loan) {
-    FactoryGirl.create(:loan, :offered, :guaranteed, :with_premium_schedule, :with_loan_securities, :sflg, lender: lender)
+    FactoryGirl.create(:loan, :offered, :guaranteed, :with_premium_schedule, :with_loan_securities, :sflg, :with_sub_lender, lender: lender)
   }
 
   let(:loan_transfer) {
@@ -44,7 +44,7 @@ describe LoanTransfer::Sflg do
         id lender_id reference state sortcode repayment_duration amount
         repayment_frequency_id maturity_date invoice_id generic1 generic2 generic3
         generic4 generic5 transferred_from_id lending_limit_id created_at
-        updated_at legacy_id created_by_id lender_reference last_modified_at
+        updated_at legacy_id created_by_id lender_reference last_modified_at sub_lender
       )
 
       fields_to_compare = Loan.column_names - fields_not_copied

@@ -54,12 +54,13 @@ class LoanTransfer::Base
         maturity_date
         invoice_id
         lender_reference
+        sub_lender
       ).each do |field|
         new_loan.public_send("#{field}=", nil)
       end
 
       (1..5).each do |num|
-        new_loan.send("generic#{num}=", nil)
+        new_loan.public_send("generic#{num}=", nil)
       end
 
       yield new_loan if block_given?

@@ -84,6 +84,10 @@ shared_examples_for 'a loan transfer' do
         new_loan.maturity_date.should be_blank
       end
 
+      it 'should create new loan with no value for sub-lender' do
+        new_loan.sub_lender.should be_blank
+      end
+
       it 'should create new loan with no value for generic fields' do
         (1..5).each do |num|
           new_loan.send("generic#{num}").should be_blank
