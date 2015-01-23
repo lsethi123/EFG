@@ -16,12 +16,14 @@
     <thead>
       <tr>
         <th>Sub-lender Name</th>
+        <th>Options</th>
       </tr>
     </thead>
     <tbody>
       <% @sub_lenders.each do |sub_lender| %>
         <tr>
           <td><%= link_to sub_lender.name, edit_lender_sub_lender_path(@lender, sub_lender) %></td>
+          <td><%= link_to "Delete", lender_sub_lender_path(@lender, sub_lender), data: {confirm: "Are you sure?"}, method: :delete %></td>
         </tr>
       <% end %>
     </tbody>

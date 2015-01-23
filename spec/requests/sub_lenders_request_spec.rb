@@ -79,6 +79,19 @@ describe 'Sub-lenders' do
     end
   end
 
+  describe 'delete sub-lender' do
+    let!(:sub_lender) { FactoryGirl.create(:sub_lender, lender: lender) }
+
+    before do
+      click_link 'Sub-lenders'
+    end
+
+    it do
+      click_link 'Delete'
+      page.should_not have_content sub_lender.name
+    end
+  end
+
   private
 
   def fill_in(attribute, value)
