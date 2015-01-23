@@ -198,6 +198,10 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_sub_lender do
+      sub_lender "ACME sub-lender"
+    end
+
     trait :efg do
       loan_scheme Loan::EFG_SCHEME
       loan_source Loan::SFLG_SOURCE
