@@ -29,6 +29,7 @@ class DataCorrectionsController < ApplicationController
     if @presenter.save
       redirect_to loan_url(@loan)
     else
+      @loan.reload
       render :new
     end
   end

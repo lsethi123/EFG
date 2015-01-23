@@ -149,7 +149,10 @@ en:
               collection_month_forbidden: 'Month of collection must not be selected for schedule types "New"'
             collection_month:
               required: 'Month of collection must be selected for schedule types "All" or "Changed" if no loan reference is entered'
-
+        data_correction:
+          attributes:
+            sub_lender:
+              inclusion: "a sub-lender must be chosen"
   activerecord:
     models:
       auditor_user:
