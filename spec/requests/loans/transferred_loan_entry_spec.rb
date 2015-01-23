@@ -52,4 +52,14 @@ describe 'Transferred loan entry' do
     should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
   end
 
+  it "does not continue with invalid values" do
+    expect {
+      click_button 'Submit'
+    }.not_to change(loan, :state)
+
+    page.should have_content "must be accepted"
+    page.should have_content "must be calculated"
+    page.should have_content "a sub-lender must be chosen"
+  end
+
 end
