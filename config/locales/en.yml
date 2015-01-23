@@ -139,6 +139,8 @@ en:
             maturity_date:
               required: "can't be blank"
               greater_than_max_repayment_duration: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
+            sub_lender:
+              inclusion: "a sub-lender must be chosen"
         premium_schedule_report:
           attributes:
             base:

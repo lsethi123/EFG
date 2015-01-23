@@ -5,6 +5,7 @@ describe 'Transferred loan entry' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
 
   let(:loan) { FactoryGirl.create(:loan, :transferred, lender: current_user.lender) }
+  let!(:sub_lender) { FactoryGirl.create(:sub_lender, lender: loan.lender, name: "ACME sublender")}
 
   before(:each) do
     login_as(current_user, scope: :user)
@@ -18,6 +19,7 @@ describe 'Transferred loan entry' do
     fill_in 'transferred_loan_entry_lender_reference', with: 'lenderref1'
     fill_in "transferred_loan_entry_repayment_duration_years", with: 1
     fill_in "transferred_loan_entry_repayment_duration_months", with: 6
+    select "ACME sublender", from: "Sub-lender"
 
     calculate_state_aid(loan)
 
@@ -38,6 +40,7 @@ describe 'Transferred loan entry' do
     loan.lender_reference.should == 'lenderref1'
     loan.repayment_frequency_id.should == 3
     loan.repayment_duration.should == MonthDuration.new(18)
+    loan.sub_lender.should == "ACME sublender"
     loan.generic1.should == 'Generic 1'
     loan.generic2.should == 'Generic 2'
     loan.generic3.should == 'Generic 3'
