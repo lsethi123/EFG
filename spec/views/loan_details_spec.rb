@@ -207,4 +207,12 @@ describe 'loans/details' do
       let(:visible_details) { %w(loan_entry.business_name) }
     end
   end
+
+  context "with a loan with sub-lender" do
+    let(:loan) { FactoryGirl.build(:loan, :with_sub_lender) }
+
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_entry.sub_lender) }
+    end
+  end
 end

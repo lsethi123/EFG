@@ -17,6 +17,11 @@
 <h3>Eligibility and Loan Entry</h3>
 <%= loan_details_table(@loan, 'simple_form.labels.loan_entry') do |table| %>
   <%= table.row 'lender', header: 'What is the name of the lender organisation?' %>
+
+  <% if @loan.sub_lender? %>
+    <%= table.row 'sub_lender', header: 'Sub-lender' %>
+  <% end %>
+
   <%= table.row 'reference', header: 'System Generated Identification Reference' %>
   <%= table.row 'lender_reference' %>
   <%= table.row 'declaration_signed' %>
