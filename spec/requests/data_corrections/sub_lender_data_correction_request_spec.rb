@@ -38,10 +38,23 @@ describe 'Sub Lender Data Correction' do
     end
   end
 
-  context "lender has no sub-lenders and loan has no existing sub-lender" do
-    it "does not show link to Sub-lender data correction" do
-      visit_data_corrections
-      page.should_not have_css('a', text: 'Sub-lender')
+  context "lender has no sub-lenders" do
+    context "and loan has no existing sub-lender value" do
+      it "does not show link to Sub-lender data correction" do
+        visit_data_corrections
+        page.should_not have_css('a', text: 'Sub-lender')
+      end
+    end
+
+    context "and loan has sub-lender value" do
+      before do
+        loan.update_column(:sub_lender, 'ACME')
+      end
+
+      it "shows link to Sub-lender data correction" do
+        visit_data_corrections
+        page.should have_css('a', text: 'Sub-lender')
+      end
     end
   end
 end
