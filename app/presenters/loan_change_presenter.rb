@@ -1,39 +1,4 @@
 class LoanChangePresenter
-  module CapitalRepaymentHolidayFields
-    extend ActiveSupport::Concern
-
-    included do
-      delegate :initial_capital_repayment_holiday, :initial_capital_repayment_holiday=, to: :premium_schedule
-
-      attr_accessible  :initial_capital_repayment_holiday
-    end
-
-    def includes_capital_repayment_fields?
-      true
-    end
-  end
-
-  module TrancheDrawdownsFields
-    extend ActiveSupport::Concern
-
-    included do
-      delegate :second_draw_amount, :second_draw_amount=, to: :premium_schedule
-      delegate :second_draw_months, :second_draw_months=, to: :premium_schedule
-      delegate :third_draw_amount, :third_draw_amount=, to: :premium_schedule
-      delegate :third_draw_months, :third_draw_months=, to: :premium_schedule
-      delegate :fourth_draw_amount, :fourth_draw_amount=, to: :premium_schedule
-      delegate :fourth_draw_months, :fourth_draw_months=, to: :premium_schedule
-
-      attr_accessible :second_draw_amount, :second_draw_months,
-        :third_draw_amount, :third_draw_months, :fourth_draw_amount,
-        :fourth_draw_months
-    end
-
-    def includes_tranche_drawdown_fields?
-      true
-    end
-  end
-
   extend  ActiveModel::Callbacks
   extend  ActiveModel::Naming
   include ActiveModel::Conversion
