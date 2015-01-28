@@ -32,7 +32,7 @@ en:
             lump_sum_repayment:
               required: "can't be blank"
               must_be_gt_zero: "can't be negative"
-              exceeds_amount_draw: "can't be more than the total amount drawn"
+              exceeds_amount_drawn: "can't be more than the total amount drawn"
             maturity_date:
               required: "can't be blank"
               less_than_min_repayment_duration: Maturity date must be at least three months after the date of initial draw of funds
