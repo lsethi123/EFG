@@ -6,10 +6,6 @@ class CapitalRepaymentHolidayLoanChange < LoanChangePresenter
   validate :validate_capital_repayment_holiday
   before_save :update_loan_change
 
-  def includes_capital_repayment_fields?
-    true
-  end
-
   private
     def update_loan_change
       loan_change.change_type = ChangeType::CapitalRepaymentHoliday

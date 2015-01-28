@@ -19,10 +19,6 @@ class ReprofileDrawsLoanChange < LoanChangePresenter
     super
   end
 
-  def includes_tranche_drawdown_fields?
-    true
-  end
-
   private
     def update_loan_change
       loan_change.change_type = ChangeType::ReprofileDraws
