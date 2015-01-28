@@ -3,7 +3,15 @@ require 'spec_helper'
 describe 'Reprofile draws loan change' do
   include LoanChangeSpecHelper
 
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(100_000_00), maturity_date: Date.new(2014, 12, 25), repayment_duration: 60, repayment_frequency_id: RepaymentFrequency::Quarterly.id) }
+  let(:loan) {
+    FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, {
+        amount: Money.new(100_000_00),
+        maturity_date: Date.new(2014, 12, 25),
+        repayment_duration: 60,
+        repayment_frequency_id: RepaymentFrequency::Quarterly.id
+      }
+    )
+  }
 
   before do
     loan.initial_draw_change.update_column(:date_of_change, Date.new(2009, 12, 25))
@@ -42,6 +50,8 @@ describe 'Reprofile draws loan change' do
         click_button 'Submit'
       end
 
+      loan.reload
+
       loan_change = loan.loan_changes.last!
       loan_change.change_type.should == ChangeType::ReprofileDraws
       loan_change.date_of_change.should == Date.new(2010, 9, 11)
@@ -58,7 +68,6 @@ describe 'Reprofile draws loan change' do
       premium_schedule.fourth_draw_amount.should == Money.new(5_000_00)
       premium_schedule.fourth_draw_months.should == 18
 
-      loan.reload
       loan.modified_by.should == current_user
       loan.repayment_duration.total_months.should == 60
       loan.maturity_date.should == Date.new(2014, 12, 25)
