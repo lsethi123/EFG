@@ -1,7 +1,6 @@
 class ReprofileDrawsLoanChange < LoanChangePresenter
   LoanAlreadyFullyDrawnError = Class.new(StandardError)
 
-  include CapitalRepaymentHolidayFields
   include TrancheDrawdownsFields
 
   before_save :update_loan_change
