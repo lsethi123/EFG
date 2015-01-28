@@ -1,11 +1,30 @@
 require 'spec_helper'
 
 describe CapitalRepaymentHolidayLoanChange do
-  it_behaves_like 'LoanChangePresenter'
+  it_behaves_like 'LoanChangePresenter' do
+    let(:presenter_factory_options) { { loan: FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, :fully_drawn) } }
+  end
+
+  describe '#initialize' do
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(20_000_00)) }
+    let(:presenter) { FactoryGirl.build(:capital_repayment_holiday_loan_change, loan: loan) }
+
+    context 'when the full amount has not been fully drawn' do
+      before do
+        loan.initial_draw_change.update_column(:amount_drawn, Money.new(5_000_00).cents)
+      end
+
+      it 'is not allowed' do
+        expect {
+          presenter
+        }.to raise_error(CapitalRepaymentHolidayLoanChange::LoanNotFullyDrawnError)
+      end
+    end
+  end
 
   describe 'validations' do
     context '#initial_capital_repayment_holiday' do
-      let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+      let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, :fully_drawn) }
       let(:presenter) { FactoryGirl.build(:capital_repayment_holiday_loan_change, loan: loan) }
 
       it 'is required' do
@@ -21,7 +40,7 @@ describe CapitalRepaymentHolidayLoanChange do
   end
 
   describe '#save' do
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60, repayment_frequency_id: 4) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, :fully_drawn, repayment_duration: 60, repayment_frequency_id: 4) }
     let(:presenter) { FactoryGirl.build(:capital_repayment_holiday_loan_change, created_by: user, loan: loan) }
     let(:user) { FactoryGirl.create(:lender_user) }
 

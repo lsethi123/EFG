@@ -182,6 +182,12 @@ FactoryGirl.define do
       end
     end
 
+    trait :fully_drawn do
+      after(:create) do |loan|
+        loan.initial_draw_change.update_column(:amount_drawn, loan.amount.cents)
+      end
+    end
+
     trait :efg do
       loan_scheme Loan::EFG_SCHEME
       loan_source Loan::SFLG_SOURCE
