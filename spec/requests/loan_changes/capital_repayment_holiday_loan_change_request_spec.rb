@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Capital repayment loan change' do
   include LoanChangeSpecHelper
 
-  it_behaves_like "loan change" do
+  it_behaves_like "loan change on loan with tranche drawdowns" do
     before do
       # loan must be fully drawn to access 'Capital repayment holiday' form
       loan.initial_draw_change.update_column(:amount_drawn, loan.amount.cents)
