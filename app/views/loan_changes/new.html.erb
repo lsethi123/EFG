@@ -20,25 +20,10 @@
 
   <%= render params[:type], f: f %>
 
-  <%= field_set_tag 'Draw Information' do %>
+  <%= field_set_tag 'Outstanding Loan Balance &amp; Term'.html_safe do %>
     <%= simple_form_row 'Next quarterly Premium month due', @presenter.next_premium_cheque_month %>
     <%= f.input :initial_draw_amount, as: :currency %>
     <%= simple_form_row 'Outstanding loan term at the next quarterly Premium collection point', @presenter.current_repayment_duration_at_next_premium %>
-
-    <hr>
-
-    <% if @presenter.includes_capital_repayment_fields? %>
-      <%= f.input :initial_capital_repayment_holiday, input_html: { class: 'input-mini' } %>
-    <% end %>
-
-    <% if @presenter.includes_tranche_drawdown_fields? %>
-      <%= f.input :second_draw_amount, as: :currency %>
-      <%= f.input :second_draw_months, input_html: { class: 'input-mini' } %>
-      <%= f.input :third_draw_amount, as: :currency %>
-      <%= f.input :third_draw_months, input_html: { class: 'input-mini' } %>
-      <%= f.input :fourth_draw_amount, as: :currency %>
-      <%= f.input :fourth_draw_months, input_html: { class: 'input-mini' } %>
-    <% end %>
   <% end %>
 
   <div class="form-actions">
