@@ -3,16 +3,6 @@ require 'spec_helper'
 describe 'Reprofile draws loan change' do
   include LoanChangeSpecHelper
 
-  let(:loan) {
-    FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, {
-        amount: Money.new(100_000_00),
-        maturity_date: Date.new(2014, 12, 25),
-        repayment_duration: 60,
-        repayment_frequency_id: RepaymentFrequency::Quarterly.id
-      }
-    )
-  }
-
   before do
     loan.initial_draw_change.update_column(:date_of_change, Date.new(2009, 12, 25))
 
