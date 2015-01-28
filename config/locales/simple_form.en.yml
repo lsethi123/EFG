@@ -49,11 +49,11 @@ en:
         lump_sum_repayment: 'What is the amount of the lump sum repayment?'
         initial_draw_amount: 'What is the outstanding balance at the next quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
         initial_capital_repayment_holiday: What is the length of the initial capital repayment holiday? (Months)
-        second_draw_amount: What is the amount of the additional draw? (Second tranche)
+        second_draw_amount: What is the new amount of the second tranche drawdown?
         second_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to second tranche drawdown?
-        third_draw_amount: What is the amount of the additional draw? (Third tranche)
+        third_draw_amount: What is the new amount of the third tranche drawdown?
         third_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to third tranche drawdown?
-        fourth_draw_amount: What is the amount of the additional draw? (Fourth tranche)
+        fourth_draw_amount: What is the new amount of the fourth tranche drawdown?
         fourth_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to fourth tranche drawdown?
 
       loan_eligibility_check:
