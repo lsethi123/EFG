@@ -12,16 +12,16 @@
 <%= simple_form_for(@premium_schedule, url: loan_premium_schedule_path(@loan, redirect: params[:redirect]), html: {method: :put, class: 'form-horizontal form-state-aid-calculation'}) do |f| %>
   <%= f.input :initial_draw_year, as: :string, placeholder: 'yyyy' %>
   <%= f.input :initial_draw_amount, as: :currency %>
-  <%= f.input :repayment_duration, as: :string, disabled: true %>
+  <%= f.input :repayment_duration, as: :months, disabled: true, input_html: { class: 'input-mini' } %>
 
   <%= field_set_tag 'Draw Information' do %>
-    <%= f.input :initial_capital_repayment_holiday, as: :string %>
+    <%= f.input :initial_capital_repayment_holiday, as: :months, input_html: { class: 'input-mini' } %>
     <%= f.input :second_draw_amount, as: :currency %>
-    <%= f.input :second_draw_months, as: :string %>
+    <%= f.input :second_draw_months, as: :months, input_html: { class: 'input-mini' } %>
     <%= f.input :third_draw_amount, as: :currency %>
-    <%= f.input :third_draw_months, as: :string %>
+    <%= f.input :third_draw_months, as: :months, input_html: { class: 'input-mini' } %>
     <%= f.input :fourth_draw_amount, as: :currency %>
-    <%= f.input :fourth_draw_months, as: :string %>
+    <%= f.input :fourth_draw_months, as: :months, input_html: { class: 'input-mini' } %>
   <% end %>
 
   <div class="form-actions">

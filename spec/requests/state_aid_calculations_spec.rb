@@ -62,9 +62,9 @@ describe 'state aid calculations' do
         fill_in :initial_capital_repayment_holiday, '0'
         fill_in :initial_draw_amount, '£100,000'
         fill_in :second_draw_amount, '£100,000'
-        fill_in :second_draw_months, 3
+        fill_in :second_draw_months, '3'
         fill_in :third_draw_amount, '£100,000'
-        fill_in :third_draw_months, 6
+        fill_in :third_draw_months, '6'
 
         expect {
           click_button 'Submit'
