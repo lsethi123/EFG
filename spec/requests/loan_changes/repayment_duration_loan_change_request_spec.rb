@@ -3,16 +3,6 @@ require 'spec_helper'
 describe 'Repayment duration loan change' do
   include LoanChangeSpecHelper
 
-  let(:loan) {
-    FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, {
-        amount: Money.new(100_000_00),
-        maturity_date: Date.new(2014, 12, 25),
-        repayment_duration: 60,
-        repayment_frequency_id: RepaymentFrequency::Quarterly.id
-      }
-    )
-  }
-
   it_behaves_like "loan change"
 
   before do
