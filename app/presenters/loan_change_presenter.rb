@@ -10,6 +10,7 @@ class LoanChangePresenter
   end
 
   define_model_callbacks :save
+  define_model_callbacks :validation
 
   attr_reader :created_by, :date_of_change, :loan
   attr_accessible :date_of_change, :initial_draw_amount
@@ -87,14 +88,16 @@ class LoanChangePresenter
   end
 
   def valid?
-    super
+    run_callbacks :validation do
+      super
 
-    premium_schedule.premium_cheque_month = next_premium_cheque_month
-    premium_schedule.repayment_duration = repayment_duration_at_next_premium
+      premium_schedule.premium_cheque_month = next_premium_cheque_month
+      premium_schedule.repayment_duration = repayment_duration_at_next_premium
 
-    if premium_schedule.invalid?
-      premium_schedule.errors.each do |key, message|
-        errors.add(key, message)
+      if premium_schedule.invalid?
+        premium_schedule.errors.each do |key, message|
+          errors.add(key, message)
+        end
       end
     end
 
