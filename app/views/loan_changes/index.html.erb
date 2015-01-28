@@ -16,7 +16,6 @@
   <% unless @loan.fully_drawn? %>
     <li>
       <%= link_to('Reprofile Draws', new_loan_loan_change_path(@loan, type: 'reprofile_draws')) %>
-      (and record capital repayment holiday)
     </li>
   <% end %>
 </ul>
