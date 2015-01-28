@@ -1,10 +1,17 @@
 class CapitalRepaymentHolidayLoanChange < LoanChangePresenter
+  LoanNotFullyDrawnError = Class.new(StandardError)
+
   delegate :initial_capital_repayment_holiday, :initial_capital_repayment_holiday=, to: :premium_schedule
 
   attr_accessible  :initial_capital_repayment_holiday
 
   validate :validate_capital_repayment_holiday
   before_save :update_loan_change
+
+  def initialize(loan, _)
+    raise LoanNotFullyDrawnError unless loan.fully_drawn?
+    super
+  end
 
   private
     def update_loan_change
