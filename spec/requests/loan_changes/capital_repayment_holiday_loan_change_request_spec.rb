@@ -3,10 +3,21 @@ require 'spec_helper'
 describe 'Capital repayment loan change' do
   include LoanChangeSpecHelper
 
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(100_000_00), maturity_date: Date.new(2014, 12, 25), repayment_duration: 60, repayment_frequency_id: RepaymentFrequency::Quarterly.id) }
+  let(:loan) {
+    FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, {
+        amount: Money.new(100_000_00),
+        maturity_date: Date.new(2014, 12, 25),
+        repayment_duration: 60,
+        repayment_frequency_id: RepaymentFrequency::Quarterly.id
+      }
+    )
+  }
 
-  before do
-    visit loan_path(loan)
+  it_behaves_like "loan change" do
+    before do
+      # loan must be fully drawn to access 'Capital repayment holiday' form
+      loan.initial_draw_change.update_column(:amount_drawn, loan.amount.cents)
+    end
   end
 
   context 'when the loan has NOT drawn its full amount' do
@@ -15,6 +26,7 @@ describe 'Capital repayment loan change' do
     end
 
     it do
+      visit loan_path(loan)
       click_link 'Change Amount or Terms'
       expect(page).to_not have_content('Capital Repayment Holiday')
     end
@@ -24,19 +36,12 @@ describe 'Capital repayment loan change' do
     before do
       loan.initial_draw_change.update_column(:amount_drawn, loan.amount.cents)
       loan.initial_draw_change.update_column(:date_of_change, Date.new(2009, 12, 25))
-
-      click_link 'Change Amount or Terms'
-      click_link 'Capital Repayment Holiday'
     end
 
     it do
-      fill_in :date_of_change, '11/9/10'
-      fill_in :initial_draw_amount, '65,432.10'
-      fill_in :initial_capital_repayment_holiday, '3'
+      dispatch
 
-      Timecop.freeze(2010, 9, 1) do
-        click_button 'Submit'
-      end
+      loan.reload
 
       loan_change = loan.loan_changes.last!
       loan_change.change_type.should == ChangeType::CapitalRepaymentHoliday
@@ -48,10 +53,26 @@ describe 'Capital repayment loan change' do
       premium_schedule.repayment_duration.should == 48
       premium_schedule.initial_capital_repayment_holiday.should == 3
 
-      loan.reload
       loan.modified_by.should == current_user
       loan.repayment_duration.total_months.should == 60
       loan.maturity_date.should == Date.new(2014, 12, 25)
+    end
+  end
+
+  private
+
+  def dispatch
+    visit loan_path(loan)
+
+    click_link 'Change Amount or Terms'
+    click_link 'Capital Repayment Holiday'
+
+    fill_in :date_of_change, '11/9/10'
+    fill_in :initial_draw_amount, '65,432.10'
+    fill_in :initial_capital_repayment_holiday, '3'
+
+    Timecop.freeze(2010, 9, 1) do
+      click_button 'Submit'
     end
   end
 end

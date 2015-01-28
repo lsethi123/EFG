@@ -3,24 +3,26 @@ require 'spec_helper'
 describe 'Lump sum repayment loan change' do
   include LoanChangeSpecHelper
 
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(100_000_00), maturity_date: Date.new(2014, 12, 25), repayment_duration: 60, repayment_frequency_id: RepaymentFrequency::Quarterly.id) }
+  let(:loan) {
+    FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, {
+        amount: Money.new(100_000_00),
+        maturity_date: Date.new(2014, 12, 25),
+        repayment_duration: 60,
+        repayment_frequency_id: RepaymentFrequency::Quarterly.id
+      }
+    )
+  }
+
+  it_behaves_like "loan change"
 
   before do
     loan.initial_draw_change.update_column(:date_of_change, Date.new(2009, 12, 25))
-
-    visit loan_path(loan)
-    click_link 'Change Amount or Terms'
-    click_link 'Lump Sum Repayment'
   end
 
   it do
-    fill_in :date_of_change, '1/12/11'
-    fill_in :lump_sum_repayment, '1234.56'
-    fill_in :initial_draw_amount, '65,432.10'
+    dispatch
 
-    Timecop.freeze(2011, 12, 1) do
-      click_button 'Submit'
-    end
+    loan.reload
 
     loan_change = loan.loan_changes.last!
     loan_change.change_type.should == ChangeType::LumpSumRepayment
@@ -32,8 +34,23 @@ describe 'Lump sum repayment loan change' do
     premium_schedule.premium_cheque_month.should == '03/2012'
     premium_schedule.repayment_duration.should == 33
 
-    loan.reload
     loan.maturity_date.should == Date.new(2014, 12, 25)
     loan.modified_by.should == current_user
+  end
+
+  private
+
+  def dispatch
+    visit loan_path(loan)
+    click_link 'Change Amount or Terms'
+    click_link 'Lump Sum Repayment'
+
+    fill_in :date_of_change, '1/12/11'
+    fill_in :lump_sum_repayment, '1234.56'
+    fill_in :initial_draw_amount, '65,432.10'
+
+    Timecop.freeze(2011, 12, 1) do
+      click_button 'Submit'
+    end
   end
 end
