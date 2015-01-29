@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :loan_change_presenter do
     ignore do
-      association :loan, factory: [:loan, :guaranteed]
+      association :loan, factory: [:loan, :guaranteed, :with_premium_schedule]
       association :created_by, factory: :lender_user
     end
 

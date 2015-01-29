@@ -22,7 +22,7 @@ describe ReprofileDrawsLoanChange do
 
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, repayment_duration: 60) }
     let(:presenter) { FactoryGirl.build(:reprofile_draws_loan_change, created_by: user, loan: loan) }
 
     before do
