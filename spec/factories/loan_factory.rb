@@ -83,13 +83,7 @@ FactoryGirl.define do
       signed_direct_debit_received true
       first_pp_received true
       maturity_date { 10.years.from_now }
-
-      after :create do |loan|
-        FactoryGirl.create(:initial_draw_change,
-          amount_drawn: Money.new(10_000_00),
-          loan: loan
-        )
-      end
+      with_initial_draw
     end
 
     trait :loan_with_generic_info do
@@ -177,8 +171,11 @@ FactoryGirl.define do
     trait :transferred do
       reference 'ABCDEFG+02'
       state Loan::Incomplete
+      with_initial_draw
+    end
 
-      after :create do |loan|
+    trait :with_initial_draw do
+      after(:create) do |loan|
         FactoryGirl.create(:initial_draw_change,
           amount_drawn: Money.new(10_000_00),
           loan: loan
