@@ -24,13 +24,14 @@ class PremiumSchedule < ActiveRecord::Base
   validates_presence_of :initial_draw_year, unless: :reschedule?
   validates_format_of :premium_cheque_month, with: /\A\d{2}\/\d{4}\z/, if: :reschedule?, message: :invalid_format
 
-  %w(initial_capital_repayment_holiday second_draw_months third_draw_months fourth_draw_months).each do |attr|
+  %w(second_draw_months third_draw_months fourth_draw_months).each do |attr|
     validates_inclusion_of attr, in: 0..120, allow_blank: true, message: :invalid
   end
 
   validate :premium_cheque_month_in_the_future, if: :reschedule?
   validate :initial_draw_amount_is_within_limit
   validate :total_draw_amount_less_than_or_equal_to_loan_amount
+  validate :validate_capital_repayment_holiday
 
   format :initial_draw_amount, with: MoneyFormatter.new
   format :second_draw_amount, with: MoneyFormatter.new
@@ -187,5 +188,17 @@ class PremiumSchedule < ActiveRecord::Base
 
     def loan_quarters
       (0...number_of_loan_quarters).map { |n| LoanQuarter.new(n) }
+    end
+
+    def validate_capital_repayment_holiday
+      if initial_capital_repayment_holiday < 0
+        errors.add(:initial_capital_repayment_holiday, :must_be_gt_zero)
+      end
+
+      return unless repayment_duration.present?
+
+      if initial_capital_repayment_holiday >= repayment_duration
+        errors.add(:initial_capital_repayment_holiday, :must_be_lt_loan_duration)
+      end
     end
 end

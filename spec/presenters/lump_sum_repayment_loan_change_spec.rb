@@ -5,7 +5,7 @@ describe LumpSumRepaymentLoanChange do
 
   describe 'validations' do
     context '#lump_sum_repayment' do
-      let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(10_000_00)) }
+      let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, amount: Money.new(15_000_00)) }
       let(:presenter) { FactoryGirl.build(:lump_sum_repayment_loan_change, loan: loan) }
 
       it 'is required' do
@@ -33,7 +33,7 @@ describe LumpSumRepaymentLoanChange do
 
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, repayment_duration: 60) }
     let(:presenter) { FactoryGirl.build(:lump_sum_repayment_loan_change, created_by: user, loan: loan) }
 
     context 'success' do

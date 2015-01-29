@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :loan_change_presenter do
     ignore do
-      association :loan, factory: [:loan, :guaranteed]
+      association :loan, factory: [:loan, :guaranteed, :with_premium_schedule]
       association :created_by, factory: :lender_user
     end
 
@@ -10,6 +10,10 @@ FactoryGirl.define do
 
     initialize_with do
       new(loan, created_by)
+    end
+
+    factory :capital_repayment_holiday_loan_change, class: CapitalRepaymentHolidayLoanChange do
+      initial_capital_repayment_holiday 6
     end
 
     factory :lump_sum_repayment_loan_change, class: LumpSumRepaymentLoanChange do

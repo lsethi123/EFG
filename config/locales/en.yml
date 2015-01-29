@@ -27,10 +27,12 @@ en:
               must_not_be_zero: "cannot be zero"
               must_match_repayment_frequency: "must be a multiple of %{months_per_repayment_period} to match the loan's repayment frequency"
               must_have_a_positive_repayment_duration_at_next_premium: "must ensure a valid loan term at the next premium collection quarter"
+            initial_capital_repayment_holiday:
+              must_be_gt_zero: "must be greater than zero"
             lump_sum_repayment:
               required: "can't be blank"
               must_be_gt_zero: "can't be negative"
-              exceeds_amount_draw: "can't be more than the total amount drawn"
+              exceeds_amount_drawn: "can't be more than the total amount drawn"
             maturity_date:
               required: "can't be blank"
               less_than_min_repayment_duration: Maturity date must be at least three months after the date of initial draw of funds
@@ -196,7 +198,7 @@ en:
               must_be_positive: 'must be more than £0.00'
               invalid: 'must be less than £9,999,999.99'
             initial_capital_repayment_holiday:
-              invalid: 'must be between 0 and 120'
+              must_be_lt_loan_duration: "must be less than the loan's term"
             second_draw_months:
               invalid: 'must be between 0 and 120'
             third_draw_months:

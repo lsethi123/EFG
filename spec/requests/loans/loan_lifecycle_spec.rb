@@ -36,7 +36,7 @@ describe 'Loan lifecycle' do
         # Before offering facility in Phase 6, premium schedule must be generated
         click_link "Generate Premium Schedule"
         page.fill_in 'premium_schedule_initial_draw_year', with: Date.current.year
-        page.fill_in 'premium_schedule_initial_draw_amount', with: Loan.last.amount.to_s
+        page.fill_in 'premium_schedule_initial_draw_amount', with: (loan.amount - Money.new(1_000_00)).to_s
         click_button 'Submit'
 
         loan_lifecycle_steps_from_offered(loan)
@@ -46,7 +46,7 @@ describe 'Loan lifecycle' do
 
   %w(sflg legacy_sflg).each do |loan_type|
     context "for guaranteed #{loan_type.humanize} loan" do
-      let!(:loan) { FactoryGirl.create(:loan, loan_type.to_sym, :offered, :guaranteed, lender: lender, sortcode: '03-12-45') }
+      let!(:loan) { FactoryGirl.create(:loan, loan_type.to_sym, :offered, :guaranteed, :with_premium_schedule, lender: lender, sortcode: '03-12-45') }
 
       it do
         visit root_path

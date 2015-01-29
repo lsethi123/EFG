@@ -1,0 +1,21 @@
+<%= field_set_tag 'New Tranche Drawdowns' do %>
+
+  <p>
+    <span class="label label-important">IMPORTANT</span> All tranche drawdowns are optional. To remove an existing tranche drawdown, leave the relevant fields blank.
+  </p>
+
+  <h5>Second tranche drawdown</h5>
+  <%= simple_form_row 'Current second tranche drawdown amount', @presenter.current_second_draw_amount.try(:format) %>
+  <%= f.input :second_draw_amount, as: :currency %>
+  <%= f.input :second_draw_months, as: :months, input_html: { class: 'input-mini' } %>
+
+  <h5>Third tranche drawdown</h5>
+  <%= simple_form_row 'Current third tranche drawdown amount', @presenter.current_third_draw_amount.try(:format) %>
+  <%= f.input :third_draw_amount, as: :currency %>
+  <%= f.input :third_draw_months, as: :months, input_html: { class: 'input-mini' } %>
+
+  <h5>Fourth tranche drawdown</h5>
+  <%= simple_form_row 'Current fourth tranche drawdown amount', @presenter.current_fourth_draw_amount.try(:format) %>
+  <%= f.input :fourth_draw_amount, as: :currency %>
+  <%= f.input :fourth_draw_months, as: :months, input_html: { class: 'input-mini' } %>
+<% end %>

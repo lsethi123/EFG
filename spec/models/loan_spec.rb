@@ -356,6 +356,20 @@ describe Loan do
     end
   end
 
+  describe '#fully_drawn?' do
+    context 'when cumulative drawn amount equals loan amount' do
+      before do
+        loan.stub(:cumulative_drawn_amount).and_return(loan.amount)
+      end
+
+      specify { loan.fully_drawn?.should == true }
+    end
+
+    context 'when cumulative drawn amount is less than loan amount' do
+      specify { loan.fully_drawn?.should == false }
+    end
+  end
+
   describe '#amount_not_yet_drawn' do
     before do
       loan.save!

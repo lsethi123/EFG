@@ -154,6 +154,10 @@ class Loan < ActiveRecord::Base
     self.state_aid = rules.state_aid_calculator.new(self).state_aid_eur
   end
 
+  def fully_drawn?
+    cumulative_drawn_amount >= amount
+  end
+
   def cancelled_reason
     CancelReason.find(cancelled_reason_id)
   end

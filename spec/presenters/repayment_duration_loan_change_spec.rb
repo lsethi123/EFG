@@ -56,7 +56,7 @@ describe RepaymentDurationLoanChange do
       end
 
       context 'calculated #repayment_duration_at_next_premium' do
-        let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 24) }
+        let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, repayment_duration: 24) }
         let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change, loan: loan) }
 
         before do
@@ -96,7 +96,7 @@ describe RepaymentDurationLoanChange do
         end
 
         context 'for an EFG loan' do
-          let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60, maturity_date: Date.new(2015, 1, 1)) }
+          let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, repayment_duration: 60, maturity_date: Date.new(2015, 1, 1)) }
 
           it 'must be more than zero months' do
             presenter.added_months = -60
@@ -118,7 +118,7 @@ describe RepaymentDurationLoanChange do
         end
 
         context 'for a SFLG loan (with no category)' do
-          let(:loan) { FactoryGirl.create(:loan, :sflg, :guaranteed, loan_category_id: nil, repayment_duration: 60) }
+          let(:loan) { FactoryGirl.create(:loan, :sflg, :guaranteed, :with_premium_schedule, loan_category_id: nil, repayment_duration: 60) }
 
           it 'must be more than zero months' do
             presenter.added_months = -60
@@ -143,7 +143,7 @@ describe RepaymentDurationLoanChange do
         end
 
         context 'for a transferred loan' do
-          let(:loan) { FactoryGirl.create(:loan, :transferred, repayment_duration: 60) }
+          let(:loan) { FactoryGirl.create(:loan, :transferred, :with_premium_schedule, repayment_duration: 60) }
 
           it 'must be more than zero months' do
             presenter.added_months = -60
@@ -156,7 +156,7 @@ describe RepaymentDurationLoanChange do
     context 'phase 6' do
       let(:added_months) { 1 }
       let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6) }
-      let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: amount, repayment_duration: repayment_duration, lending_limit: lending_limit) }
+      let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, amount: amount, repayment_duration: repayment_duration, lending_limit: lending_limit) }
 
       subject { FactoryGirl.build(:repayment_duration_loan_change, loan: loan, added_months: added_months) }
 
@@ -210,7 +210,7 @@ describe RepaymentDurationLoanChange do
 
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: Date.new(2015, 3, 2), repayment_duration: 60) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, maturity_date: Date.new(2015, 3, 2), repayment_duration: 60) }
     let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change, created_by: user, loan: loan) }
 
     context 'success' do

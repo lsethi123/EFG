@@ -80,7 +80,7 @@ module RequestSpecHelpers
   def calculate_state_aid(loan)
     click_button 'State Aid Calculation'
     page.fill_in 'premium_schedule_initial_draw_year', with: Date.current.year
-    page.fill_in 'premium_schedule_initial_draw_amount', with: loan.amount.to_s
+    page.fill_in 'premium_schedule_initial_draw_amount', with: (loan.amount - Money.new(1_000_00)).to_s
     click_button 'Submit'
   end
 
