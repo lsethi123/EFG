@@ -21,7 +21,7 @@ describe RepaymentFrequencyLoanChange do
 
     context "without changing the repayment_frequency" do
       let(:repayment_frequency_id) { RepaymentFrequency::Annually.id }
-      let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_frequency_id: repayment_frequency_id) }
+      let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, repayment_frequency_id: repayment_frequency_id) }
       subject { FactoryGirl.build(:repayment_frequency_loan_change, loan: loan, repayment_frequency_id: repayment_frequency_id) }
       it { should_not be_valid }
     end
@@ -50,7 +50,7 @@ describe RepaymentFrequencyLoanChange do
 
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60, repayment_frequency_id: RepaymentFrequency::Annually.id) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, repayment_duration: 60, repayment_frequency_id: RepaymentFrequency::Annually.id) }
     let(:presenter) { FactoryGirl.build(:repayment_frequency_loan_change, created_by: user, loan: loan) }
 
     context 'success' do

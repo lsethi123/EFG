@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe LoanChangePresenter, 'next premium collection values' do
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, :with_premium_schedule, repayment_duration: 60) }
   let(:presenter) { FactoryGirl.build(:loan_change_presenter, loan: loan, date_of_change: Date.current) }
   let(:premium_schedule) { presenter.premium_schedule }
 
