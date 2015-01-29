@@ -18,7 +18,7 @@ describe 'Capital repayment loan change' do
     it do
       visit loan_path(loan)
       click_link 'Change Amount or Terms'
-      expect(page).to_not have_content('Capital Repayment Holiday')
+      expect(page).to_not have_css('a', text: 'Capital Repayment Holiday')
     end
   end
 

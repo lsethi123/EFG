@@ -17,7 +17,7 @@ describe 'Reprofile draws loan change' do
     it do
       visit loan_path(loan)
       click_link 'Change Amount or Terms'
-      expect(page).to_not have_content('Reprofile Draws')
+      expect(page).to_not have_css('a', text: 'Reprofile Draws')
     end
   end
 
