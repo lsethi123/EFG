@@ -11,6 +11,8 @@ class AdminAudit < ActiveRecord::Base
   LendingLimitActivated = 'Activated Lender Lending limit'
   PhaseCreated = 'Phase created'
   PhaseEdited = 'Phase edited'
+  SubLenderCreated = 'Sub-lender created'
+  SubLenderEdited = 'Sub-lender edited'
   UserCreated = 'User created'
   UserDisabled = 'User disabled'
   UserEdited = 'User edited'

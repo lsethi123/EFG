@@ -283,4 +283,11 @@ describe LenderUserPermissions do
     it { refute user.can_update?(AgreedDraw) }
     it { refute user.can_view?(AgreedDraw) }
   end
+
+  context 'SubLender' do
+    it { refute user.can_create?(SubLender) }
+    it { refute user.can_update?(SubLender) }
+    it { refute user.can_view?(SubLender) }
+    it { refute user.can_destroy?(SubLender) }
+  end
 end

@@ -7,12 +7,15 @@ module CfeAdminPermissions
       LenderAdmin,
       LendingLimit,
       Phase,
-      PremiumCollectorUser
+      PremiumCollectorUser,
+      SubLender,
     ].include?(resource)
   end
 
   def can_destroy?(resource)
-    false
+    [
+      SubLender,
+    ].include?(resource)
   end
 
   def can_update?(resource)
@@ -23,7 +26,8 @@ module CfeAdminPermissions
       LenderAdmin,
       LendingLimit,
       Phase,
-      PremiumCollectorUser
+      PremiumCollectorUser,
+      SubLender,
     ].include?(resource)
   end
 
@@ -48,7 +52,8 @@ module CfeAdminPermissions
       LenderAdmin,
       LendingLimit,
       Phase,
-      PremiumCollectorUser
+      PremiumCollectorUser,
+      SubLender,
     ].include?(resource)
   end
 end

@@ -47,6 +47,22 @@ describe TransferredLoanEntry do
       transferred_loan_entry.errors[:state_aid].should == ['must be calculated']
     end
 
+    context "when sub lenders exist for the lender" do
+      let!(:sub_lender) { FactoryGirl.create(:sub_lender, lender: transferred_loan_entry.lender) }
+
+      it "must have a sub-lender" do
+        transferred_loan_entry.sub_lender = nil
+        transferred_loan_entry.should_not be_valid
+        transferred_loan_entry.should have(1).error_on(:sub_lender)
+      end
+
+      it "must have an allowed sub-lender" do
+        transferred_loan_entry.sub_lender = "not a valid sub lender for this lender"
+        transferred_loan_entry.should_not be_valid
+        transferred_loan_entry.should have(1).error_on(:sub_lender)
+      end
+    end
+
     it_behaves_like 'loan presenter that validates loan repayment frequency' do
       let(:loan_presenter) { transferred_loan_entry }
     end

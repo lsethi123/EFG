@@ -7,6 +7,7 @@ class DataCorrectionsController < ApplicationController
     'lender_reference' => LenderReferenceDataCorrection,
     'postcode' => PostcodeDataCorrection,
     'sortcode' => SortcodeDataCorrection,
+    'sub_lender' => SubLenderDataCorrection,
     'trading_date' => TradingDateDataCorrection,
     'trading_name' => TradingNameDataCorrection,
   }
@@ -28,6 +29,7 @@ class DataCorrectionsController < ApplicationController
     if @presenter.save
       redirect_to loan_url(@loan)
     else
+      @loan.reload
       render :new
     end
   end

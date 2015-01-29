@@ -60,6 +60,17 @@ shared_examples_for 'a basic data correction presenter' do |attribute, input_val
     end
   end
 
+  it_behaves_like "loan updating data correction presenter", attribute, input_value, new_value, loan_attrs
+
+end
+
+shared_examples_for "loan updating data correction presenter" do |attribute, input_value, new_value = nil, loan_attrs = {}|
+  let(:factory_name) { "#{attribute}_data_correction" }
+  let(:user) { FactoryGirl.create(:lender_user) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, loan_attrs) }
+  let(:presenter) { FactoryGirl.build(factory_name, created_by: user, loan: loan) }
+  let(:expected_new_value) { new_value || input_value }
+
   describe '#save' do
     let!(:old_value) { loan.public_send(attribute) }
 

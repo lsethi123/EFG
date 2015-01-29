@@ -362,6 +362,22 @@ describe LoanEntry do
       loan_entry.should have(1).error_on(:collateral_exhausted)
     end
 
+    context "when sub lenders exist for the lender" do
+      let!(:sub_lender) { FactoryGirl.create(:sub_lender, lender: loan_entry.lender) }
+
+      it "must have a sub-lender" do
+        loan_entry.sub_lender = nil
+        loan_entry.should_not be_valid
+        loan_entry.should have(1).error_on(:sub_lender)
+      end
+
+      it "must have an allowed sub-lender" do
+        loan_entry.sub_lender = "not a valid sub lender for this lender"
+        loan_entry.should_not be_valid
+        loan_entry.should have(1).error_on(:sub_lender)
+      end
+    end
+
     context 'phase 5' do
       let(:lender) { FactoryGirl.create(:lender) }
       let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_5, lender: lender) }
