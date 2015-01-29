@@ -1,5 +1,6 @@
 class PremiumSchedule < ActiveRecord::Base
   include FormatterConcern
+  include Sequenceable
 
   SCHEDULE_TYPE = 'S'.freeze
   RESCHEDULE_TYPE = 'R'.freeze
@@ -16,8 +17,6 @@ class PremiumSchedule < ActiveRecord::Base
     :loan_id, :premium_cheque_month
 
   attr_readonly :legacy_premium_calculation
-
-  before_validation :set_seq, on: :create
 
   validates_presence_of :loan_id, strict: true
   validates_presence_of :repayment_duration
@@ -139,9 +138,6 @@ class PremiumSchedule < ActiveRecord::Base
   end
 
   private
-    def set_seq
-      self.seq = (PremiumSchedule.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
-    end
 
     def initial_draw_amount_is_within_limit
       if initial_draw_amount.blank?

@@ -28,8 +28,8 @@ describe 'Demanded Amount Data Correction' do
         click_button 'Submit'
 
         data_correction = loan.data_corrections.last!
-        data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-        data_correction.dti_demand_out_amount.should == Money.new(2_000_00)
+        data_correction.old_dti_demand_outstanding.should == Money.new(1_000_00)
+        data_correction.dti_demand_outstanding.should == Money.new(2_000_00)
         data_correction.change_type.should == ChangeType::DataCorrection
         data_correction.date_of_change.should == Date.current
         data_correction.modified_date.should == Date.current
@@ -51,10 +51,10 @@ describe 'Demanded Amount Data Correction' do
           click_button 'Submit'
 
           data_correction = loan.data_corrections.last!
-          data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-          data_correction.dti_demand_out_amount.should == Money.new(2_000_00)
-          data_correction.old_dti_demand_interest.should == Money.new(100_00)
-          data_correction.dti_demand_interest.should == Money.new(1_000_00)
+          data_correction.old_dti_demand_outstanding.should == Money.new(1_000_00)
+          data_correction.dti_demand_outstanding.should == Money.new(2_000_00)
+          data_correction.old_dti_interest.should == Money.new(100_00)
+          data_correction.dti_interest.should == Money.new(1_000_00)
           data_correction.change_type.should == ChangeType::DataCorrection
           data_correction.date_of_change.should == Date.current
           data_correction.modified_date.should == Date.current

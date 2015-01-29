@@ -1,5 +1,6 @@
 class DataCorrectionPresenter
   include ActiveModel::Model
+  include ActiveModel::Validations::Callbacks
   include ActiveModel::MassAssignmentSecurity
   extend  ActiveModel::Callbacks
 
@@ -8,6 +9,10 @@ class DataCorrectionPresenter
   end
 
   define_model_callbacks :save
+
+  before_validation :update_loan, :set_data_correction_changes
+
+  validate :loan_has_changed
 
   attr_reader :created_by, :loan
 
@@ -31,7 +36,7 @@ class DataCorrectionPresenter
 
     loan.transaction do
       run_callbacks :save do
-        data_correction.change_type = ChangeType::DataCorrection unless data_correction.change_type
+        data_correction.change_type = change_type
         data_correction.created_by = created_by
         data_correction.date_of_change = Date.current
         data_correction.modified_date = Date.current
@@ -44,5 +49,21 @@ class DataCorrectionPresenter
     end
 
     true
+  end
+
+  private
+
+  def loan_has_changed
+    unless loan.changed?
+      errors.add(:base, 'You must change at least one field.')
+    end
+  end
+
+  def set_data_correction_changes
+    data_correction.data_correction_changes = loan.changes
+  end
+
+  def update_loan
+    raise NotImplementedError, 'Subclasses must implement #update_loan'
   end
 end

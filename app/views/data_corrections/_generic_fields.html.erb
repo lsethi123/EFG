@@ -1,0 +1,4 @@
+<% (1..5).each do |n| %>
+  <%= simple_form_row "Field #{n} old value", @loan.public_send("generic#{n}") %>
+  <%= f.input "generic#{n}", label: t("simple_form.labels.loan_entry.generic#{n}") %>
+<% end %>

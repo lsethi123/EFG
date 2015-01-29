@@ -12,7 +12,7 @@
 
 <p>From this page you can view a summary of Facility History Changes.</p>
 
-<% if @loan_modifications.empty? %>
+<% if @loan_amendments.empty? %>
 
   <h4>No changes.</h4>
 
@@ -26,10 +26,11 @@
       </tr>
     </thead>
     <tbody>
-      <% @loan_modifications.each do |loan_modification| %>
+      <% @loan_amendments.each do |loan_amendment| %>
         <tr>
-          <td><%= link_to loan_modification.date_of_change.to_s(:screen), loan_loan_modification_path(@loan, loan_modification) %></td>
-          <td><%= link_to loan_modification.change_type_name, loan_loan_modification_path(@loan, loan_modification) %></td>
+          <td><%= loan_amendment.date_link %></td>
+
+          <td><%= loan_amendment.type_of_amendment_link %></td>
         </tr>
       <% end %>
     </tbody>

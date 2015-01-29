@@ -1,13 +1,12 @@
 class Recovery < ActiveRecord::Base
   include FormatterConcern
+  include Sequenceable
 
   belongs_to :loan
   belongs_to :created_by, class_name: 'User'
   belongs_to :realisation_statement
 
   scope :realised, -> { where(realise_flag: true) }
-
-  before_save :set_seq, on: :create
 
   validates_presence_of :loan, strict: true
   validates_presence_of :created_by, strict: true
@@ -108,10 +107,6 @@ class Recovery < ActiveRecord::Base
 
     def log_loan_state_change!
       LoanStateChange.log(loan, LoanEvent::RecoveryMade, created_by)
-    end
-
-    def set_seq
-      self.seq ||= (self.class.where(loan_id: loan_id).maximum(:seq) || 0) + 1
     end
 
     def validate_scheme_fields

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe DemandedAmountDataCorrection do
   describe 'validations' do
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, :demanded, dti_demand_outstanding: Money.new(1_000_00), dti_interest: Money.new(100_00)) }
-    let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction) }
+    let(:loan) { FactoryGirl.create(:loan, :sflg, :guaranteed, :demanded, dti_demand_outstanding: Money.new(1_000_00), dti_interest: Money.new(100_00)) }
+    let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction, loan: loan) }
 
     it 'has a valid factory' do
       presenter.should be_valid
@@ -17,13 +17,18 @@ describe DemandedAmountDataCorrection do
     end
 
     it 'requires a change' do
-      presenter.demanded_amount = ''
-      presenter.demanded_interest = ''
+      presenter.demanded_amount = '1000.00'
+      presenter.demanded_interest = '100.00'
       presenter.should_not be_valid
     end
 
     context '#demanded_amount=' do
-      let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction, loan: loan) }
+      let(:presenter) {
+        FactoryGirl.build(:demanded_amount_data_correction,
+          demanded_interest: loan.dti_interest,
+          loan: loan
+        )
+      }
 
       it 'must not be negative' do
         presenter.demanded_amount = Money.new(-1)
@@ -42,7 +47,12 @@ describe DemandedAmountDataCorrection do
     end
 
     context '#demanded_interest=' do
-      let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction, loan: loan) }
+      let(:presenter) {
+        FactoryGirl.build(:demanded_amount_data_correction,
+          demanded_amount: loan.dti_demand_outstanding,
+          loan: loan
+        )
+      }
 
       it 'must not be negative' do
         presenter.demanded_interest = Money.new(-1)
@@ -76,10 +86,9 @@ describe DemandedAmountDataCorrection do
 
           data_correction = loan.data_corrections.last!
           data_correction.created_by.should == user
-          data_correction.dti_demand_out_amount.should == Money.new(1_234_56)
-          data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-          data_correction.dti_demand_interest.should be_nil
-          data_correction.old_dti_demand_interest.should be_nil
+          data_correction.dti_demand_outstanding.should == Money.new(1_234_56)
+          data_correction.old_dti_demand_outstanding.should == Money.new(1_000_00)
+          data_correction.data_correction_changes.should_not have_key('dti_interest')
 
           loan.reload
           loan.dti_demand_outstanding.should == Money.new(1_234_56)
@@ -110,10 +119,10 @@ describe DemandedAmountDataCorrection do
           presenter.save.should == true
 
           data_correction = loan.data_corrections.last!
-          data_correction.dti_demand_out_amount.should == Money.new(1_234_56)
-          data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-          data_correction.dti_demand_interest.should == Money.new(123_45)
-          data_correction.old_dti_demand_interest.should == Money.new(100_00)
+          data_correction.dti_demand_outstanding.should == Money.new(1_234_56)
+          data_correction.old_dti_demand_outstanding.should == Money.new(1_000_00)
+          data_correction.dti_interest.should == Money.new(123_45)
+          data_correction.old_dti_interest.should == Money.new(100_00)
 
           loan.reload
           loan.dti_demand_outstanding.should == Money.new(1_234_56)

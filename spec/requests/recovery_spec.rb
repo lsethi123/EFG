@@ -109,7 +109,7 @@ describe 'loan recovery' do
 
       recovery = Recovery.last
       recovery.loan.should == loan
-      recovery.seq.should == 3
+      recovery.seq.should == 2
       recovery.recovered_on.should == Date.current
       recovery.total_proceeds_recovered.should == Money.new(100_000_91)
       recovery.total_liabilities_behind.should == Money.new(123_00)
@@ -163,7 +163,7 @@ describe 'loan recovery' do
 
       recovery = Recovery.last
       recovery.loan.should == loan
-      recovery.seq.should == 1
+      recovery.seq.should == 0
       recovery.recovered_on.should == Date.new(2012, 5, 1)
       recovery.total_proceeds_recovered.should == Money.new(2_531_25)
       recovery.total_liabilities_behind.should == Money.new(123_00)
@@ -186,7 +186,7 @@ describe 'loan recovery' do
     def verify_recovery_and_loan
       recovery = Recovery.last
       recovery.loan.should == loan
-      recovery.seq.should == 1
+      recovery.seq.should == 0
       recovery.recovered_on.should == Date.current
       recovery.total_proceeds_recovered.should == Money.new(6_789_00)
       recovery.outstanding_non_efg_debt.should == Money.new(2_500_00)

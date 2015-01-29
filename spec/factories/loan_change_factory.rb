@@ -25,6 +25,7 @@ FactoryGirl.define do
 
     trait :lump_sum_repayment do
       change_type ChangeType::LumpSumRepayment
+      lump_sum_repayment Money.new(500_00)
     end
 
     trait :repayment_frequency do

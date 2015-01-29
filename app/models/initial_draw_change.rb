@@ -10,11 +10,14 @@ class InitialDrawChange < LoanModification
   end
 
   private
-    def set_change_type_id
-      self.change_type_id = nil
-    end
 
-    def set_seq
-      self.seq = 0
-    end
+  def set_change_type_id
+    self.change_type_id = nil
+  end
+
+  # Initial Draw Change should always be the first loan modification
+  # and there can only ever be one per loan
+  def set_seq
+    self.seq = 0
+  end
 end

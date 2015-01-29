@@ -275,8 +275,8 @@ describe Recovery do
       recovery1 = FactoryGirl.create(:recovery)
       recovery2 = FactoryGirl.create(:recovery, loan: recovery1.loan)
 
-      recovery1.seq.should == 1
-      recovery2.seq.should == 2
+      recovery1.seq.should == 0
+      recovery2.seq.should == 1
     end
   end
 end

@@ -1,5 +1,5 @@
-module LoanModificationsHelper
-  def format_modification_value(value)
+module LoanAmendmentsHelper
+  def format_amendment_value(value)
     case value
     when Date
       value.to_s(:screen)

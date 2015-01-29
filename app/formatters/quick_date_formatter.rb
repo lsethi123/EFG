@@ -1,4 +1,4 @@
-module QuickDateFormatter
+class QuickDateFormatter
   def self.format(value)
     value
   end

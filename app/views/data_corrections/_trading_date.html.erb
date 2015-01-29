@@ -1,0 +1,2 @@
+<%= simple_form_row 'Trading Date', @loan.trading_date.try(:to_s, :screen) %>
+<%= f.input :trading_date, label: 'New Trading Date', as: :quick_date %>

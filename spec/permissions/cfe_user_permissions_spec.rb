@@ -210,7 +210,7 @@ describe CfeUserPermissions do
   context 'DataCorrection' do
     it { assert user.can_create?(DataCorrection) }
     it { refute user.can_update?(DataCorrection) }
-    it { refute user.can_view?(DataCorrection) }
+    it { assert user.can_view?(DataCorrection) }
   end
 
   context 'LoanModification' do

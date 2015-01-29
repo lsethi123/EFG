@@ -1,10 +1,9 @@
 class DemandToBorrower < ActiveRecord::Base
   include FormatterConcern
+  include Sequenceable
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :loan
-
-  before_save :set_seq, on: :create
 
   validates_presence_of :created_by, strict: true
   validates_presence_of :loan, strict: true
@@ -15,8 +14,4 @@ class DemandToBorrower < ActiveRecord::Base
   format :date_of_demand, with: QuickDateFormatter
   format :demanded_amount, with: MoneyFormatter.new
 
-  private
-    def set_seq
-      self.seq = (self.class.where(loan_id: loan_id).maximum(:seq) || 0) + 1
-    end
 end

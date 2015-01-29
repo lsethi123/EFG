@@ -47,8 +47,8 @@ describe DemandToBorrower do
       demand_to_borrower1 = FactoryGirl.create(:demand_to_borrower, loan: loan)
       demand_to_borrower2 = FactoryGirl.create(:demand_to_borrower, loan: loan)
 
-      demand_to_borrower1.seq.should == 1
-      demand_to_borrower2.seq.should == 2
+      demand_to_borrower1.seq.should == 0
+      demand_to_borrower2.seq.should == 1
     end
   end
 end

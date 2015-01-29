@@ -1,10 +1,14 @@
 class DataCorrectionsController < ApplicationController
   TYPES = {
     'business_name' => BusinessNameDataCorrection,
+    'company_registration' => CompanyRegistrationDataCorrection,
     'demanded_amount' => DemandedAmountDataCorrection,
+    'generic_fields' => GenericFieldsDataCorrection,
     'lender_reference' => LenderReferenceDataCorrection,
     'postcode' => PostcodeDataCorrection,
-    'sortcode' => SortcodeDataCorrection
+    'sortcode' => SortcodeDataCorrection,
+    'trading_date' => TradingDateDataCorrection,
+    'trading_name' => TradingNameDataCorrection,
   }
 
   before_filter :verify_create_permission

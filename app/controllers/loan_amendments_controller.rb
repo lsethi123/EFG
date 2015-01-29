@@ -1,13 +1,13 @@
-class LoanModificationsController < ApplicationController
+class LoanAmendmentsController < ApplicationController
   before_filter :verify_view_permission
   before_filter :load_loan
 
   def index
-    @loan_modifications = @loan.loan_modifications.desc
+    @loan_amendments = LoanAmendmentPresenter.for_loan(@loan)
   end
 
   def show
-    @loan_modification = @loan.loan_modifications.find(params[:id])
+    @loan_amendment = LoanAmendmentPresenter.new(@loan, params)
   end
 
   private

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe LoanModificationsController do
+describe LoanAmendmentsController do
   let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
   describe '#index' do

@@ -60,7 +60,7 @@ class LoanEntry
   validates_presence_of :business_name, :fees, :interest_rate,
     :interest_rate_type_id, :legal_form_id, :repayment_frequency_id
   validates_presence_of :state_aid
-  validates_presence_of :company_registration, if: :company_registration_required?
+  validates_presence_of :company_registration, if: ->(loan_entry) { loan_entry.legal_form_id.present? && LegalForm.company_registration_required?(loan_entry.legal_form_id) }
   validate :postcode_allowed
   validate :state_aid_calculated
   validate :state_aid_within_sic_threshold, if: :state_aid
@@ -108,10 +108,6 @@ class LoanEntry
   # Note: state aid must be recalculated if the loan term has changed
   def state_aid_calculated
     errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
-  end
-
-  def company_registration_required?
-    legal_form_id && LegalForm.find(legal_form_id).requires_company_registration == true
   end
 
   def validate_eligibility

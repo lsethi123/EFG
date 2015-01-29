@@ -13,8 +13,25 @@ FactoryGirl.define do
       business_name 'New Business Name'
     end
 
+    factory :company_registration_data_correction, class: CompanyRegistrationDataCorrection do
+      company_registration '987654'
+    end
+
+    factory :generic_fields_data_correction, class: GenericFieldsDataCorrection do
+      generic1 "first"
+    end
+
+    factory :trading_name_data_correction, class: TradingNameDataCorrection do
+      trading_name 'New Trading Name'
+    end
+
+    factory :trading_date_data_correction, class: TradingDateDataCorrection do
+      trading_date '10/4/13'
+    end
+
     factory :demanded_amount_data_correction, class: DemandedAmountDataCorrection do
-      demanded_amount Money.new(1_000_00)
+      demanded_amount Money.new(1_500_00)
+      demanded_interest Money.new(425_00)
       association :loan, factory: [:loan, :guaranteed, :demanded]
     end
 

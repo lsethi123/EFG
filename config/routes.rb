@@ -82,7 +82,7 @@ EFG::Application.routes.draw do
     resources :agreed_draws, only: [:new, :create]
     resources :data_corrections, only: [:index, :new, :create]
     resources :loan_changes, only: [:index, :new, :create]
-    resources :loan_modifications, only: [:index, :show]
+    resources :loan_amendments, only: [:index, :show]
     resources :recoveries, only: [:new, :create]
   end
 

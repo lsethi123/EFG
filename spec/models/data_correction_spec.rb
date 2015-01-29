@@ -5,6 +5,17 @@ require 'spec_helper'
 describe DataCorrection do
   it_behaves_like 'LoanModification'
 
+  describe 'validations' do
+    let(:loan_modification) { FactoryGirl.build(:data_correction) }
+
+    it 'strictly requires a change_type_id' do
+      expect {
+        loan_modification.change_type_id = nil
+        loan_modification.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
+  end
+
   describe '#seq' do
     let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
@@ -12,26 +23,8 @@ describe DataCorrection do
       correction1 = FactoryGirl.create(:data_correction, loan: loan)
       correction2 = FactoryGirl.create(:data_correction, loan: loan)
 
-      correction1.seq.should == 1
-      correction2.seq.should == 2
-    end
-  end
-
-  describe "#changes" do
-    describe "data correction with lending limit change" do
-      it "should return the old and new lending limits" do
-        lender = FactoryGirl.create(:lender)
-        lending_limit_1 = FactoryGirl.create(:lending_limit, lender: lender)
-        lending_limit_2 = FactoryGirl.create(:lending_limit, lender: lender)
-
-        data_correction = FactoryGirl.create(:data_correction, old_lending_limit_id: lending_limit_1.id, lending_limit_id: lending_limit_2.id)
-        data_correction.changes.should == [{
-          old_attribute: 'old_lending_limit',
-          old_value: lending_limit_1,
-          attribute: 'lending_limit',
-          value: lending_limit_2
-        }]
-      end
+      correction1.seq.should == 0
+      correction2.seq.should == 1
     end
   end
 end

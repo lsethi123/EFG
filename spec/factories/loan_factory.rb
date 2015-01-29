@@ -92,6 +92,22 @@ FactoryGirl.define do
       end
     end
 
+    trait :loan_with_generic_info do
+      generic1 "first generic field"
+      generic2 "more info in second field"
+      generic3 "nowhere else to put this"
+      generic4 "entered by ..."
+      generic5 "authorized"
+    end
+
+    trait :loan_without_generic_info do
+      generic1 nil
+      generic2 nil
+      generic3 nil
+      generic4 nil
+      generic5 nil
+    end
+
     trait :removed do
       state Loan::Removed
       remove_guarantee_outstanding_amount Money.new(10_000_00)
