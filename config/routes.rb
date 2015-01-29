@@ -84,6 +84,7 @@ EFG::Application.routes.draw do
     resources :loan_changes, only: [:index, :new, :create]
     resources :loan_amendments, only: [:index, :show]
     resources :recoveries, only: [:new, :create]
+    resources :realisation_adjustments, only: [:new, :create]
   end
 
   resources :documents, only: [] do

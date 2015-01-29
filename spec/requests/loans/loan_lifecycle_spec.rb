@@ -112,6 +112,9 @@ describe 'Loan lifecycle' do
         realise_recovery(loan)
 
         loan.reload.state.should == Loan::Realised
+
+        # Adding a Realisation Adjustment
+        add_realisation_adjustment(loan)
       end
     end
   end
@@ -213,6 +216,17 @@ describe 'Loan lifecycle' do
     click_button 'Realise Loans'
   end
 
+  def add_realisation_adjustment(loan)
+    within_navigation { click_link 'Loan Portfolio' }
+    within('#realised_loans') { click_link '1' }
+    click_link loan.reference
+    click_link 'Make a Realisation Adjustment'
+
+    fill_in 'Amount', with: '100.00'
+    fill_in 'Date', with: '22/09/2014'
+    click_button 'Submit'
+  end
+
   def phase_5_loan_lifecycle_steps
     loan = loan_lifecycle_steps_up_to_complete
     loan_lifecycle_steps_from_offered(loan)
@@ -308,6 +322,9 @@ describe 'Loan lifecycle' do
     realise_recovery(loan)
 
     loan.reload.state.should == Loan::Realised
+
+    # Adding a Realisation Adjustment
+    add_realisation_adjustment(loan)
   end
 
   def next_quarter_month_name(date)

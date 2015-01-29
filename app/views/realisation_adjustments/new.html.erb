@@ -1,0 +1,16 @@
+<%= breadcrumbs_for_loan(@loan) %>
+
+<div class="page-header">
+  <h1>Realisation Adjustment</h1>
+</div>
+
+<%= simple_form_for([@loan, @realisation_adjustment], html: { class: 'form-horizontal' }) do |f| %>
+
+  <%= f.input :amount, as: :currency %>
+  <%= f.input :date, as: :quick_date %>
+  <%= f.input :notes, input_html: {rows: 5} %>
+
+  <div class="form-actions">
+    <%= f.button(:submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' }) %>
+  </div>
+<% end %>

@@ -1,5 +1,6 @@
 <div class="form-actions">
   <%= link_to('Recovery Made', new_loan_recovery_path(@loan), class: 'btn') if current_user.can_create?(Recovery) %>
+  <%= link_to('Make a Realisation Adjustment', new_loan_realisation_adjustment_path(@loan), class: 'btn') if current_user.can_create?(RealisationAdjustment) %>
 </div>
 
 <div class="form-actions">
