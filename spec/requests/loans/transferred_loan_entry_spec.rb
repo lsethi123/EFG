@@ -33,7 +33,7 @@ describe 'Transferred loan entry' do
 
     loan.reload
     loan.state.should == Loan::Completed
-    loan.declaration_signed.should be_true
+    expect(loan.declaration_signed).to eql(true)
     loan.sortcode.should == '03-12-45'
     loan.lender_reference.should == 'lenderref1'
     loan.repayment_frequency_id.should == 3

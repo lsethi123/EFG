@@ -47,7 +47,7 @@ describe LoanTransfer::LegacySflg do
     end
 
     it "should set state aid to be valid" do
-      new_loan.state_aid_is_valid.should be_true
+      expect(new_loan.state_aid_is_valid).to eql(true)
     end
 
     it "should set notified aid to zero" do
@@ -55,19 +55,19 @@ describe LoanTransfer::LegacySflg do
     end
 
     it "should set declaration signed to true" do
-      new_loan.declaration_signed.should be_true
+      expect(new_loan.declaration_signed).to eql(true)
     end
 
     it "should set viable proposition to true" do
-      new_loan.viable_proposition.should be_true
+      expect(new_loan.viable_proposition).to eql(true)
     end
 
     it "should set collateral exhausted to true" do
-      new_loan.collateral_exhausted.should be_true
+      expect(new_loan.collateral_exhausted).to eql(true)
     end
 
     it "should set previous borrowing to true" do
-      new_loan.previous_borrowing.should be_true
+      expect(new_loan.previous_borrowing).to eql(true)
     end
 
     it "should clear facility letter date" do
@@ -75,7 +75,7 @@ describe LoanTransfer::LegacySflg do
     end
 
     it "should set would you lend to true" do
-      new_loan.would_you_lend.should be_true
+      expect(new_loan.would_you_lend).to eql(true)
     end
 
     it "should create new loan with a copy of some of the original loan's data" do

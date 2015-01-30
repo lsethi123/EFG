@@ -25,7 +25,7 @@ describe 'loan entry' do
       current_path.should == complete_loan_entry_path(loan)
 
       loan.state.should == Loan::Completed
-      loan.declaration_signed.should be_true
+      expect(loan.declaration_signed).to eql(true)
       loan.business_name.should == 'Widgets Ltd.'
       loan.trading_name.should == 'Brilliant Widgets'
       loan.company_registration.should == '0123456789'

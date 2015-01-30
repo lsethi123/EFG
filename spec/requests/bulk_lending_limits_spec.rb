@@ -41,8 +41,14 @@ describe "bulk creation of lending limits" do
       lending_limit_audits = AdminAudit.where(action: AdminAudit::LendingLimitCreated)
       lending_limit_audits.count.should == 2
       lending_limit_audits.map(&:auditable).should =~ LendingLimit.all
-      lending_limit_audits.all? {|lending_limit| lending_limit.modified_by == current_user}.should be_true
-      lending_limit_audits.all? {|lending_limit| lending_limit.modified_on.should == Date.current }.should be_true
+
+      lending_limit_audits.each do |lending_limit|
+        expect(lending_limit.modified_by).to eql(current_user)
+      end
+
+      lending_limit_audits.each do |lending_limit|
+        expect(lending_limit.modified_on).to eql(Date.current)
+      end
 
       phase.lending_limits.count.should == 2
 

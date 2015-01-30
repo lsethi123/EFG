@@ -7,27 +7,27 @@ describe Postcode do
 
     context 'a Postcode with the same value' do
       let(:other) { Postcode.new('EC1R 4RP') }
-      it { should be_true }
+      it { should eql(true) }
     end
 
     context 'a Postcode with the same but differently formatted value' do
       let(:other) { Postcode.new('ec1r4rp') }
-      it { should be_true }
+      it { should eql(true) }
     end
 
     context 'a String with the same value' do
       let(:other) { 'EC1R 4RP' }
-      it { should be_true }
+      it { should eql(true) }
     end
 
     context 'a Postcode with a different value' do
       let(:other) { Postcode.new('SW1A 1AA') }
-      it { should be_false }
+      it { should eql(false) }
     end
 
     context 'a String with a different value' do
       let(:other) { 'SW1A 1AA' }
-      it { should be_false }
+      it { should eql(false) }
     end
   end
 

@@ -28,10 +28,10 @@ describe 'eligibility checks' do
 
     loan.lender.should == lender
     loan.state.should == Loan::Eligible
-    loan.viable_proposition.should be_true
-    loan.would_you_lend.should be_true
-    loan.collateral_exhausted.should be_true
-    loan.not_insolvent.should be_true
+    expect(loan.viable_proposition).to eql(true)
+    expect(loan.would_you_lend).to eql(true)
+    expect(loan.collateral_exhausted).to eql(true)
+    expect(loan.not_insolvent).to eql(true)
     loan.amount.should == Money.new(5000089)
     loan.lending_limit.should be_instance_of(LendingLimit)
     loan.repayment_duration.should == MonthDuration.new(30)
@@ -40,9 +40,9 @@ describe 'eligibility checks' do
     loan.sic_code.should == sic_code.code
     loan.loan_category_id.should == LoanCategory::TypeB.id
     loan.reason_id.should == 28
-    loan.previous_borrowing.should be_true
-    loan.private_residence_charge_required.should be_false
-    loan.personal_guarantee_required.should be_false
+    expect(loan.previous_borrowing).to eql(true)
+    expect(loan.private_residence_charge_required).to eql(false)
+    expect(loan.personal_guarantee_required).to eql(false)
     loan.loan_scheme.should == Loan::EFG_SCHEME
     loan.loan_source.should == Loan::SFLG_SOURCE
     loan.created_by.should == current_user

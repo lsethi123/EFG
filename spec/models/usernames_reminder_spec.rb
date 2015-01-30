@@ -8,12 +8,12 @@ describe UsernamesReminder do
 
     it 'requires an email address' do
       usernames_reminder.email = nil
-      usernames_reminder.valid?.should be_false
+      expect(usernames_reminder).to_not be_valid
     end
 
     it 'validates email address' do
       usernames_reminder.email = 'slkfdlk;'
-      usernames_reminder.should_not be_valid
+      expect(usernames_reminder).to_not be_valid
     end
   end
 

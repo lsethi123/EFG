@@ -47,7 +47,7 @@ describe RealiseRecovery do
         run
         recovery.reload
 
-        recovery.realise_flag.should be_true
+        expect(recovery.realise_flag).to eql(true)
       end
 
       context "creating a loan realisation" do
@@ -83,7 +83,7 @@ describe RealiseRecovery do
           run
           realisation = LoanRealisation.last
 
-          realisation.post_claim_limit.should be_false
+          expect(realisation.post_claim_limit).to eql(false)
         end
 
         it "sets the post claim limit to true if selected" do
@@ -91,7 +91,7 @@ describe RealiseRecovery do
           run
           realisation = LoanRealisation.last
 
-          realisation.post_claim_limit.should be_true
+          expect(realisation.post_claim_limit).to eql(true)
         end
       end
     end

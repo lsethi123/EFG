@@ -81,7 +81,7 @@ describe 'Realise loans' do
     loan6.reload
     loan6.state.should == Loan::Realised
     loan6.modified_by.should == current_user
-    loan6.loan_realisations.last.post_claim_limit.should be_true
+    expect(loan6.loan_realisations.last.post_claim_limit).to eql(true)
 
     loan3.reload.state.should == Loan::Recovered
     loan5.reload.state.should == Loan::Eligible

@@ -47,11 +47,11 @@ describe MonthDuration do
 
   describe "comparable" do
     it "should have correct < behaviour" do
-      (MonthDuration.new(3) < MonthDuration.new(4)).should be_true
+      expect(MonthDuration.new(3) < MonthDuration.new(4)).to eql(true)
     end
 
     it "should have correct > behaviour" do
-      (MonthDuration.new(10) > MonthDuration.new(4)).should be_true
+      expect(MonthDuration.new(10) > MonthDuration.new(4)).to eql(true)
     end
 
     it "should have the correct between? behaviour" do

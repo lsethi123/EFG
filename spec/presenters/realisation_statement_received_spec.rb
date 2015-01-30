@@ -122,9 +122,9 @@ describe RealisationStatementReceived do
       end
 
       it 'updates recoveries to be realised' do
-        recovery1.reload.realise_flag.should be_true
-        recovery2.reload.realise_flag.should be_true
-        recovery3.reload.realise_flag.should be_true
+        expect(recovery1.reload.realise_flag).to eql(true)
+        expect(recovery2.reload.realise_flag).to eql(true)
+        expect(recovery3.reload.realise_flag).to eql(true)
       end
 
       it 'updates realised_money_date on all loans' do
