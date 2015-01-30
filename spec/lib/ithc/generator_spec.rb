@@ -24,12 +24,12 @@ describe "Generator.seed " do
     end
 
     it "should create a new LenderAdmin" do
-      pending "TODO"
+      skip "TODO"
       assert seed["LenderAdmin"][:created], "LenderAdmin was created"
     end
 
     it "should create a new LenderUser" do
-      pending "TODO"
+      skip "TODO"
       assert seed["LenderUser"][:created], "LenderUser was created"
     end
   end
