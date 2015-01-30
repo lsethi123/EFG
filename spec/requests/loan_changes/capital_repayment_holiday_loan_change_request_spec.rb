@@ -30,18 +30,18 @@ describe 'Capital repayment loan change' do
       loan.reload
 
       loan_change = loan.loan_changes.last!
-      loan_change.change_type.should == ChangeType::CapitalRepaymentHoliday
-      loan_change.date_of_change.should == Date.new(2010, 9, 11)
+      expect(loan_change.change_type).to eq(ChangeType::CapitalRepaymentHoliday)
+      expect(loan_change.date_of_change).to eq(Date.new(2010, 9, 11))
 
       premium_schedule = loan.premium_schedules.last!
-      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
-      premium_schedule.premium_cheque_month.should == '12/2010'
-      premium_schedule.repayment_duration.should == 48
-      premium_schedule.initial_capital_repayment_holiday.should == 3
+      expect(premium_schedule.initial_draw_amount).to eq(Money.new(65_432_10))
+      expect(premium_schedule.premium_cheque_month).to eq('12/2010')
+      expect(premium_schedule.repayment_duration).to eq(48)
+      expect(premium_schedule.initial_capital_repayment_holiday).to eq(3)
 
-      loan.modified_by.should == current_user
-      loan.repayment_duration.total_months.should == 60
-      loan.maturity_date.should == Date.new(2014, 12, 25)
+      expect(loan.modified_by).to eq(current_user)
+      expect(loan.repayment_duration.total_months).to eq(60)
+      expect(loan.maturity_date).to eq(Date.new(2014, 12, 25))
     end
   end
 

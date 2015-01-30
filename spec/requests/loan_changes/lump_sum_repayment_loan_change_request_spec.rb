@@ -17,17 +17,17 @@ describe 'Lump sum repayment loan change' do
     loan.reload
 
     loan_change = loan.loan_changes.last!
-    loan_change.change_type.should == ChangeType::LumpSumRepayment
-    loan_change.date_of_change.should == Date.new(2011, 12, 1)
-    loan_change.lump_sum_repayment.should == Money.new(1_234_56)
+    expect(loan_change.change_type).to eq(ChangeType::LumpSumRepayment)
+    expect(loan_change.date_of_change).to eq(Date.new(2011, 12, 1))
+    expect(loan_change.lump_sum_repayment).to eq(Money.new(1_234_56))
 
     premium_schedule = loan.premium_schedules.last!
-    premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
-    premium_schedule.premium_cheque_month.should == '03/2012'
-    premium_schedule.repayment_duration.should == 33
+    expect(premium_schedule.initial_draw_amount).to eq(Money.new(65_432_10))
+    expect(premium_schedule.premium_cheque_month).to eq('03/2012')
+    expect(premium_schedule.repayment_duration).to eq(33)
 
-    loan.maturity_date.should == Date.new(2014, 12, 25)
-    loan.modified_by.should == current_user
+    expect(loan.maturity_date).to eq(Date.new(2014, 12, 25))
+    expect(loan.modified_by).to eq(current_user)
   end
 
   private

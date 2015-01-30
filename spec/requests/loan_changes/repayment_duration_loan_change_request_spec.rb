@@ -18,19 +18,19 @@ describe 'Repayment duration loan change' do
       loan.reload
 
       loan_change = loan.loan_changes.last!
-      loan_change.change_type.should == ChangeType::ExtendTerm
-      loan_change.date_of_change.should == Date.new(2010, 9, 11)
-      loan_change.old_repayment_duration.should == 60
-      loan_change.repayment_duration.should == 63
+      expect(loan_change.change_type).to eq(ChangeType::ExtendTerm)
+      expect(loan_change.date_of_change).to eq(Date.new(2010, 9, 11))
+      expect(loan_change.old_repayment_duration).to eq(60)
+      expect(loan_change.repayment_duration).to eq(63)
 
       premium_schedule = loan.premium_schedules.last!
-      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
-      premium_schedule.premium_cheque_month.should == '12/2010'
-      premium_schedule.repayment_duration.should == 51
+      expect(premium_schedule.initial_draw_amount).to eq(Money.new(65_432_10))
+      expect(premium_schedule.premium_cheque_month).to eq('12/2010')
+      expect(premium_schedule.repayment_duration).to eq(51)
 
-      loan.modified_by.should == current_user
-      loan.repayment_duration.total_months.should == 63
-      loan.maturity_date.should == Date.new(2015, 3, 25)
+      expect(loan.modified_by).to eq(current_user)
+      expect(loan.repayment_duration.total_months).to eq(63)
+      expect(loan.maturity_date).to eq(Date.new(2015, 3, 25))
     end
   end
 
@@ -47,7 +47,7 @@ describe 'Repayment duration loan change' do
       it 'displays error message explaining why loan amount is invalid' do
         dispatch
 
-        page.should have_content(I18n.t('validators.phase6_amount.amount.invalid'))
+        expect(page).to have_content(I18n.t('validators.phase6_amount.amount.invalid'))
       end
     end
 
@@ -59,7 +59,7 @@ describe 'Repayment duration loan change' do
       it 'displays error message explaining why loan term cannot be extended' do
         dispatch
 
-        page.should have_content(I18n.t('validators.repayment_duration.repayment_duration.invalid'))
+        expect(page).to have_content(I18n.t('validators.repayment_duration.repayment_duration.invalid'))
       end
     end
   end

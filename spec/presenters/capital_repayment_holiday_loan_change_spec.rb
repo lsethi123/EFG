@@ -29,12 +29,12 @@ describe CapitalRepaymentHolidayLoanChange do
 
       it 'is required' do
         presenter.initial_capital_repayment_holiday = nil
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       it 'must be greater than zero' do
         presenter.initial_capital_repayment_holiday = '0'
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
     end
   end
@@ -53,29 +53,29 @@ describe CapitalRepaymentHolidayLoanChange do
         presenter.initial_capital_repayment_holiday = 6
 
         Timecop.freeze(2013, 3, 1) do
-          presenter.save.should == true
+          expect(presenter.save).to eq(true)
         end
 
         loan_change = loan.loan_changes.last!
-        loan_change.change_type.should == ChangeType::CapitalRepaymentHoliday
-        loan_change.created_by.should == user
+        expect(loan_change.change_type).to eq(ChangeType::CapitalRepaymentHoliday)
+        expect(loan_change.created_by).to eq(user)
 
         loan.reload
-        loan.modified_by.should == user
+        expect(loan.modified_by).to eq(user)
 
         premium_schedule = loan.premium_schedules.last!
-        premium_schedule.premium_cheque_month.should == '05/2013'
-        premium_schedule.repayment_duration.should == 57
+        expect(premium_schedule.premium_cheque_month).to eq('05/2013')
+        expect(premium_schedule.repayment_duration).to eq(57)
       end
     end
 
     context 'failure' do
       it 'does not update loan' do
         presenter.initial_capital_repayment_holiday = nil
-        presenter.save.should == false
+        expect(presenter.save).to eq(false)
 
         loan.reload
-        loan.modified_by.should_not == user
+        expect(loan.modified_by).not_to eq(user)
       end
     end
   end

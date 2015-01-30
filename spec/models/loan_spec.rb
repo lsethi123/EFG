@@ -331,14 +331,14 @@ describe Loan do
   describe '#fully_drawn?' do
     context 'when cumulative drawn amount equals loan amount' do
       before do
-        loan.stub(:cumulative_drawn_amount).and_return(loan.amount)
+        allow(loan).to receive(:cumulative_drawn_amount).and_return(loan.amount)
       end
 
-      specify { loan.fully_drawn?.should == true }
+      specify { expect(loan.fully_drawn?).to eq(true) }
     end
 
     context 'when cumulative drawn amount is less than loan amount' do
-      specify { loan.fully_drawn?.should == false }
+      specify { expect(loan.fully_drawn?).to eq(false) }
     end
   end
 
@@ -450,7 +450,7 @@ describe Loan do
       it "returns the loan's category specific guarantee rate" do
         loan.guarantee_rate.should == 75
       end
-    end  
+    end
   end
 
   describe "#premium_rate" do

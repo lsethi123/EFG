@@ -20,12 +20,12 @@ shared_examples_for "loan change on loan with tranche drawdowns" do
 
       loan.reload
       premium_schedule = loan.premium_schedules.last!
-      premium_schedule.second_draw_amount.should == Money.new(10_000_00)
-      premium_schedule.second_draw_months.should == 6
-      premium_schedule.third_draw_amount.should == Money.new(5_000_00)
-      premium_schedule.third_draw_months.should == 12
-      premium_schedule.fourth_draw_amount.should == Money.new(2_000_00)
-      premium_schedule.fourth_draw_months.should == 24
+      expect(premium_schedule.second_draw_amount).to eq(Money.new(10_000_00))
+      expect(premium_schedule.second_draw_months).to eq(6)
+      expect(premium_schedule.third_draw_amount).to eq(Money.new(5_000_00))
+      expect(premium_schedule.third_draw_months).to eq(12)
+      expect(premium_schedule.fourth_draw_amount).to eq(Money.new(2_000_00))
+      expect(premium_schedule.fourth_draw_months).to eq(24)
     end
   end
 end
@@ -52,14 +52,14 @@ shared_examples_for "loan change on loan with no premium schedule" do
   context "loan has no premium schedule" do
     before do
       loan.premium_schedules.destroy_all
-      loan.premium_schedules.should be_empty
+      expect(loan.premium_schedules).to be_empty
     end
 
     it "creates a new premium schedule based on the loan change data" do
       dispatch
 
       loan.reload
-      loan.premium_schedules.count.should == 1
+      expect(loan.premium_schedules.count).to eq(1)
     end
   end
 end
