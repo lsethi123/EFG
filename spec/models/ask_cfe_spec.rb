@@ -7,7 +7,7 @@ describe AskCfe do
 
     it 'requires a message' do
       ask_cfe.message = ''
-      ask_cfe.should_not be_valid
+      expect(ask_cfe).not_to be_valid
     end
 
     it 'strictly requires a user' do
@@ -18,7 +18,7 @@ describe AskCfe do
     end
 
     it "should have the correct TO address" do
-      ask_cfe.to.should == EFG::Application.config.cfe_support_email
+      expect(ask_cfe.to).to eq(EFG::Application.config.cfe_support_email)
     end
   end
 

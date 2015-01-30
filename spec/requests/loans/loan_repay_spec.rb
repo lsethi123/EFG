@@ -14,11 +14,11 @@ describe 'loan repay' do
 
     loan = Loan.last
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
-    loan.state.should == Loan::Repaid
-    loan.repaid_on.should == 1.day.from_now.to_date
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Repaid)
+    expect(loan.repaid_on).to eq(1.day.from_now.to_date)
+    expect(loan.modified_by).to eq(current_user)
 
     should_log_loan_state_change(loan, Loan::Repaid, 14, current_user)
   end
@@ -33,24 +33,24 @@ describe 'loan repay' do
 
     loan = Loan.last
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
-    loan.state.should == Loan::Repaid
-    loan.repaid_on.should == 1.day.from_now.to_date
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Repaid)
+    expect(loan.repaid_on).to eq(1.day.from_now.to_date)
+    expect(loan.modified_by).to eq(current_user)
   end
 
   it 'does not continue with invalid values' do
     visit loan_path(loan)
     click_link 'Repay Loan'
 
-    loan.state.should == Loan::Guaranteed
+    expect(loan.state).to eq(Loan::Guaranteed)
     expect {
       click_button 'Submit'
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == loan_repay_path(loan)
+    expect(current_path).to eq(loan_repay_path(loan))
   end
 
   private

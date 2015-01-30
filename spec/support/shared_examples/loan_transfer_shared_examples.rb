@@ -3,37 +3,37 @@ shared_examples_for 'a loan transfer' do
   describe 'validations' do
 
     it 'should have a valid factory' do
-      loan_transfer.should be_valid
+      expect(loan_transfer).to be_valid
     end
 
     it 'must have a reference' do
       loan_transfer.reference = nil
-      loan_transfer.should_not be_valid
+      expect(loan_transfer).not_to be_valid
     end
 
     it 'must have an amount' do
       loan_transfer.amount = nil
-      loan_transfer.should_not be_valid
+      expect(loan_transfer).not_to be_valid
     end
 
     it 'must have a new amount' do
       loan_transfer.new_amount = nil
-      loan_transfer.should_not be_valid
+      expect(loan_transfer).not_to be_valid
     end
 
     it 'declaration signed must be true' do
       loan_transfer.declaration_signed = false
-      loan_transfer.should_not be_valid
+      expect(loan_transfer).not_to be_valid
     end
 
     it 'declaration signed must not be blank' do
       loan_transfer.declaration_signed = nil
-      loan_transfer.should_not be_valid
+      expect(loan_transfer).not_to be_valid
     end
 
     it 'must have a lender' do
       loan_transfer.lender = nil
-      loan_transfer.should_not be_valid
+      expect(loan_transfer).not_to be_valid
     end
 
   end
@@ -49,79 +49,79 @@ shared_examples_for 'a loan transfer' do
       end
 
       it 'should transition original loan to repaid from transfer state' do
-        original_loan.state.should == Loan::RepaidFromTransfer
+        expect(original_loan.state).to eq(Loan::RepaidFromTransfer)
       end
 
       it 'should assign new loan to lender requesting transfer' do
-        new_loan.lender.should == loan_transfer.lender
+        expect(new_loan.lender).to eq(loan_transfer.lender)
       end
 
       it 'should create new loan with incremented reference number' do
-        new_loan.reference.should == reference_class.new(loan.reference).increment
+        expect(new_loan.reference).to eq(reference_class.new(loan.reference).increment)
       end
 
       it 'should create new loan with state "incomplete"' do
-        new_loan.state.should == Loan::Incomplete
+        expect(new_loan.state).to eq(Loan::Incomplete)
       end
 
       it 'should create new loan with amount set to the specified new amount' do
-        new_loan.amount.should == loan_transfer.new_amount
+        expect(new_loan.amount).to eq(loan_transfer.new_amount)
       end
 
       it 'should create new loan with no value for branch sort code' do
-        new_loan.sortcode.should be_blank
+        expect(new_loan.sortcode).to be_blank
       end
 
       it 'should create new loan with repayment duration of 0' do
-        new_loan.repayment_duration.should == MonthDuration.new(0)
+        expect(new_loan.repayment_duration).to eq(MonthDuration.new(0))
       end
 
       it 'should create new loan with no value for payment period' do
-        new_loan.repayment_frequency.should be_blank
+        expect(new_loan.repayment_frequency).to be_blank
       end
 
       it 'should create new loan with no value for maturity date' do
-        new_loan.maturity_date.should be_blank
+        expect(new_loan.maturity_date).to be_blank
       end
 
       it 'should create new loan with no value for generic fields' do
         (1..5).each do |num|
-          new_loan.send("generic#{num}").should be_blank
+          expect(new_loan.send("generic#{num}")).to be_blank
         end
       end
 
       it 'should create new loan with no invoice' do
-        new_loan.invoice_id.should be_blank
+        expect(new_loan.invoice_id).to be_blank
       end
 
       it 'should create a new loan with no lender reference' do
-        new_loan.lender_reference.should be_blank
+        expect(new_loan.lender_reference).to be_blank
       end
 
       it 'should track which loan a transferred loan came from' do
-        new_loan.transferred_from_id.should == loan.id
+        expect(new_loan.transferred_from_id).to eq(loan.id)
       end
 
       it 'should assign new loan to the newest active LendingLimit of the lender receiving transfer' do
-        new_loan.lending_limit.should == new_loan.lender.lending_limits.active.first
+        expect(new_loan.lending_limit).to eq(new_loan.lender.lending_limits.active.first)
       end
 
       it 'should nullify legacy_id field' do
         original_loan.legacy_id = 12345
-        new_loan.legacy_id.should be_nil
+        expect(new_loan.legacy_id).to be_nil
       end
 
       it 'should create new loan with modified by set to user requesting transfer' do
-        new_loan.modified_by.should == loan_transfer.modified_by
+        expect(new_loan.modified_by).to eq(loan_transfer.modified_by)
       end
 
       it 'should create new loan with created by set to user requesting transfer' do
-        new_loan.created_by.should == loan_transfer.modified_by
+        expect(new_loan.created_by).to eq(loan_transfer.modified_by)
       end
 
       it 'should copy existing loan securities to new loan' do
-        original_loan.loan_security_types.should_not be_empty
-        new_loan.loan_security_types.should == original_loan.loan_security_types
+        expect(original_loan.loan_security_types).not_to be_empty
+        expect(new_loan.loan_security_types).to eq(original_loan.loan_security_types)
       end
     end
 
@@ -131,12 +131,12 @@ shared_examples_for 'a loan transfer' do
       end
 
       it 'should return false' do
-        loan_transfer.save.should == false
+        expect(loan_transfer.save).to eq(false)
       end
 
       it 'should add error to base' do
         loan_transfer.save
-        loan_transfer.errors[:new_amount].should include(error_string('new_amount.cannot_be_greater'))
+        expect(loan_transfer.errors[:new_amount]).to include(error_string('new_amount.cannot_be_greater'))
       end
     end
 
@@ -146,7 +146,7 @@ shared_examples_for 'a loan transfer' do
       end
 
       it "should return false" do
-        loan_transfer.save.should == false
+        expect(loan_transfer.save).to eq(false)
       end
     end
 
@@ -156,12 +156,12 @@ shared_examples_for 'a loan transfer' do
       end
 
       it "should return false" do
-        loan_transfer.save.should == false
+        expect(loan_transfer.save).to eq(false)
       end
 
       it "should add error to base" do
         loan_transfer.save
-        loan_transfer.errors[:base].should include(error_string('base.cannot_transfer_own_loan'))
+        expect(loan_transfer.errors[:base]).to include(error_string('base.cannot_transfer_own_loan'))
       end
     end
 
@@ -174,12 +174,12 @@ shared_examples_for 'a loan transfer' do
       end
 
       it "should return false" do
-        loan_transfer.save.should == false
+        expect(loan_transfer.save).to eq(false)
       end
 
       it "should add error to base" do
         loan_transfer.save
-        loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
+        expect(loan_transfer.errors[:base]).to include(error_string('base.cannot_be_transferred'))
       end
     end
 
@@ -189,12 +189,12 @@ shared_examples_for 'a loan transfer' do
       end
 
       it "should return false" do
-        loan_transfer.save.should == false
+        expect(loan_transfer.save).to eq(false)
       end
 
       it "should add error to base" do
         loan_transfer.save
-        loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
+        expect(loan_transfer.errors[:base]).to include(error_string('base.cannot_be_transferred'))
       end
     end
 
@@ -202,12 +202,12 @@ shared_examples_for 'a loan transfer' do
       let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_premium_schedule) }
 
       it "should return false" do
-        loan_transfer.save.should == false
+        expect(loan_transfer.save).to eq(false)
       end
 
       it "should add error to base" do
         loan_transfer.save
-        loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
+        expect(loan_transfer.errors[:base]).to include(error_string('base.cannot_be_transferred'))
       end
     end
 
@@ -219,12 +219,12 @@ shared_examples_for 'a loan transfer' do
       end
 
       it "should return false" do
-        loan_transfer.save.should == false
+        expect(loan_transfer.save).to eq(false)
       end
 
       it "should add error to base" do
         loan_transfer.save
-        loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
+        expect(loan_transfer.errors[:base]).to include(error_string('base.cannot_be_transferred'))
       end
     end
   end

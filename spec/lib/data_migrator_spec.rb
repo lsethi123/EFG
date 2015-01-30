@@ -18,19 +18,19 @@ describe "DataMigrator" do
 
   context "#run" do
     it "runs all migrations" do
-      MyData.should_receive(:migrate!)
+      expect(MyData).to receive(:migrate!)
       migrator.run
     end
 
     it "runs each migration in a transaction" do
       DataMigrationRecord.stub(:create!)
-      ActiveRecord::Base.connection.should_receive(:transaction).and_yield
-      MyData.should_receive(:migrate!)
+      expect(ActiveRecord::Base.connection).to receive(:transaction).and_yield
+      expect(MyData).to receive(:migrate!)
       migrator.run
     end
 
     it "records a data migration on success" do
-      DataMigrationRecord.should_receive(:create!).with(version: "20100101120000")
+      expect(DataMigrationRecord).to receive(:create!).with(version: "20100101120000")
       migrator.run
     end
   end

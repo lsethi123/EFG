@@ -58,12 +58,12 @@ describe RealiseLoansController do
       end
 
       it "renders CSV loan data" do
-        response.content_type.should == 'text/csv'
+        expect(response.content_type).to eq('text/csv')
       end
 
       it "sets filename for CSV" do
         expected_filename = "loan_recoveries_#{lender.name.parameterize}_#{Date.current.strftime('%Y-%m-%d')}.csv"
-        response.headers['Content-Disposition'].should include(%Q(filename="#{expected_filename}"))
+        expect(response.headers['Content-Disposition']).to include(%Q(filename="#{expected_filename}"))
       end
     end
   end

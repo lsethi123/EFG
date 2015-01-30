@@ -22,9 +22,9 @@ describe LoanAlerts::PriorityGrouping do
 
     it "returns a PriorityGrouping with merge high, medium, low loans" do
       merged_grouping = LoanAlerts::PriorityGrouping.merge(group1, group2)
-      merged_grouping.high_priority_loans.should == [[1, 11], [2, 12], [3, 13]]
-      merged_grouping.medium_priority_loans.should == [[4, 14], [5, 15], [6, 16]]
-      merged_grouping.low_priority_loans.should == [[7, 17], [8, 18], [9, 19], [10]]
+      expect(merged_grouping.high_priority_loans).to eq([[1, 11], [2, 12], [3, 13]])
+      expect(merged_grouping.medium_priority_loans).to eq([[4, 14], [5, 15], [6, 16]])
+      expect(merged_grouping.low_priority_loans).to eq([[7, 17], [8, 18], [9, 19], [10]])
     end
   end
 
@@ -67,28 +67,28 @@ describe LoanAlerts::PriorityGrouping do
 
     describe "#high_priority_loans" do
       it "returns all high priority loans" do
-        priority_grouping.high_priority_loans.should == padded_array_of_arrays(10, {
+        expect(priority_grouping.high_priority_loans).to eq(padded_array_of_arrays(10, {
           0 => [high_priority_loan1],
           9 => [high_priority_loan2]
-        })
+        }))
       end
     end
 
     describe "#medium_priority_loans" do
       it "returns all medium priority loans" do
-        priority_grouping.medium_priority_loans.should == padded_array_of_arrays(20, {
+        expect(priority_grouping.medium_priority_loans).to eq(padded_array_of_arrays(20, {
           0 => [medium_priority_loan1],
           19 => [medium_priority_loan2]
-        })
+        }))
       end
     end
 
     describe "#low_priority_loans" do
       it "returns all low priority loans" do
-        priority_grouping.low_priority_loans.should == padded_array_of_arrays(30, {
+        expect(priority_grouping.low_priority_loans).to eq(padded_array_of_arrays(30, {
           0 => [low_priority_loan1],
           29 => [low_priority_loan2]
-        })
+        }))
       end
     end
   end

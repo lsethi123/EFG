@@ -12,7 +12,7 @@ describe CfeAdmin do
     end
 
     it "returns all lenders" do
-      user.lenders.should == Lender.all
+      expect(user.lenders).to eq(Lender.all)
     end
   end
 end

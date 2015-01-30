@@ -5,7 +5,7 @@ describe LenderLogo do
 
   describe '#public_path' do
     it 'returns the correct path' do
-      logo.public_path.should == '/system/logos/XX.jpg'
+      expect(logo.public_path).to eq('/system/logos/XX.jpg')
     end
   end
 

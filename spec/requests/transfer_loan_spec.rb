@@ -20,25 +20,25 @@ describe 'Transfer a loan' do
 
     click_button 'Transfer Loan'
 
-    page.should have_content('This page provides confirmation that the loan has been transferred.')
+    expect(page).to have_content('This page provides confirmation that the loan has been transferred.')
 
     # Check original loan and new loan
     loan.reload
-    loan.state.should == Loan::RepaidFromTransfer
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::RepaidFromTransfer)
+    expect(loan.modified_by).to eq(current_user)
 
     transferred_loan = Loan.last
-    transferred_loan.transferred_from_id.should == loan.id
-    transferred_loan.reference.should == LoanReference.new(loan.reference).increment
-    transferred_loan.state.should == Loan::Incomplete
-    transferred_loan.business_name.should == loan.business_name
-    transferred_loan.amount.should == loan.amount - Money.new(500)
-    transferred_loan.created_by.should == current_user
-    transferred_loan.modified_by.should == current_user
+    expect(transferred_loan.transferred_from_id).to eq(loan.id)
+    expect(transferred_loan.reference).to eq(LoanReference.new(loan.reference).increment)
+    expect(transferred_loan.state).to eq(Loan::Incomplete)
+    expect(transferred_loan.business_name).to eq(loan.business_name)
+    expect(transferred_loan.amount).to eq(loan.amount - Money.new(500))
+    expect(transferred_loan.created_by).to eq(current_user)
+    expect(transferred_loan.modified_by).to eq(current_user)
 
     # verify correct loan entry form is shown
     click_link 'Loan Entry'
-    current_path.should == new_loan_transferred_entry_path(transferred_loan)
+    expect(current_path).to eq(new_loan_transferred_entry_path(transferred_loan))
   end
 
   it 'should display error when loan to transfer is not found' do
@@ -50,7 +50,7 @@ describe 'Transfer a loan' do
 
     click_button 'Transfer Loan'
 
-    page.should have_content(I18n.t("activemodel.errors.models.loan_transfer/sflg.attributes.base.cannot_be_transferred"))
+    expect(page).to have_content(I18n.t("activemodel.errors.models.loan_transfer/sflg.attributes.base.cannot_be_transferred"))
   end
 
   it 'should display error when loan to transfer is an EFG loan' do
@@ -66,7 +66,7 @@ describe 'Transfer a loan' do
 
     click_button 'Transfer Loan'
 
-    page.should have_content(I18n.t("activemodel.errors.models.loan_transfer/sflg.attributes.base.cannot_be_transferred"))
+    expect(page).to have_content(I18n.t("activemodel.errors.models.loan_transfer/sflg.attributes.base.cannot_be_transferred"))
   end
 
 end

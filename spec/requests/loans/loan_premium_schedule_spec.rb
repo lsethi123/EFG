@@ -29,10 +29,10 @@ shared_examples_for 'a premium schedule viewer' do
     let(:premium_schedule_type) { :premium_schedule }
 
     it 'displays the correct data' do
-      page.should have_content('£10,250.00')
-      page.should_not have_css('.premium1')
-      page.should have_css('.premium2')
-      page.should have_css('.premium40')
+      expect(page).to have_content('£10,250.00')
+      expect(page).not_to have_css('.premium1')
+      expect(page).to have_css('.premium2')
+      expect(page).to have_css('.premium40')
     end
   end
 
@@ -40,8 +40,8 @@ shared_examples_for 'a premium schedule viewer' do
     let(:premium_schedule_type) { :rescheduled_premium_schedule }
 
     it 'displays the correct data' do
-      page.should have_css('.premium1')
-      page.should have_css('.premium40')
+      expect(page).to have_css('.premium1')
+      expect(page).to have_css('.premium40')
     end
   end
 end
@@ -76,11 +76,11 @@ describe 'loan entry' do
     end
 
     it 'should redirect to loan entry' do
-      current_path.should == new_loan_entry_path(loan)
+      expect(current_path).to eq(new_loan_entry_path(loan))
     end
 
     it 'should display the correct flash message' do
-      page.should have_content(I18n.t('premium_schedule.repayment_frequency_not_set'))
+      expect(page).to have_content(I18n.t('premium_schedule.repayment_frequency_not_set'))
     end
   end
 
@@ -96,7 +96,7 @@ describe 'loan entry' do
     end
 
     it "opens the create Premium Schedule form" do
-      current_path.should == edit_loan_premium_schedule_path(loan)
+      expect(current_path).to eq(edit_loan_premium_schedule_path(loan))
     end
   end
 end

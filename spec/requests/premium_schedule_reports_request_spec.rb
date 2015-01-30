@@ -19,15 +19,15 @@ describe 'premium schedule reports' do
     click_link 'Extract Premium Schedule Information'
 
     click_button 'Submit'
-    page.should have_selector('.errors-on-base')
+    expect(page).to have_selector('.errors-on-base')
 
     fill_in 'start_on', '1/1/11'
     choose_radio_button 'schedule_type', 'new'
     click_button 'Submit'
 
-    page.should have_content('Data extract found 2 rows')
+    expect(page).to have_content('Data extract found 2 rows')
     click_button 'Download'
-    page.response_headers['Content-Type'].should include('text/csv')
+    expect(page.response_headers['Content-Type']).to include('text/csv')
   end
 
   private

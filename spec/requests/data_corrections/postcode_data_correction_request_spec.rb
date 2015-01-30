@@ -15,15 +15,15 @@ describe 'Postcode Data Correction' do
     click_button 'Submit'
 
     data_correction = loan.data_corrections.last!
-    data_correction.change_type.should == ChangeType::Postcode
-    data_correction.created_by.should == current_user
-    data_correction.date_of_change.should == Date.current
-    data_correction.modified_date.should == Date.current
-    data_correction.old_postcode.should == 'EC1R 4RP'
-    data_correction.postcode.should == 'EC1A 9PN'
+    expect(data_correction.change_type).to eq(ChangeType::Postcode)
+    expect(data_correction.created_by).to eq(current_user)
+    expect(data_correction.date_of_change).to eq(Date.current)
+    expect(data_correction.modified_date).to eq(Date.current)
+    expect(data_correction.old_postcode).to eq('EC1R 4RP')
+    expect(data_correction.postcode).to eq('EC1A 9PN')
 
     loan.reload
-    loan.postcode.should == 'EC1A 9PN'
-    loan.modified_by.should == current_user
+    expect(loan.postcode).to eq('EC1A 9PN')
+    expect(loan.modified_by).to eq(current_user)
   end
 end

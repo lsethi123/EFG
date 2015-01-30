@@ -4,7 +4,7 @@ describe UsernamesReminder do
   let(:usernames_reminder) { UsernamesReminder.new(email: 'me@example.com') }
 
   describe 'validations' do
-    before { usernames_reminder.should be_valid }
+    before { expect(usernames_reminder).to be_valid }
 
     it 'requires an email address' do
       usernames_reminder.email = nil
@@ -30,7 +30,7 @@ describe UsernamesReminder do
       end
 
       it 'calls UsernamesReminderMailer#usernames_reminder with the correct arguments' do
-        UsernamesReminderMailer.should_receive(:usernames_reminder)
+        expect(UsernamesReminderMailer).to receive(:usernames_reminder)
                                .with('me@example.com', %w(user2 user3))
                                .once
                                .and_return(double("mailer", deliver: true))
@@ -41,7 +41,7 @@ describe UsernamesReminder do
 
     context 'when the email address has no associated usernames' do
       it 'does not call UsernamesReminderMailer#usernames_reminder' do
-        UsernamesReminderMailer.should_not_receive(:usernames_reminder)
+        expect(UsernamesReminderMailer).not_to receive(:usernames_reminder)
         usernames_reminder.send_email
       end
     end
@@ -53,7 +53,7 @@ describe UsernamesReminder do
       end
 
       it 'does not call UsernamesReminderMailer#usernames_reminder' do
-        UsernamesReminderMailer.should_not_receive(:usernames_reminder)
+        expect(UsernamesReminderMailer).not_to receive(:usernames_reminder)
         usernames_reminder.send_email
       end
     end

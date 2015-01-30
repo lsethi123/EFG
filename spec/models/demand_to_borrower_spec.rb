@@ -5,7 +5,7 @@ describe DemandToBorrower do
     let(:demand_to_borrower) { FactoryGirl.build(:demand_to_borrower) }
 
     it 'has a valid factory' do
-      demand_to_borrower.should be_valid
+      expect(demand_to_borrower).to be_valid
     end
 
     it 'strictly requires a loan' do
@@ -31,12 +31,12 @@ describe DemandToBorrower do
 
     it 'requires a date_of_demand' do
       demand_to_borrower.date_of_demand = ''
-      demand_to_borrower.should_not be_valid
+      expect(demand_to_borrower).not_to be_valid
     end
 
     it 'requires a demanded_amount' do
       demand_to_borrower.demanded_amount = ''
-      demand_to_borrower.should_not be_valid
+      expect(demand_to_borrower).not_to be_valid
     end
   end
 
@@ -47,8 +47,8 @@ describe DemandToBorrower do
       demand_to_borrower1 = FactoryGirl.create(:demand_to_borrower, loan: loan)
       demand_to_borrower2 = FactoryGirl.create(:demand_to_borrower, loan: loan)
 
-      demand_to_borrower1.seq.should == 1
-      demand_to_borrower2.seq.should == 2
+      expect(demand_to_borrower1.seq).to eq(1)
+      expect(demand_to_borrower2.seq).to eq(2)
     end
   end
 end

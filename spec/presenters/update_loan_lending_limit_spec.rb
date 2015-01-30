@@ -5,12 +5,12 @@ describe UpdateLoanLendingLimit do
     subject { FactoryGirl.build(:update_loan_lending_limit) }
 
     it "has a valid factory" do
-      subject.should be_valid
+      expect(subject).to be_valid
     end
 
     it "requries a new_lending_limit_id" do
       subject.new_lending_limit_id = ''
-      subject.should_not be_valid
+      expect(subject).not_to be_valid
     end
   end
 
@@ -31,19 +31,19 @@ describe UpdateLoanLendingLimit do
       presenter.save
 
       loan.reload
-      loan.lending_limit.should == lending_limit2
+      expect(loan.lending_limit).to eq(lending_limit2)
     end
 
     it "stores the previous state aid figure" do
       previous_state_aid = loan.state_aid
       presenter.save
 
-      presenter.previous_state_aid.should == previous_state_aid
+      expect(presenter.previous_state_aid).to eq(previous_state_aid)
     end
 
     it "stores the new state aid figure" do
       presenter.save
-      presenter.new_state_aid.should == Money.new(794_98, 'EUR')
+      expect(presenter.new_state_aid).to eq(Money.new(794_98, 'EUR'))
     end
 
     context "when the loan is not valid for a Phase 5 lending limit" do
@@ -53,7 +53,7 @@ describe UpdateLoanLendingLimit do
 
       it "changes the state of the loan to incomplete" do
         presenter.save
-        loan.state.should == Loan::Incomplete
+        expect(loan.state).to eq(Loan::Incomplete)
       end
     end
 
@@ -64,7 +64,7 @@ describe UpdateLoanLendingLimit do
 
       it "changes the state of the loan to incomplete" do
         presenter.save
-        loan.state.should == Loan::Incomplete
+        expect(loan.state).to eq(Loan::Incomplete)
       end
     end
   end

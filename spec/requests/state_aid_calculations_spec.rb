@@ -15,8 +15,8 @@ describe 'state aid calculations' do
     end
 
     it 'pre-fills some fields' do
-      page.find('#premium_schedule_initial_draw_amount').value.should == '123456.00'
-      page.find('#premium_schedule_repayment_duration').value.should == '3'
+      expect(page.find('#premium_schedule_initial_draw_amount').value).to eq('123456.00')
+      expect(page.find('#premium_schedule_repayment_duration').value).to eq('3')
     end
 
     it 'creates a new record with valid data' do
@@ -30,20 +30,20 @@ describe 'state aid calculations' do
         click_button 'Submit'
       }.to change(PremiumSchedule, :count).by(1)
 
-      current_path.should == new_loan_entry_path(loan)
+      expect(current_path).to eq(new_loan_entry_path(loan))
 
       premium_schedule = PremiumSchedule.last
-      premium_schedule.loan.should == loan
-      premium_schedule.initial_draw_year.should == 2012
-      premium_schedule.initial_draw_amount.should == Money.new(123_456_00)
-      premium_schedule.repayment_duration.should == 3
-      premium_schedule.initial_capital_repayment_holiday.should == 0
-      premium_schedule.second_draw_amount.should == 0
-      premium_schedule.second_draw_months.should == 0
-      premium_schedule.third_draw_amount.should be_nil
-      premium_schedule.third_draw_months.should be_nil
-      premium_schedule.fourth_draw_amount.should be_nil
-      premium_schedule.fourth_draw_months.should be_nil
+      expect(premium_schedule.loan).to eq(loan)
+      expect(premium_schedule.initial_draw_year).to eq(2012)
+      expect(premium_schedule.initial_draw_amount).to eq(Money.new(123_456_00))
+      expect(premium_schedule.repayment_duration).to eq(3)
+      expect(premium_schedule.initial_capital_repayment_holiday).to eq(0)
+      expect(premium_schedule.second_draw_amount).to eq(0)
+      expect(premium_schedule.second_draw_months).to eq(0)
+      expect(premium_schedule.third_draw_amount).to be_nil
+      expect(premium_schedule.third_draw_months).to be_nil
+      expect(premium_schedule.fourth_draw_amount).to be_nil
+      expect(premium_schedule.fourth_draw_months).to be_nil
     end
 
     it 'does not create a new record with invalid data' do
@@ -53,7 +53,7 @@ describe 'state aid calculations' do
         click_button 'Submit'
       }.to change(PremiumSchedule, :count).by(0)
 
-      current_path.should == loan_premium_schedule_path(loan)
+      expect(current_path).to eq(loan_premium_schedule_path(loan))
     end
 
     context 'when the sum of the draw amounts exceeds the loan amount' do
@@ -80,8 +80,8 @@ describe 'state aid calculations' do
           not_less_than_or_equal_to_loan_amount
         ).join('.')
 
-        current_path.should == loan_premium_schedule_path(loan)
-        page.should have_content(I18n.t(translation_key, loan_amount: loan.amount.format))
+        expect(current_path).to eq(loan_premium_schedule_path(loan))
+        expect(page).to have_content(I18n.t(translation_key, loan_amount: loan.amount.format))
       end
     end
   end
@@ -101,20 +101,20 @@ describe 'state aid calculations' do
       fill_in :second_draw_months, '10'
       click_button 'Submit'
 
-      current_path.should == new_loan_entry_path(loan)
+      expect(current_path).to eq(new_loan_entry_path(loan))
 
       premium_schedule.reload
-      premium_schedule.initial_draw_amount.should == Money.new(80_000_00)
-      premium_schedule.second_draw_amount.should == Money.new(20_000_00)
+      expect(premium_schedule.initial_draw_amount).to eq(Money.new(80_000_00))
+      expect(premium_schedule.second_draw_amount).to eq(Money.new(20_000_00))
     end
 
     it 'does not update the record with invalid data' do
       fill_in :initial_draw_amount, ''
       click_button 'Submit'
 
-      current_path.should == loan_premium_schedule_path(loan)
+      expect(current_path).to eq(loan_premium_schedule_path(loan))
 
-      premium_schedule.reload.initial_draw_amount.should_not be_nil
+      expect(premium_schedule.reload.initial_draw_amount).not_to be_nil
     end
   end
 

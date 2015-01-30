@@ -51,50 +51,50 @@ describe LoanAuditReportCsvRow do
     let(:row) { LoanAuditReportCsvRow.new(loan, 2, Loan::Offered).to_a }
 
     it 'should CSV data for loan' do
-      row[0].should == "ABC123"                       # loan_reference
-      row[1].should == "DEF"                          # lender_id
-      row[2].should == Money.new(500_000_00).format   # facility_amount
-      row[3].should == '28-05-2011'                   # maturity_date
-      row[4].should == '30-12-2012'                   # cancellation_date
-      row[5].should == '16-06-2012'                   # scheme_facility_letter_date
-      row[6].should == '03-06-2012'                   # initial_draw_date
-      row[7].should == '16-08-2012'                   # lender_demand_date
-      row[8].should == '19-02-2014'                   # repaid_date
-      row[9].should == '13-08-2012'                   # no_claim_date
-      row[10].should == '20-05-2011'                  # government_demand_date
-      row[11].should == '03-07-2012'                  # settled_date
-      row[12].should == '24-04-2012'                  # guarantee_remove_date
-      row[13].should == 'Generic1'                    # generic1
-      row[14].should == 'Generic2'                    # generic2
-      row[15].should == 'Generic3'                    # generic3
-      row[16].should == 'Generic4'                    # generic4
-      row[17].should == 'Generic5'                    # generic5
-      row[18].should == LoanReason.find(1).name       # loan_reason
-      row[19].should == LoanCategory::TypeB.name      # loan_category
-      row[20].should == LoanSubCategory.find(4).name  # loan_sub_category
-      row[21].should == Loan::Guaranteed.humanize     # loan_state
-      row[22].should == '12-04-2012 02:34 PM'         # created_at
-      row[23].should == user.username                 # created_by
-      row[24].should == '13-04-2012 02:34 PM'         # modified_date
-      row[25].should == user.username                 # modified_by
-      row[26].should == "2"                           # audit_record_sequence
-      row[27].should == "Offered"                     # from_state
-      row[28].should == "Auto-cancelled"              # to_state
-      row[29].should == "Cancel loan"                 # loan_function
-      row[30].should == "11-06-2012 11:00 AM"         # audit_record_modified_at
-      row[31].should == user.username                 # audit_record_modified_by
+      expect(row[0]).to eq("ABC123")                       # loan_reference
+      expect(row[1]).to eq("DEF")                          # lender_id
+      expect(row[2]).to eq(Money.new(500_000_00).format)   # facility_amount
+      expect(row[3]).to eq('28-05-2011')                   # maturity_date
+      expect(row[4]).to eq('30-12-2012')                   # cancellation_date
+      expect(row[5]).to eq('16-06-2012')                   # scheme_facility_letter_date
+      expect(row[6]).to eq('03-06-2012')                   # initial_draw_date
+      expect(row[7]).to eq('16-08-2012')                   # lender_demand_date
+      expect(row[8]).to eq('19-02-2014')                   # repaid_date
+      expect(row[9]).to eq('13-08-2012')                   # no_claim_date
+      expect(row[10]).to eq('20-05-2011')                  # government_demand_date
+      expect(row[11]).to eq('03-07-2012')                  # settled_date
+      expect(row[12]).to eq('24-04-2012')                  # guarantee_remove_date
+      expect(row[13]).to eq('Generic1')                    # generic1
+      expect(row[14]).to eq('Generic2')                    # generic2
+      expect(row[15]).to eq('Generic3')                    # generic3
+      expect(row[16]).to eq('Generic4')                    # generic4
+      expect(row[17]).to eq('Generic5')                    # generic5
+      expect(row[18]).to eq(LoanReason.find(1).name)       # loan_reason
+      expect(row[19]).to eq(LoanCategory::TypeB.name)      # loan_category
+      expect(row[20]).to eq(LoanSubCategory.find(4).name)  # loan_sub_category
+      expect(row[21]).to eq(Loan::Guaranteed.humanize)     # loan_state
+      expect(row[22]).to eq('12-04-2012 02:34 PM')         # created_at
+      expect(row[23]).to eq(user.username)                 # created_by
+      expect(row[24]).to eq('13-04-2012 02:34 PM')         # modified_date
+      expect(row[25]).to eq(user.username)                 # modified_by
+      expect(row[26]).to eq("2")                           # audit_record_sequence
+      expect(row[27]).to eq("Offered")                     # from_state
+      expect(row[28]).to eq("Auto-cancelled")              # to_state
+      expect(row[29]).to eq("Cancel loan")                 # loan_function
+      expect(row[30]).to eq("11-06-2012 11:00 AM")         # audit_record_modified_at
+      expect(row[31]).to eq(user.username)                 # audit_record_modified_by
     end
 
     it "should have 'Check eligibility' when loan_function is Accept" do
       loan.stub(loan_state_change_event_id: LoanEvent::Accept.id)
 
-      row[29].should == 'Check eligibility'
+      expect(row[29]).to eq('Check eligibility')
     end
 
     it "should have 'Check eligibility' when loan_function is Reject" do
       loan.stub(loan_state_change_event_id: LoanEvent::Reject.id)
 
-      row[29].should == 'Check eligibility'
+      expect(row[29]).to eq('Check eligibility')
     end
   end
 

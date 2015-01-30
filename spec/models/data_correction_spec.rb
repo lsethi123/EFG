@@ -12,8 +12,8 @@ describe DataCorrection do
       correction1 = FactoryGirl.create(:data_correction, loan: loan)
       correction2 = FactoryGirl.create(:data_correction, loan: loan)
 
-      correction1.seq.should == 1
-      correction2.seq.should == 2
+      expect(correction1.seq).to eq(1)
+      expect(correction2.seq).to eq(2)
     end
   end
 
@@ -25,12 +25,12 @@ describe DataCorrection do
         lending_limit_2 = FactoryGirl.create(:lending_limit, lender: lender)
 
         data_correction = FactoryGirl.create(:data_correction, old_lending_limit_id: lending_limit_1.id, lending_limit_id: lending_limit_2.id)
-        data_correction.changes.should == [{
+        expect(data_correction.changes).to eq([{
           old_attribute: 'old_lending_limit',
           old_value: lending_limit_1,
           attribute: 'lending_limit',
           value: lending_limit_2
-        }]
+        }])
       end
     end
   end

@@ -6,7 +6,7 @@ describe LoanEligibilityCheck do
 
   describe 'validations' do
     it 'has a valid factory' do
-      loan_eligibility_check.should be_valid
+      expect(loan_eligibility_check).to be_valid
     end
 
     %w(
@@ -21,7 +21,7 @@ describe LoanEligibilityCheck do
     ).each do |attr|
       it "is invalid without #{attr}" do
         loan_eligibility_check.send("#{attr}=", '')
-        loan_eligibility_check.should_not be_valid
+        expect(loan_eligibility_check).not_to be_valid
       end
     end
 
@@ -37,17 +37,17 @@ describe LoanEligibilityCheck do
       describe "boolean value: #{attr}" do
         it "is valid with true" do
           loan_eligibility_check.send("#{attr}=", true)
-          loan_eligibility_check.should be_valid
+          expect(loan_eligibility_check).to be_valid
         end
 
         it "is valid with false" do
           loan_eligibility_check.send("#{attr}=", false)
-          loan_eligibility_check.should be_valid
+          expect(loan_eligibility_check).to be_valid
         end
 
         it "is invalid with nil" do
           loan_eligibility_check.send("#{attr}=", nil)
-          loan_eligibility_check.should be_invalid
+          expect(loan_eligibility_check).to be_invalid
         end
       end
     end
@@ -55,50 +55,50 @@ describe LoanEligibilityCheck do
     describe '#amount' do
       it 'is invalid when less than zero' do
         loan_eligibility_check.amount = -1
-        loan_eligibility_check.should be_invalid
+        expect(loan_eligibility_check).to be_invalid
       end
 
       it 'is invalid when zero' do
         loan_eligibility_check.amount = 0
-        loan_eligibility_check.should be_invalid
+        expect(loan_eligibility_check).to be_invalid
       end
     end
 
     describe '#loan_scheme' do
       it 'is invalid when not "E"' do
         loan_eligibility_check.loan_scheme = Loan::SFLG_SCHEME
-        loan_eligibility_check.should be_invalid
+        expect(loan_eligibility_check).to be_invalid
       end
 
       it 'is valid when "E"' do
         loan_eligibility_check.loan_scheme = Loan::EFG_SCHEME
-        loan_eligibility_check.should be_valid
+        expect(loan_eligibility_check).to be_valid
       end
     end
 
     describe '#loan_source' do
       it 'is invalid when not "S"' do
         loan_eligibility_check.loan_source = Loan::LEGACY_SFLG_SOURCE
-        loan_eligibility_check.should be_invalid
+        expect(loan_eligibility_check).to be_invalid
       end
 
       it 'is valid when "S"' do
         loan_eligibility_check.loan_source = Loan::SFLG_SOURCE
-        loan_eligibility_check.should be_valid
+        expect(loan_eligibility_check).to be_valid
       end
     end
 
     describe "#turnover" do
       it "is invalid when greater than £41,000,000" do
         loan_eligibility_check.turnover = Money.new(41_000_000_01)
-        loan_eligibility_check.should_not be_valid
+        expect(loan_eligibility_check).not_to be_valid
       end
     end
 
     describe "#sic_code" do
       it "is invalid when blank" do
         loan_eligibility_check.sic_code = ''
-        loan_eligibility_check.should_not be_valid
+        expect(loan_eligibility_check).not_to be_valid
       end
     end
   end
@@ -137,7 +137,7 @@ describe LoanEligibilityCheck do
 
       it 'sets the state to Eligible' do
         loan_eligibility_check.save
-        loan_eligibility_check.loan.state.should == Loan::Eligible
+        expect(loan_eligibility_check.loan.state).to eq(Loan::Eligible)
       end
 
       it 'creates an accepted loan state change' do
@@ -145,7 +145,7 @@ describe LoanEligibilityCheck do
           loan_eligibility_check.save
         }.to change(LoanStateChange, :count).by(1)
 
-        LoanStateChange.last!.event.should == LoanEvent::Accept
+        expect(LoanStateChange.last!.event).to eq(LoanEvent::Accept)
       end
     end
 
@@ -156,7 +156,7 @@ describe LoanEligibilityCheck do
 
       it "should set the state to Rejected if its not eligible" do
         loan_eligibility_check.save
-        loan_eligibility_check.loan.state.should == Loan::Rejected
+        expect(loan_eligibility_check.loan.state).to eq(Loan::Rejected)
       end
 
       it "should create rejected loan state change if its not eligible" do
@@ -164,7 +164,7 @@ describe LoanEligibilityCheck do
           loan_eligibility_check.save
         }.to change(LoanStateChange, :count).by(1)
 
-        LoanStateChange.last!.event.should == LoanEvent::Reject
+        expect(LoanStateChange.last!.event).to eq(LoanEvent::Reject)
       end
 
       it "should create loan ineligibility record if its not eligible" do
@@ -172,7 +172,7 @@ describe LoanEligibilityCheck do
           loan_eligibility_check.save
         }.to change(LoanIneligibilityReason, :count).by(1)
 
-        LoanIneligibilityReason.last!.reason.should == "Reason 1\nReason 2"
+        expect(LoanIneligibilityReason.last!.reason).to eq("Reason 1\nReason 2")
       end
     end
 
@@ -188,7 +188,7 @@ describe LoanEligibilityCheck do
         it "is rejected" do
           loan_eligibility_check.amount = Money.new(1_000_000_01)
           loan_eligibility_check.save
-          loan_eligibility_check.loan.state.should == Loan::Rejected
+          expect(loan_eligibility_check.loan.state).to eq(Loan::Rejected)
         end
       end
     end
@@ -206,7 +206,7 @@ describe LoanEligibilityCheck do
           loan_eligibility_check.amount = Money.new(600_000_01)
           loan_eligibility_check.repayment_duration = 61
           loan_eligibility_check.save
-          loan_eligibility_check.loan.state.should == Loan::Rejected
+          expect(loan_eligibility_check.loan.state).to eq(Loan::Rejected)
         end
       end
 
@@ -214,7 +214,7 @@ describe LoanEligibilityCheck do
         it "is rejected" do
           loan_eligibility_check.amount = Money.new(1_200_000_01)
           loan_eligibility_check.save
-          loan_eligibility_check.loan.state.should == Loan::Rejected
+          expect(loan_eligibility_check.loan.state).to eq(Loan::Rejected)
         end
       end
     end
@@ -229,9 +229,9 @@ describe LoanEligibilityCheck do
 
       loan_eligibility_check.sic_code = sic_code.code
 
-      loan_eligibility_check.loan.sic_code.should == sic_code.code
-      loan_eligibility_check.loan.sic_desc.should == sic_code.description
-      loan_eligibility_check.loan.sic_eligible.should == sic_code.eligible
+      expect(loan_eligibility_check.loan.sic_code).to eq(sic_code.code)
+      expect(loan_eligibility_check.loan.sic_desc).to eq(sic_code.description)
+      expect(loan_eligibility_check.loan.sic_eligible).to eq(sic_code.eligible)
     end
 
     it "should not cache SIC data when specified code is blank" do
@@ -240,9 +240,9 @@ describe LoanEligibilityCheck do
 
       loan_eligibility_check.sic_code = ""
 
-      loan_eligibility_check.loan.sic_code.should be_nil
-      loan_eligibility_check.loan.sic_desc.should be_nil
-      loan_eligibility_check.loan.sic_eligible.should be_nil
+      expect(loan_eligibility_check.loan.sic_code).to be_nil
+      expect(loan_eligibility_check.loan.sic_desc).to be_nil
+      expect(loan_eligibility_check.loan.sic_eligible).to be_nil
     end
 
     it "should blow up when trying to assign inactive SIC code" do
@@ -254,9 +254,9 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.sic_code = sic_code.code
       }.to raise_error(ActiveRecord::RecordNotFound)
 
-      loan_eligibility_check.loan.sic_code.should be_nil
-      loan_eligibility_check.loan.sic_desc.should be_nil
-      loan_eligibility_check.loan.sic_eligible.should be_nil
+      expect(loan_eligibility_check.loan.sic_code).to be_nil
+      expect(loan_eligibility_check.loan.sic_desc).to be_nil
+      expect(loan_eligibility_check.loan.sic_eligible).to be_nil
     end
   end
 end

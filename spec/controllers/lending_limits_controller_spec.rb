@@ -73,8 +73,8 @@ describe LendingLimitsController do
       it 'does not update starts_on attribute (amongst others)' do
         dispatch(lending_limit: { name: 'bar', starts_on: '2/2/12' })
         lending_limit.reload
-        lending_limit.name.should == 'bar'
-        lending_limit.starts_on.should == Date.new(2011, 1, 1)
+        expect(lending_limit.name).to eq('bar')
+        expect(lending_limit.starts_on).to eq(Date.new(2011, 1, 1))
       end
     end
   end

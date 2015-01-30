@@ -5,12 +5,12 @@ describe PostcodeDataCorrection do
     let(:presenter) { FactoryGirl.build(:postcode_data_correction) }
 
     it 'has a valid factory' do
-      presenter.should be_valid
+      expect(presenter).to be_valid
     end
 
     it 'requires a postcode' do
       presenter.postcode = ''
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
     end
   end
 
@@ -22,27 +22,27 @@ describe PostcodeDataCorrection do
     context 'success' do
       it 'creates a DataCorrection and updates the loan' do
         presenter.postcode = 'EC1A 9PN'
-        presenter.save.should == true
+        expect(presenter.save).to eq(true)
 
         data_correction = loan.data_corrections.last!
-        data_correction.created_by.should == user
-        data_correction.change_type.should == ChangeType::Postcode
-        data_correction.postcode.should == 'EC1A 9PN'
-        data_correction.old_postcode.should == 'EC1R 4RP'
+        expect(data_correction.created_by).to eq(user)
+        expect(data_correction.change_type).to eq(ChangeType::Postcode)
+        expect(data_correction.postcode).to eq('EC1A 9PN')
+        expect(data_correction.old_postcode).to eq('EC1R 4RP')
 
         loan.reload
-        loan.postcode.should == 'EC1A 9PN'
-        loan.modified_by.should == user
+        expect(loan.postcode).to eq('EC1A 9PN')
+        expect(loan.modified_by).to eq(user)
       end
     end
 
     context 'failure' do
       it 'does not update loan' do
         presenter.postcode = nil
-        presenter.save.should == false
+        expect(presenter.save).to eq(false)
 
         loan.reload
-        loan.postcode.should == 'EC1R 4RP'
+        expect(loan.postcode).to eq('EC1R 4RP')
       end
     end
   end

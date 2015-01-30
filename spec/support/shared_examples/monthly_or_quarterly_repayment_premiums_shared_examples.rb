@@ -17,7 +17,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           }
 
           it 'returns the correct premium payments' do
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(3569),
               Money.new(3399),
               Money.new(3229),
@@ -39,7 +39,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
               Money.new(510),
               Money.new(340),
               Money.new(170),
-            ]
+            ])
           end
         end
 
@@ -54,7 +54,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           }
 
           it 'returns the correct premium payments' do
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(80000),
               Money.new(80000),
               Money.new(80000),
@@ -63,7 +63,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
               Money.new(60000),
               Money.new(40000),
               Money.new(20000),
-            ]
+            ])
           end
         end
       end
@@ -81,7 +81,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           }
 
           it 'returns the correct premium payments' do
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(150000),
               Money.new(192500),
               Money.new(182368),
@@ -102,7 +102,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
               Money.new(30395),
               Money.new(20263),
               Money.new(10132)
-            ]
+            ])
           end
         end
       end
@@ -122,12 +122,12 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           }
 
           it 'returns the correct premium payments' do
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(6000),
               Money.new(10500),
               Money.new(13000),
               Money.new(6500)
-            ]
+            ])
           end
         end
       end
@@ -149,12 +149,12 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           }
 
           it 'returns the correct premium payments' do
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(50000),
               Money.new(62500),
               Money.new(66667),
               Money.new(433333)
-            ]
+            ])
           end
         end
 
@@ -175,7 +175,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           }
 
           it 'returns the correct premium payments' do
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(50000),
               Money.new(250000),
               Money.new(250000),
@@ -196,7 +196,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
               Money.new(41667),
               Money.new(27778),
               Money.new(13889)
-            ]
+            ])
           end
         end
       end
@@ -213,7 +213,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
         }
 
         it 'does not ignore the second drawdown and returns the correct premium payments' do
-          premium_schedule.premiums.should == [
+          expect(premium_schedule.premiums).to eq([
             Money.new(10000),
             Money.new(9000),
             Money.new(8000),
@@ -224,7 +224,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
             Money.new(3000),
             Money.new(2000),
             Money.new(1000),
-          ]
+          ])
         end
       end
 
@@ -238,9 +238,9 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
         }
 
         it 'returns the correct single premium payment' do
-          premium_schedule.premiums.should == [
+          expect(premium_schedule.premiums).to eq([
             Money.new(50000)
-          ]
+          ])
         end
       end
     end

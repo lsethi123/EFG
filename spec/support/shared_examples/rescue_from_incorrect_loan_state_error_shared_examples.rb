@@ -8,6 +8,6 @@ shared_examples_for 'rescue_from LoanStateTransition::IncorrectLoanState control
 
   it "should redirect to the loan" do
     dispatch
-    response.should redirect_to(loan_path(loan))
+    expect(response).to redirect_to(loan_path(loan))
   end
 end

@@ -9,7 +9,7 @@ describe DashboardController do
 
       it "should render success" do
         get :show
-        response.should be_success
+        expect(response).to be_success
       end
     end
   end

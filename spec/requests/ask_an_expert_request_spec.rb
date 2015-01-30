@@ -18,21 +18,21 @@ describe 'ask an expert' do
 
       it 'works' do
         click_link 'Ask an Expert'
-        page.should have_content(expert1.name)
-        page.should have_content(expert2.name)
+        expect(page).to have_content(expert1.name)
+        expect(page).to have_content(expert2.name)
         fill_in 'ask_an_expert_message', with: 'blah blah'
         click_button 'Submit'
 
-        ActionMailer::Base.deliveries.size.should == 1
+        expect(ActionMailer::Base.deliveries.size).to eq(1)
 
         email = ActionMailer::Base.deliveries.last
-        email.to.should include(expert1.email)
-        email.to.should include(expert2.email)
-        email.reply_to.should == [current_user.email]
-        email.body.should include('blah blah')
-        email.body.should include(current_user.name)
+        expect(email.to).to include(expert1.email)
+        expect(email.to).to include(expert2.email)
+        expect(email.reply_to).to eq([current_user.email])
+        expect(email.body).to include('blah blah')
+        expect(email.body).to include(current_user.name)
 
-        page.should have_content('Thanks')
+        expect(page).to have_content('Thanks')
       end
     end
   end
@@ -44,7 +44,7 @@ describe 'ask an expert' do
     it 'does nothing' do
       click_link 'Ask an Expert'
       click_button 'Submit'
-      ActionMailer::Base.deliveries.size.should == 0
+      expect(ActionMailer::Base.deliveries.size).to eq(0)
     end
   end
 
@@ -53,8 +53,8 @@ describe 'ask an expert' do
 
     it do
       click_link 'Ask an Expert'
-      page.should have_content('no experts')
-      page.should_not have_selector('#ask_an_expert_message')
+      expect(page).to have_content('no experts')
+      expect(page).not_to have_selector('#ask_an_expert_message')
     end
   end
 end

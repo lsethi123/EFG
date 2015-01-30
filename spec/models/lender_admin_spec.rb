@@ -8,7 +8,7 @@ describe LenderAdmin do
   describe 'validations' do
     it 'requires a lender' do
       user.lender = nil
-      user.should_not be_valid
+      expect(user).not_to be_valid
     end
   end
 
@@ -18,8 +18,8 @@ describe LenderAdmin do
     end
 
     it "only contains this user's lender" do
-      user.lenders.count.should == 1
-      user.lenders.should include(user.lender)
+      expect(user.lenders.count).to eq(1)
+      expect(user.lenders).to include(user.lender)
     end
   end
 end

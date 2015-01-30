@@ -20,7 +20,7 @@ describe 'password policy' do
 
         visit root_path
         submit_sign_in_form(current_user.username, current_user.password)
-        page.should have_content(I18n.t('devise.password_expired.change_required'))
+        expect(page).to have_content(I18n.t('devise.password_expired.change_required'))
       end
 
       it "should be able to login as a #{user_type.humanize} when the password has not expired" do
@@ -30,7 +30,7 @@ describe 'password policy' do
 
         visit root_path
         submit_sign_in_form(current_user.username, current_user.password)
-        page.should have_content('Logout')
+        expect(page).to have_content('Logout')
       end
 
       it "should be possible to reset an expired password as a #{user_type.humanize}" do
@@ -40,7 +40,7 @@ describe 'password policy' do
 
         visit root_path
         submit_sign_in_form(current_user.username, current_user.password)
-        page.should have_content(I18n.t('devise.password_expired.change_required'))
+        expect(page).to have_content(I18n.t('devise.password_expired.change_required'))
 
         # We have a password history policy now :)
         fill_in 'user_current_password', with: current_user.password
@@ -48,7 +48,7 @@ describe 'password policy' do
         fill_in 'user_password_confirmation', with: current_user.password + 'foo'
         click_button 'Change Password'
 
-        page.should have_content(I18n.t('devise.password_expired.updated'))
+        expect(page).to have_content(I18n.t('devise.password_expired.updated'))
       end
     end
   end

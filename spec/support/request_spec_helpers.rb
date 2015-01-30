@@ -9,11 +9,11 @@ module RequestSpecHelpers
   end
 
   def should_log_loan_state_change(loan, to_state, event_id, user)
-    loan.state_changes.count.should == 1
+    expect(loan.state_changes.count).to eq(1)
     state_change = loan.state_changes.last
-    state_change.state.should == to_state
-    state_change.event.should == LoanEvent.find(event_id)
-    state_change.modified_by.should == user
+    expect(state_change.state).to eq(to_state)
+    expect(state_change.event).to eq(LoanEvent.find(event_id))
+    expect(state_change.modified_by).to eq(user)
   end
 
   def fill_in_duration_input(attribute, years, months)

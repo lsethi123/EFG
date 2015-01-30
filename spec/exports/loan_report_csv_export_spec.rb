@@ -159,7 +159,7 @@ describe LoanReportCsvExport do
     let(:header) { row.headers }
 
     it 'should return the correct headers' do
-      header.should ==
+      expect(header).to eq(
         [
           :loan_reference,
           :legal_form,
@@ -245,92 +245,93 @@ describe LoanReportCsvExport do
           :scheme,
           :phase,
         ].map {|h| t(h) }
+      )
     end
 
     it 'should return the correct data' do
-      row[t(:loan_reference)].should == "ABC12345"
-      row[t(:legal_form)].should == LegalForm.find(1).name
-      row[t(:post_code)].should == 'EC1V 3WB'
-      row[t(:annual_turnover)].should == '5000000.00'
-      row[t(:trading_date)].should == '28-05-2011'
-      row[t(:sic_code)].should == '1'
-      row[t(:sic_code_description)].should == 'Sic description'
-      row[t(:parent_sic_code_description)].should == 'Sic parent description'
-      row[t(:purpose_of_loan)].should == LoanReason.find(1).name
-      row[t(:facility_amount)].should == '250000.00'
-      row[t(:guarantee_rate)].should == '85.0'
-      row[t(:premium_rate)].should == '3.0'
-      row[t(:lending_limit)].should == 'lending limit'
-      row[t(:lender_reference)].should == 'ABC123'
-      row[t(:loan_state)].should == 'Eligible'
-      row[t(:repayment_duration)].should == '24'
-      row[t(:repayment_frequency)].should == RepaymentFrequency.find(1).name
-      row[t(:maturity_date)].should == '05-11-2025'
-      row[t(:generic1)].should == 'generic1'
-      row[t(:generic2)].should == 'generic2'
-      row[t(:generic3)].should == 'generic3'
-      row[t(:generic4)].should == 'generic4'
-      row[t(:generic5)].should == 'generic5'
-      row[t(:cancellation_reason)].should == CancelReason.find(1).name
-      row[t(:cancellation_comment)].should == 'cancel comment'
-      row[t(:cancellation_date)].should == '22-01-2012'
-      row[t(:scheme_facility_letter_date)].should == '16-05-2012'
-      row[t(:initial_draw_amount)].should == "10000.00"
-      row[t(:initial_draw_date)].should == '17-05-2012'
-      row[t(:lender_demand_date)].should == '18-06-2012'
-      row[t(:lender_demand_amount)].should == "10000.00"
-      row[t(:repaid_date)].should == '15-09-2012'
-      row[t(:no_claim_date)].should == '16-09-2012'
-      row[t(:demand_made_date)].should == '17-09-2012'
-      row[t(:outstanding_facility_principal)].should == "50000.00"
-      row[t(:total_claimed)].should == "40000.00"
-      row[t(:outstanding_facility_interest)].should == "5000.00"
-      row[t(:business_failure_group)].should == 'Trading'
-      row[t(:business_failure_category_description)].should == 'Loss of Market'
-      row[t(:business_failure_description)].should == 'Competition'
-      row[t(:business_failure_code)].should == 'A.10.1.1'
-      row[t(:government_demand_reason)].should == 'failure!'
-      row[t(:break_cost)].should == "5000.00"
-      row[t(:latest_recovery_date)].should == '18-07-2012'
-      row[t(:total_recovered)].should == "150000.00"
-      row[t(:latest_realised_date)].should == '06-08-2012'
-      row[t(:total_realised)].should == '5000.00'
-      row[t(:cumulative_amount_drawn)].should == "10000.00"
-      row[t(:total_lump_sum_repayments)].should == "5000.00"
-      row[t(:created_by)].should == 'bobby.t'
-      row[t(:created_at)].should == '12-04-2012 02:34 PM'
-      row[t(:modified_by)].should == 'billy.bob'
-      row[t(:modified_date)].should == '13-04-2012'
-      row[t(:guarantee_remove_date)].should == '16-09-2012'
-      row[t(:outstanding_balance)].should == '20000.00'
-      row[t(:guarantee_remove_reason)].should == 'removal reason'
-      row[t(:state_aid_amount)].should == '5600.00'
-      row[t(:settled_date)].should == '17-07-2012'
-      row[t(:invoice_reference)].should == '123-INV'
-      row[t(:loan_category)].should == LoanCategory::TypeA.name
-      row[t(:loan_sub_category)].should == LoanSubCategory.find(4).name
-      row[t(:interest_type)].should == InterestRateType.find(1).name
-      row[t(:interest_rate)].should == '2.0'
-      row[t(:fees)].should == '5000.00'
-      row[t(:type_a1)].should == 'Yes'
-      row[t(:type_a2)].should == 'No'
-      row[t(:type_b1)].should == '70.0'
-      row[t(:type_d1)].should == '1000.00'
-      row[t(:type_d2)].should == '10000.00'
-      row[t(:type_c1)].should == '60.0'
-      row[t(:security_type)].should == 'Residential property other than a principal private residence / Commercial property' # security_type
-      row[t(:type_c_d1)].should == '30.0'
-      row[t(:type_e1)].should == '5000.00'
-      row[t(:type_e2)].should == 'Yes'
-      row[t(:type_f1)].should == '6000.00'
-      row[t(:type_f2)].should == '30.0'
-      row[t(:type_f3)].should == '5.0'
-      row[t(:loan_lender_reference)].should == 'lenderref1'
-      row[t(:settled_amount)].should == '1000.00'
-      row[t(:cumulative_pre_claim_limit_realised_amount)].should == '3000.00'
-      row[t(:cumulative_post_claim_limit_realised_amount)].should == '2000.00'
-      row[t(:scheme)].should == 'EFG'
-      row[t(:phase)].should == 'Phase 5 (FY 2013/14)'
+      expect(row[t(:loan_reference)]).to eq("ABC12345")
+      expect(row[t(:legal_form)]).to eq(LegalForm.find(1).name)
+      expect(row[t(:post_code)]).to eq('EC1V 3WB')
+      expect(row[t(:annual_turnover)]).to eq('5000000.00')
+      expect(row[t(:trading_date)]).to eq('28-05-2011')
+      expect(row[t(:sic_code)]).to eq('1')
+      expect(row[t(:sic_code_description)]).to eq('Sic description')
+      expect(row[t(:parent_sic_code_description)]).to eq('Sic parent description')
+      expect(row[t(:purpose_of_loan)]).to eq(LoanReason.find(1).name)
+      expect(row[t(:facility_amount)]).to eq('250000.00')
+      expect(row[t(:guarantee_rate)]).to eq('85.0')
+      expect(row[t(:premium_rate)]).to eq('3.0')
+      expect(row[t(:lending_limit)]).to eq('lending limit')
+      expect(row[t(:lender_reference)]).to eq('ABC123')
+      expect(row[t(:loan_state)]).to eq('Eligible')
+      expect(row[t(:repayment_duration)]).to eq('24')
+      expect(row[t(:repayment_frequency)]).to eq(RepaymentFrequency.find(1).name)
+      expect(row[t(:maturity_date)]).to eq('05-11-2025')
+      expect(row[t(:generic1)]).to eq('generic1')
+      expect(row[t(:generic2)]).to eq('generic2')
+      expect(row[t(:generic3)]).to eq('generic3')
+      expect(row[t(:generic4)]).to eq('generic4')
+      expect(row[t(:generic5)]).to eq('generic5')
+      expect(row[t(:cancellation_reason)]).to eq(CancelReason.find(1).name)
+      expect(row[t(:cancellation_comment)]).to eq('cancel comment')
+      expect(row[t(:cancellation_date)]).to eq('22-01-2012')
+      expect(row[t(:scheme_facility_letter_date)]).to eq('16-05-2012')
+      expect(row[t(:initial_draw_amount)]).to eq("10000.00")
+      expect(row[t(:initial_draw_date)]).to eq('17-05-2012')
+      expect(row[t(:lender_demand_date)]).to eq('18-06-2012')
+      expect(row[t(:lender_demand_amount)]).to eq("10000.00")
+      expect(row[t(:repaid_date)]).to eq('15-09-2012')
+      expect(row[t(:no_claim_date)]).to eq('16-09-2012')
+      expect(row[t(:demand_made_date)]).to eq('17-09-2012')
+      expect(row[t(:outstanding_facility_principal)]).to eq("50000.00")
+      expect(row[t(:total_claimed)]).to eq("40000.00")
+      expect(row[t(:outstanding_facility_interest)]).to eq("5000.00")
+      expect(row[t(:business_failure_group)]).to eq('Trading')
+      expect(row[t(:business_failure_category_description)]).to eq('Loss of Market')
+      expect(row[t(:business_failure_description)]).to eq('Competition')
+      expect(row[t(:business_failure_code)]).to eq('A.10.1.1')
+      expect(row[t(:government_demand_reason)]).to eq('failure!')
+      expect(row[t(:break_cost)]).to eq("5000.00")
+      expect(row[t(:latest_recovery_date)]).to eq('18-07-2012')
+      expect(row[t(:total_recovered)]).to eq("150000.00")
+      expect(row[t(:latest_realised_date)]).to eq('06-08-2012')
+      expect(row[t(:total_realised)]).to eq('5000.00')
+      expect(row[t(:cumulative_amount_drawn)]).to eq("10000.00")
+      expect(row[t(:total_lump_sum_repayments)]).to eq("5000.00")
+      expect(row[t(:created_by)]).to eq('bobby.t')
+      expect(row[t(:created_at)]).to eq('12-04-2012 02:34 PM')
+      expect(row[t(:modified_by)]).to eq('billy.bob')
+      expect(row[t(:modified_date)]).to eq('13-04-2012')
+      expect(row[t(:guarantee_remove_date)]).to eq('16-09-2012')
+      expect(row[t(:outstanding_balance)]).to eq('20000.00')
+      expect(row[t(:guarantee_remove_reason)]).to eq('removal reason')
+      expect(row[t(:state_aid_amount)]).to eq('5600.00')
+      expect(row[t(:settled_date)]).to eq('17-07-2012')
+      expect(row[t(:invoice_reference)]).to eq('123-INV')
+      expect(row[t(:loan_category)]).to eq(LoanCategory::TypeA.name)
+      expect(row[t(:loan_sub_category)]).to eq(LoanSubCategory.find(4).name)
+      expect(row[t(:interest_type)]).to eq(InterestRateType.find(1).name)
+      expect(row[t(:interest_rate)]).to eq('2.0')
+      expect(row[t(:fees)]).to eq('5000.00')
+      expect(row[t(:type_a1)]).to eq('Yes')
+      expect(row[t(:type_a2)]).to eq('No')
+      expect(row[t(:type_b1)]).to eq('70.0')
+      expect(row[t(:type_d1)]).to eq('1000.00')
+      expect(row[t(:type_d2)]).to eq('10000.00')
+      expect(row[t(:type_c1)]).to eq('60.0')
+      expect(row[t(:security_type)]).to eq('Residential property other than a principal private residence / Commercial property') # security_type
+      expect(row[t(:type_c_d1)]).to eq('30.0')
+      expect(row[t(:type_e1)]).to eq('5000.00')
+      expect(row[t(:type_e2)]).to eq('Yes')
+      expect(row[t(:type_f1)]).to eq('6000.00')
+      expect(row[t(:type_f2)]).to eq('30.0')
+      expect(row[t(:type_f3)]).to eq('5.0')
+      expect(row[t(:loan_lender_reference)]).to eq('lenderref1')
+      expect(row[t(:settled_amount)]).to eq('1000.00')
+      expect(row[t(:cumulative_pre_claim_limit_realised_amount)]).to eq('3000.00')
+      expect(row[t(:cumulative_post_claim_limit_realised_amount)]).to eq('2000.00')
+      expect(row[t(:scheme)]).to eq('EFG')
+      expect(row[t(:phase)]).to eq('Phase 5 (FY 2013/14)')
     end
 
     context "without guarantee rate on loan" do
@@ -339,7 +340,7 @@ describe LoanReportCsvExport do
       end
 
       it "exports phase's premium rate" do
-        row[t(:guarantee_rate)].should == '75.0'
+        expect(row[t(:guarantee_rate)]).to eq('75.0')
       end
     end
 
@@ -349,7 +350,7 @@ describe LoanReportCsvExport do
       end
 
       it "exports phase's premium rate" do
-        row[t(:premium_rate)].should == '2.0'
+        expect(row[t(:premium_rate)]).to eq('2.0')
       end
     end  
   end

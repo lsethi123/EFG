@@ -23,36 +23,36 @@ describe 'loan guarantee' do
 
     loan = Loan.last!
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
-    loan.state.should == Loan::Guaranteed
-    loan.received_declaration.should == true
-    loan.signed_direct_debit_received.should == true
-    loan.first_pp_received.should == true
-    loan.maturity_date.should == Date.new(2015, 11, 30)
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Guaranteed)
+    expect(loan.received_declaration).to eq(true)
+    expect(loan.signed_direct_debit_received).to eq(true)
+    expect(loan.first_pp_received).to eq(true)
+    expect(loan.maturity_date).to eq(Date.new(2015, 11, 30))
+    expect(loan.modified_by).to eq(current_user)
 
     should_log_loan_state_change(loan, Loan::Guaranteed, 7, current_user)
 
     loan_change = loan.initial_draw_change
-    loan_change.amount_drawn.should == loan.amount
-    loan_change.change_type.should == nil
-    loan_change.created_by.should == current_user
-    loan_change.date_of_change.should == Date.new(2012, 11, 30)
-    loan_change.modified_date.should == Date.current
-    loan_change.seq.should == 0
+    expect(loan_change.amount_drawn).to eq(loan.amount)
+    expect(loan_change.change_type).to eq(nil)
+    expect(loan_change.created_by).to eq(current_user)
+    expect(loan_change.date_of_change).to eq(Date.new(2012, 11, 30))
+    expect(loan_change.modified_date).to eq(Date.current)
+    expect(loan_change.seq).to eq(0)
   end
 
   it 'does not continue with invalid values' do
     visit new_loan_guarantee_path(loan)
 
-    loan.state.should == Loan::Offered
+    expect(loan.state).to eq(Loan::Offered)
     expect {
       click_button 'Submit'
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == "/loans/#{loan.id}/guarantee"
+    expect(current_path).to eq("/loans/#{loan.id}/guarantee")
   end
 
   it 'allows you to change the lender reference' do
@@ -66,7 +66,7 @@ describe 'loan guarantee' do
     click_button 'Submit'
 
     loan = Loan.last!
-    loan.lender_reference.should == "MAH REF"
+    expect(loan.lender_reference).to eq("MAH REF")
 
     Timecop.return
   end

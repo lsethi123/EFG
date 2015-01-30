@@ -6,7 +6,7 @@ describe LendingLimit do
     let(:lending_limit) { FactoryGirl.build(:lending_limit) }
 
     it 'has a valid Factory' do
-      lending_limit.should be_valid
+      expect(lending_limit).to be_valid
     end
 
     it 'strictly requires a lender' do
@@ -18,37 +18,37 @@ describe LendingLimit do
 
     it 'requires an allocation' do
       lending_limit.allocation = nil
-      lending_limit.should_not be_valid
+      expect(lending_limit).not_to be_valid
     end
 
     it 'requires a starts_on date' do
       lending_limit.starts_on = nil
-      lending_limit.should_not be_valid
+      expect(lending_limit).not_to be_valid
     end
 
     it 'requires a ends_on date' do
       lending_limit.ends_on = nil
-      lending_limit.should_not be_valid
+      expect(lending_limit).not_to be_valid
     end
 
     it 'requires a valid allocation_type_id' do
       lending_limit.allocation_type_id = ''
-      lending_limit.should_not be_valid
+      expect(lending_limit).not_to be_valid
       lending_limit.allocation_type_id = '99'
-      lending_limit.should_not be_valid
+      expect(lending_limit).not_to be_valid
       lending_limit.allocation_type_id = '1'
-      lending_limit.should be_valid
+      expect(lending_limit).to be_valid
     end
 
     it 'requires a name' do
       lending_limit.name = ''
-      lending_limit.should_not be_valid
+      expect(lending_limit).not_to be_valid
     end
 
     it 'requires ends_on to be after starts_on' do
       lending_limit.starts_on = Date.new(2012, 1, 2)
       lending_limit.ends_on = Date.new(2012, 1, 1)
-      lending_limit.should_not be_valid
+      expect(lending_limit).not_to be_valid
     end
   end
 
@@ -61,7 +61,7 @@ describe LendingLimit do
 
     eligible_loan = FactoryGirl.create(:loan, :eligible, lending_limit: lending_limit)
 
-    lending_limit.loans_using_lending_limit.should == expected_loans
+    expect(lending_limit.loans_using_lending_limit).to eq(expected_loans)
   end
 
   describe "activation" do
@@ -72,14 +72,14 @@ describe LendingLimit do
         lending_limit.activate!
         lending_limit.reload
 
-        lending_limit.should be_active
+        expect(lending_limit).to be_active
       end
 
       specify "#deactivate! sets the active flag to false" do
         lending_limit.deactivate!
         lending_limit.reload
 
-        lending_limit.should_not be_active
+        expect(lending_limit).not_to be_active
       end
     end
 
@@ -90,14 +90,14 @@ describe LendingLimit do
         lending_limit.activate!
         lending_limit.reload
 
-        lending_limit.should be_active
+        expect(lending_limit).to be_active
       end
 
       specify "#deactivate! sets the active flag to false" do
         lending_limit.deactivate!
         lending_limit.reload
 
-        lending_limit.should_not be_active
+        expect(lending_limit).not_to be_active
       end
     end
   end
@@ -110,29 +110,29 @@ describe LendingLimit do
       starts_today = FactoryGirl.create(:lending_limit, starts_on: Date.current, ends_on: 4.weeks.from_now)
       starts_in_future = FactoryGirl.create(:lending_limit, starts_on: 2.weeks.from_now, ends_on: 4.weeks.from_now)
 
-      LendingLimit.current.should =~ [ends_today, overlaps_today, starts_today]
+      expect(LendingLimit.current).to match_array([ends_today, overlaps_today, starts_today])
     end
   end
 
   describe "#unavailable?" do
     it "unavailable if its not current and past the 30 day grace period" do
       lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 6.weeks.ago)
-      lending_limit.should be_unavailable
+      expect(lending_limit).to be_unavailable
     end
 
     it "available if its not current and within the 30 day grace period" do
       lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 30.days.ago)
-      lending_limit.should_not be_unavailable
+      expect(lending_limit).not_to be_unavailable
     end
 
     it "unavailable if its not active" do
       lending_limit = FactoryGirl.build(:lending_limit, :inactive, starts_on: 4.weeks.ago, ends_on: 4.weeks.from_now)
-      lending_limit.should be_unavailable
+      expect(lending_limit).to be_unavailable
     end
 
     it "available if its active and current" do
       lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 4.weeks.from_now)
-      lending_limit.should_not be_unavailable
+      expect(lending_limit).not_to be_unavailable
     end
   end
 end

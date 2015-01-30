@@ -4,15 +4,15 @@ describe LoanEligibilityDecisionMailer do
 
   shared_examples_for "loan eligibility decision email" do
     it "should be sent to correct recipients" do
-      email.to.should == [ "joe@example.com" ]
+      expect(email.to).to eq([ "joe@example.com" ])
     end
 
     it "should have a from header" do
-      Devise.mailer_sender.should match email.from[0]
+      expect(Devise.mailer_sender).to match email.from[0]
     end
 
     it "should contain the loan reference" do
-      email.body.should include(loan.reference)
+      expect(email.body).to include(loan.reference)
     end
   end
 
@@ -33,7 +33,7 @@ describe LoanEligibilityDecisionMailer do
 
     it "should contain the loan rejection reasons" do
       loan.ineligibility_reasons.each do |ineligibility_reason|
-        email.body.should include(ineligibility_reason.reason)
+        expect(email.body).to include(ineligibility_reason.reason)
       end
     end
   end

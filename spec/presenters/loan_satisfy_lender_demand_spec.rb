@@ -5,12 +5,12 @@ describe LoanSatisfyLenderDemand do
     let(:presenter) { FactoryGirl.build(:loan_satisfy_lender_demand) }
 
     it 'has a valid factory' do
-      presenter.should be_valid
+      expect(presenter).to be_valid
     end
 
     it 'requires a date_of_change' do
       presenter.date_of_change = nil
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
     end
   end
 
@@ -20,15 +20,15 @@ describe LoanSatisfyLenderDemand do
     let(:presenter) { FactoryGirl.build(:loan_satisfy_lender_demand, loan: loan, modified_by: user) }
 
     it 'creates a LoanChange, a PremiumSchedule, and updates the loan' do
-      presenter.save.should == true
+      expect(presenter.save).to eq(true)
 
       loan_change = loan.loan_changes.last!
-      loan_change.change_type.should == ChangeType::LenderDemandSatisfied
-      loan_change.created_by.should == user
+      expect(loan_change.change_type).to eq(ChangeType::LenderDemandSatisfied)
+      expect(loan_change.created_by).to eq(user)
 
       loan.reload
-      loan.state.should == Loan::Guaranteed
-      loan.modified_by.should == user
+      expect(loan.state).to eq(Loan::Guaranteed)
+      expect(loan.modified_by).to eq(user)
     end
   end
 end

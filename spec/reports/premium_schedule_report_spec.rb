@@ -5,22 +5,22 @@ describe PremiumScheduleReport do
     let(:premium_schedule_report) { PremiumScheduleReport.new }
 
     it 'is invalid with nothing set' do
-      premium_schedule_report.should_not be_valid
+      expect(premium_schedule_report).not_to be_valid
     end
 
     context '#loan_reference' do
       it 'makes everything good' do
         premium_schedule_report.loan_reference = 'ABC'
-        premium_schedule_report.should be_valid
+        expect(premium_schedule_report).to be_valid
       end
     end
 
     context '#collection_month' do
       it 'must be in the correct format' do
         premium_schedule_report.loan_reference = 'ABC'
-        premium_schedule_report.should be_valid
+        expect(premium_schedule_report).to be_valid
         premium_schedule_report.collection_month = 'zzz'
-        premium_schedule_report.should_not be_valid
+        expect(premium_schedule_report).not_to be_valid
       end
     end
 
@@ -35,17 +35,17 @@ describe PremiumScheduleReport do
         end
 
         it 'is not valid without a start_on or finish_on' do
-          premium_schedule_report.should_not be_valid
+          expect(premium_schedule_report).not_to be_valid
         end
 
         it 'is valid with a start_on (or finish_on)' do
           premium_schedule_report.start_on = '1/1/11'
-          premium_schedule_report.should be_valid
+          expect(premium_schedule_report).to be_valid
         end
 
         it 'is valid with a finish_on (or start_on)' do
           premium_schedule_report.finish_on = '1/1/11'
-          premium_schedule_report.should be_valid
+          expect(premium_schedule_report).to be_valid
         end
       end
 
@@ -55,12 +55,12 @@ describe PremiumScheduleReport do
         end
 
         it 'is not valid without a collection_month' do
-          premium_schedule_report.should_not be_valid
+          expect(premium_schedule_report).not_to be_valid
         end
 
         it 'is valid with a collection_month' do
           premium_schedule_report.collection_month = '1/2012'
-          premium_schedule_report.should be_valid
+          expect(premium_schedule_report).to be_valid
         end
       end
 
@@ -70,12 +70,12 @@ describe PremiumScheduleReport do
         end
 
         it 'is not valid without a collection_month' do
-          premium_schedule_report.should_not be_valid
+          expect(premium_schedule_report).not_to be_valid
         end
 
         it 'is valid with a collection_month' do
           premium_schedule_report.collection_month = '1/2012'
-          premium_schedule_report.should be_valid
+          expect(premium_schedule_report).to be_valid
         end
       end
     end
@@ -86,24 +86,24 @@ describe PremiumScheduleReport do
       end
 
       it 'is invalid without a collection_month' do
-        premium_schedule_report.should_not be_valid
+        expect(premium_schedule_report).not_to be_valid
       end
 
       it 'is valid with a collection_month' do
         premium_schedule_report.collection_month = '1/2012'
-        premium_schedule_report.should be_valid
+        expect(premium_schedule_report).to be_valid
       end
 
       it 'cannot have start_on' do
         premium_schedule_report.collection_month = '1/2012'
         premium_schedule_report.start_on = '1/1/11'
-        premium_schedule_report.should_not be_valid
+        expect(premium_schedule_report).not_to be_valid
       end
 
       it 'cannot have finish_on' do
         premium_schedule_report.collection_month = '1/2012'
         premium_schedule_report.finish_on = '1/1/11'
-        premium_schedule_report.should_not be_valid
+        expect(premium_schedule_report).not_to be_valid
       end
     end
 
@@ -113,23 +113,23 @@ describe PremiumScheduleReport do
       end
 
       it 'is invalid without a start_on or finish_on' do
-        premium_schedule_report.should_not be_valid
+        expect(premium_schedule_report).not_to be_valid
       end
 
       it 'requires start_on (or finish_on)' do
         premium_schedule_report.start_on = '1/1/11'
-        premium_schedule_report.should be_valid
+        expect(premium_schedule_report).to be_valid
       end
 
       it 'requires finish_on (or start_on)' do
         premium_schedule_report.finish_on = '1/1/11'
-        premium_schedule_report.should be_valid
+        expect(premium_schedule_report).to be_valid
       end
 
       it 'cannot have collection_month' do
         premium_schedule_report.start_on = '1/1/11'
         premium_schedule_report.collection_month = '01/2011'
-        premium_schedule_report.should_not be_valid
+        expect(premium_schedule_report).not_to be_valid
       end
     end
   end
@@ -156,9 +156,9 @@ describe PremiumScheduleReport do
     let(:loan_ids) { premium_schedule_report.loans.map(&:id) }
 
     it 'returns the loans' do
-      loan_ids.should include(loan1.id)
-      loan_ids.should include(loan2.id)
-      loan_ids.should include(loan3.id)
+      expect(loan_ids).to include(loan1.id)
+      expect(loan_ids).to include(loan2.id)
+      expect(loan_ids).to include(loan3.id)
     end
 
     context 'with combination of conditions' do
@@ -169,15 +169,15 @@ describe PremiumScheduleReport do
         premium_schedule_report.collection_month = '01/2011'
         premium_schedule_report.start_on = '01/01/2011'
 
-        premium_schedule_report.should be_valid
-        loan_ids.should == [ loan1.id ]
+        expect(premium_schedule_report).to be_valid
+        expect(loan_ids).to eq([ loan1.id ])
       end
     end
 
     context 'with schedule_type' do
       it do
         premium_schedule_report.schedule_type = 'All'
-        loan_ids.length.should == 3
+        expect(loan_ids.length).to eq(3)
       end
 
       context '"New"' do
@@ -192,14 +192,14 @@ describe PremiumScheduleReport do
           end
 
           it do
-            loan_ids.should include(loan1.id)
-            loan_ids.should_not include(loan2.id)
-            loan_ids.should include(loan3.id)
+            expect(loan_ids).to include(loan1.id)
+            expect(loan_ids).not_to include(loan2.id)
+            expect(loan_ids).to include(loan3.id)
           end
 
           it 'pulls the draw_down_date from the first loan_change' do
-            premium_schedule_report.loans.first.draw_down_date.should == Date.new(2011, 1, 1)
-            premium_schedule_report.loans.last.draw_down_date.should == Date.new(2011, 1, 3)
+            expect(premium_schedule_report.loans.first.draw_down_date).to eq(Date.new(2011, 1, 1))
+            expect(premium_schedule_report.loans.last.draw_down_date).to eq(Date.new(2011, 1, 3))
           end
         end
 
@@ -207,51 +207,51 @@ describe PremiumScheduleReport do
           it do
             premium_schedule_report.start_on = '1/1/2011'
 
-            loan_ids.should include(loan1.id)
-            loan_ids.should_not include(loan2.id)
-            loan_ids.should include(loan3.id)
+            expect(loan_ids).to include(loan1.id)
+            expect(loan_ids).not_to include(loan2.id)
+            expect(loan_ids).to include(loan3.id)
           end
 
           it do
             premium_schedule_report.start_on = '1/1/2011'
             premium_schedule_report.finish_on = '1/1/2011'
 
-            loan_ids.should include(loan1.id)
-            loan_ids.should_not include(loan2.id)
-            loan_ids.should_not include(loan3.id)
+            expect(loan_ids).to include(loan1.id)
+            expect(loan_ids).not_to include(loan2.id)
+            expect(loan_ids).not_to include(loan3.id)
           end
 
           it do
             premium_schedule_report.start_on = '1/1/2011'
             premium_schedule_report.finish_on = '2/1/2011'
 
-            loan_ids.should include(loan1.id)
-            loan_ids.should_not include(loan2.id)
-            loan_ids.should_not include(loan3.id)
+            expect(loan_ids).to include(loan1.id)
+            expect(loan_ids).not_to include(loan2.id)
+            expect(loan_ids).not_to include(loan3.id)
           end
 
           it do
             premium_schedule_report.start_on = '2/1/2011'
 
-            loan_ids.should_not include(loan1.id)
-            loan_ids.should_not include(loan2.id)
-            loan_ids.should include(loan3.id)
+            expect(loan_ids).not_to include(loan1.id)
+            expect(loan_ids).not_to include(loan2.id)
+            expect(loan_ids).to include(loan3.id)
           end
 
           it do
             premium_schedule_report.finish_on = '3/1/2011'
 
-            loan_ids.should include(loan1.id)
-            loan_ids.should_not include(loan2.id)
-            loan_ids.should include(loan3.id)
+            expect(loan_ids).to include(loan1.id)
+            expect(loan_ids).not_to include(loan2.id)
+            expect(loan_ids).to include(loan3.id)
           end
 
           it do
             premium_schedule_report.finish_on = '1/1/2011'
 
-            loan_ids.should include(loan1.id)
-            loan_ids.should_not include(loan2.id)
-            loan_ids.should_not include(loan3.id)
+            expect(loan_ids).to include(loan1.id)
+            expect(loan_ids).not_to include(loan2.id)
+            expect(loan_ids).not_to include(loan3.id)
           end
         end
       end
@@ -262,18 +262,18 @@ describe PremiumScheduleReport do
         end
 
         it do
-          loan_ids.should_not include(loan1.id)
-          loan_ids.should include(loan2.id)
-          loan_ids.should_not include(loan3.id)
+          expect(loan_ids).not_to include(loan1.id)
+          expect(loan_ids).to include(loan2.id)
+          expect(loan_ids).not_to include(loan3.id)
         end
 
         it 'includes all rescheduled loans' do
           FactoryGirl.create(:premium_schedule, loan: loan1, calc_type: 'R', premium_cheque_month: "03/#{Date.current.year + 1}")
           FactoryGirl.create(:premium_schedule, loan: loan3, calc_type: 'R', premium_cheque_month: "03/#{Date.current.year + 1}")
 
-          loan_ids.should include(loan1.id)
-          loan_ids.should include(loan2.id)
-          loan_ids.should include(loan3.id)
+          expect(loan_ids).to include(loan1.id)
+          expect(loan_ids).to include(loan2.id)
+          expect(loan_ids).to include(loan3.id)
         end
 
         context 'draw_down_date' do
@@ -283,7 +283,7 @@ describe PremiumScheduleReport do
           end
 
           it 'pulls the draw_down_date from the first loan_change' do
-            premium_schedule_report.loans.first.draw_down_date.should == Date.new(2011, 1, 2)
+            expect(premium_schedule_report.loans.first.draw_down_date).to eq(Date.new(2011, 1, 2))
           end
         end
 
@@ -297,17 +297,17 @@ describe PremiumScheduleReport do
           it do
             premium_schedule_report.collection_month = "04/#{Date.current.year + 1}"
 
-            loan_ids.should include(loan1.id)
-            loan_ids.should include(loan2.id)
-            loan_ids.should_not include(loan3.id)
+            expect(loan_ids).to include(loan1.id)
+            expect(loan_ids).to include(loan2.id)
+            expect(loan_ids).not_to include(loan3.id)
           end
 
           it do
             premium_schedule_report.collection_month = "04/#{Date.current.year + 2}"
 
-            loan_ids.should_not include(loan1.id)
-            loan_ids.should_not include(loan2.id)
-            loan_ids.should_not include(loan3.id)
+            expect(loan_ids).not_to include(loan1.id)
+            expect(loan_ids).not_to include(loan2.id)
+            expect(loan_ids).not_to include(loan3.id)
           end
         end
       end
@@ -316,60 +316,60 @@ describe PremiumScheduleReport do
     context 'with a lender_id' do
       it 'includes only loans from that lender' do
         premium_schedule_report.lender_id = loan1.lender_id
-        premium_schedule_report.loans.should include(loan1)
-        premium_schedule_report.loans.should_not include(loan2)
-        premium_schedule_report.loans.should_not include(loan3)
+        expect(premium_schedule_report.loans).to include(loan1)
+        expect(premium_schedule_report.loans).not_to include(loan2)
+        expect(premium_schedule_report.loans).not_to include(loan3)
       end
     end
 
     context 'with a loan_reference' do
       it do
         premium_schedule_report.loan_reference = 'ABC'
-        premium_schedule_report.loans.should_not include(loan1)
-        premium_schedule_report.loans.should include(loan2)
-        premium_schedule_report.loans.should_not include(loan3)
+        expect(premium_schedule_report.loans).not_to include(loan1)
+        expect(premium_schedule_report.loans).to include(loan2)
+        expect(premium_schedule_report.loans).not_to include(loan3)
       end
     end
 
     context 'with a loan_scheme' do
       it do
         premium_schedule_report.loan_scheme = 'All'
-        premium_schedule_report.loans.length.should == 3
+        expect(premium_schedule_report.loans.length).to eq(3)
       end
 
       it do
         premium_schedule_report.loan_scheme = 'SFLG Only'
-        premium_schedule_report.loans.should_not include(loan1)
-        premium_schedule_report.loans.should_not include(loan2)
-        premium_schedule_report.loans.should include(loan3)
+        expect(premium_schedule_report.loans).not_to include(loan1)
+        expect(premium_schedule_report.loans).not_to include(loan2)
+        expect(premium_schedule_report.loans).to include(loan3)
       end
 
       it do
         premium_schedule_report.loan_scheme = 'EFG Only'
-        premium_schedule_report.loans.should include(loan1)
-        premium_schedule_report.loans.should include(loan2)
-        premium_schedule_report.loans.should_not include(loan3)
+        expect(premium_schedule_report.loans).to include(loan1)
+        expect(premium_schedule_report.loans).to include(loan2)
+        expect(premium_schedule_report.loans).not_to include(loan3)
       end
     end
 
     context 'with a loan_type' do
       it do
         premium_schedule_report.loan_type = 'All'
-        premium_schedule_report.loans.length.should == 3
+        expect(premium_schedule_report.loans.length).to eq(3)
       end
 
       it do
         premium_schedule_report.loan_type = 'New'
-        premium_schedule_report.loans.should_not include(loan1)
-        premium_schedule_report.loans.should include(loan2)
-        premium_schedule_report.loans.should include(loan3)
+        expect(premium_schedule_report.loans).not_to include(loan1)
+        expect(premium_schedule_report.loans).to include(loan2)
+        expect(premium_schedule_report.loans).to include(loan3)
       end
 
       it do
         premium_schedule_report.loan_type = 'Legacy'
-        premium_schedule_report.loans.should include(loan1)
-        premium_schedule_report.loans.should_not include(loan2)
-        premium_schedule_report.loans.should_not include(loan3)
+        expect(premium_schedule_report.loans).to include(loan1)
+        expect(premium_schedule_report.loans).not_to include(loan2)
+        expect(premium_schedule_report.loans).not_to include(loan3)
       end
     end
   end
@@ -396,57 +396,57 @@ describe PremiumScheduleReport do
       end
 
       it 'should return 2 rows of data' do
-        csv.length.should == 2
+        expect(csv.length).to eq(2)
       end
 
       it 'should return loan premium schedule details' do
-        row[0].should == '03-11-2011'
-        row[1].should == 'Z'
-        row[2].should == 'ABC'
-        row[3].should == 'S'
-        row[4].should == '61.72'
-        row[5].should == '2/2011'
-        row[6].should == '3'
-        row[7].should == '0.0'
-        row[8].should == '46.29'
-        row[9].should == '30.86'
-        row[10].should == '15.43'
-        row[11].should == '0.0'
-        row[12].should == '0.0'
-        row[13].should == '0.0'
-        row[14].should == '0.0'
-        row[15].should == '0.0'
-        row[16].should == '0.0'
-        row[17].should == '0.0'
-        row[18].should == '0.0'
-        row[19].should == '0.0'
-        row[20].should == '0.0'
-        row[21].should == '0.0'
-        row[22].should == '0.0'
-        row[23].should == '0.0'
-        row[24].should == '0.0'
-        row[25].should == '0.0'
-        row[26].should == '0.0'
-        row[27].should == '0.0'
-        row[28].should == '0.0'
-        row[29].should == '0.0'
-        row[30].should == '0.0'
-        row[31].should == '0.0'
-        row[32].should == '0.0'
-        row[33].should == '0.0'
-        row[34].should == '0.0'
-        row[35].should == '0.0'
-        row[36].should == '0.0'
-        row[37].should == '0.0'
-        row[38].should == '0.0'
-        row[39].should == '0.0'
-        row[40].should == '0.0'
-        row[41].should == '0.0'
-        row[42].should == '0.0'
-        row[43].should == '0.0'
-        row[44].should == '0.0'
-        row[45].should == '0.0'
-        row[46].should == '0.0'
+        expect(row[0]).to eq('03-11-2011')
+        expect(row[1]).to eq('Z')
+        expect(row[2]).to eq('ABC')
+        expect(row[3]).to eq('S')
+        expect(row[4]).to eq('61.72')
+        expect(row[5]).to eq('2/2011')
+        expect(row[6]).to eq('3')
+        expect(row[7]).to eq('0.0')
+        expect(row[8]).to eq('46.29')
+        expect(row[9]).to eq('30.86')
+        expect(row[10]).to eq('15.43')
+        expect(row[11]).to eq('0.0')
+        expect(row[12]).to eq('0.0')
+        expect(row[13]).to eq('0.0')
+        expect(row[14]).to eq('0.0')
+        expect(row[15]).to eq('0.0')
+        expect(row[16]).to eq('0.0')
+        expect(row[17]).to eq('0.0')
+        expect(row[18]).to eq('0.0')
+        expect(row[19]).to eq('0.0')
+        expect(row[20]).to eq('0.0')
+        expect(row[21]).to eq('0.0')
+        expect(row[22]).to eq('0.0')
+        expect(row[23]).to eq('0.0')
+        expect(row[24]).to eq('0.0')
+        expect(row[25]).to eq('0.0')
+        expect(row[26]).to eq('0.0')
+        expect(row[27]).to eq('0.0')
+        expect(row[28]).to eq('0.0')
+        expect(row[29]).to eq('0.0')
+        expect(row[30]).to eq('0.0')
+        expect(row[31]).to eq('0.0')
+        expect(row[32]).to eq('0.0')
+        expect(row[33]).to eq('0.0')
+        expect(row[34]).to eq('0.0')
+        expect(row[35]).to eq('0.0')
+        expect(row[36]).to eq('0.0')
+        expect(row[37]).to eq('0.0')
+        expect(row[38]).to eq('0.0')
+        expect(row[39]).to eq('0.0')
+        expect(row[40]).to eq('0.0')
+        expect(row[41]).to eq('0.0')
+        expect(row[42]).to eq('0.0')
+        expect(row[43]).to eq('0.0')
+        expect(row[44]).to eq('0.0')
+        expect(row[45]).to eq('0.0')
+        expect(row[46]).to eq('0.0')
       end
     end
 
@@ -456,11 +456,11 @@ describe PremiumScheduleReport do
       end
 
       it 'sets schedule type correctly' do
-        row[3].should == 'R'
+        expect(row[3]).to eq('R')
       end
 
       it 'includes first premium amount' do
-        row[7].should == '61.72'
+        expect(row[7]).to eq('61.72')
       end
     end
 
@@ -471,7 +471,7 @@ describe PremiumScheduleReport do
       end
 
       it 'sets first collection date to 3 months after guarantee date' do
-        row[5].should == "02/2012"
+        expect(row[5]).to eq("02/2012")
       end
     end
 
@@ -483,11 +483,11 @@ describe PremiumScheduleReport do
       let(:row2) { csv[2] }
 
       it "should include a row for both state aid calculations" do
-        csv.length.should == 3
+        expect(csv.length).to eq(3)
       end
 
       it "should set the correct calc type for scheduled state aid calculation" do
-        row1[3].should == 'S'
+        expect(row1[3]).to eq('S')
       end
 
       it "should set the correct premiums for scheduled state aid calculation" do
@@ -495,17 +495,17 @@ describe PremiumScheduleReport do
         expected_premiums = scheduled_premium_schedule.premiums.collect { |p| p.to_f.to_s }
         expected_premiums[0] = "0.0"
 
-        row1[7, expected_premiums.size].should == expected_premiums
+        expect(row1[7, expected_premiums.size]).to eq(expected_premiums)
       end
 
       it "should set the correct calc type for re-scheduled state aid calculation" do
-        row2[3].should == 'R'
+        expect(row2[3]).to eq('R')
       end
 
       it "should set the correct premiums for re-scheduled state aid calculation" do
         expected_premiums = rescheduled_premium_schedule.premiums.collect { |p| p.to_f.to_s }
 
-        row2[7, expected_premiums.size].should == expected_premiums
+        expect(row2[7, expected_premiums.size]).to eq(expected_premiums)
       end
     end
 
@@ -515,7 +515,7 @@ describe PremiumScheduleReport do
       end
 
       it "sets Schedule Type value to 'S' instead of 'N'" do
-        row[3].should == 'S'
+        expect(row[3]).to eq('S')
       end
     end
 
@@ -527,7 +527,7 @@ describe PremiumScheduleReport do
         PremiumScheduleReportRow.stub(:from_loans).and_return([row])
 
         logger = double
-        logger.should_receive(:error).with("PremiumScheduleReport Error: ZeroDivisionError reporting on #<Loan id:1>")
+        expect(logger).to receive(:error).with("PremiumScheduleReport Error: ZeroDivisionError reporting on #<Loan id:1>")
         Rails.stub(:logger).and_return(logger)
 
         premium_schedule_report.to_csv

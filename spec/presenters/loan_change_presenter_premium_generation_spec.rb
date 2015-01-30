@@ -13,7 +13,7 @@ describe LoanChangePresenter, 'next premium collection values' do
     Timecop.freeze(2010, 1, 1) do
       presenter.valid?
 
-      premium_schedule.premium_cheque_month.should == '04/2010'
+      expect(premium_schedule.premium_cheque_month).to eq('04/2010')
       premium_schedule.repayment_duration == 57
     end
   end
@@ -22,8 +22,8 @@ describe LoanChangePresenter, 'next premium collection values' do
     Timecop.freeze(2013, 1, 15) do
       presenter.valid?
 
-      premium_schedule.premium_cheque_month.should == '04/2013'
-      premium_schedule.repayment_duration.should == 21
+      expect(premium_schedule.premium_cheque_month).to eq('04/2013')
+      expect(premium_schedule.repayment_duration).to eq(21)
     end
   end
 
@@ -31,8 +31,8 @@ describe LoanChangePresenter, 'next premium collection values' do
     Timecop.freeze(2013, 2, 15) do
       presenter.valid?
 
-      premium_schedule.premium_cheque_month.should == '04/2013'
-      premium_schedule.repayment_duration.should == 21
+      expect(premium_schedule.premium_cheque_month).to eq('04/2013')
+      expect(premium_schedule.repayment_duration).to eq(21)
     end
   end
 
@@ -40,8 +40,8 @@ describe LoanChangePresenter, 'next premium collection values' do
     Timecop.freeze(2013, 3, 31) do
       presenter.valid?
 
-      premium_schedule.premium_cheque_month.should == '04/2013'
-      premium_schedule.repayment_duration.should == 21
+      expect(premium_schedule.premium_cheque_month).to eq('04/2013')
+      expect(premium_schedule.repayment_duration).to eq(21)
     end
   end
 end

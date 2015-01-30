@@ -26,14 +26,14 @@ describe 'Resetting password' do
     fill_in 'user_username', with: 'joe2'
     click_button 'Send Reset Instructions'
 
-    page.should have_content(I18n.t('devise.passwords.send_paranoid_instructions'))
+    expect(page).to have_content(I18n.t('devise.passwords.send_paranoid_instructions'))
 
     user2.reload
-    user2.locked.should == false
+    expect(user2.locked).to eq(false)
 
     emails = ActionMailer::Base.deliveries
-    emails.size.should == 1
-    emails.first.to.should == [ user2.email ]
+    expect(emails.size).to eq(1)
+    expect(emails.first.to).to eq([ user2.email ])
   end
 
   it 'does not work if the user has no email' do
@@ -44,21 +44,21 @@ describe 'Resetting password' do
     fill_in 'user_username', with: 'bob'
     click_button 'Send Reset Instructions'
 
-    ActionMailer::Base.deliveries.size.should == 0
-    page.should have_content(I18n.t('devise.passwords.send_paranoid_instructions'))
+    expect(ActionMailer::Base.deliveries.size).to eq(0)
+    expect(page).to have_content(I18n.t('devise.passwords.send_paranoid_instructions'))
   end
 
   it 'can successfully reset password' do
     open_reset_password_page
     submit_change_password_form
 
-    page.should have_content(I18n.t('devise.passwords.updated'))
+    expect(page).to have_content(I18n.t('devise.passwords.updated'))
   end
 
   it 'fails when changed password is too weak' do
     open_reset_password_page
     submit_change_password_form 'password'
-    page.should have_content(I18n.t('errors.messages.insufficient_entropy', entropy: 5, minimum_entropy: Devise::Models::Strengthened::MINIMUM_ENTROPY))
+    expect(page).to have_content(I18n.t('errors.messages.insufficient_entropy', entropy: 5, minimum_entropy: Devise::Models::Strengthened::MINIMUM_ENTROPY))
   end
 
   it 'fails when allowed time has expired' do
@@ -68,14 +68,14 @@ describe 'Resetting password' do
     open_reset_password_page
     submit_change_password_form
 
-    page.should have_content('Reset password token has expired')
+    expect(page).to have_content('Reset password token has expired')
   end
 
   it 'fails with invalid token' do
     open_reset_password_page(reset_password_token: 'wrong')
     submit_change_password_form
 
-    page.should have_content('Reset password token is invalid')
+    expect(page).to have_content('Reset password token is invalid')
   end
 
   private

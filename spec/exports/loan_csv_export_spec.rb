@@ -45,11 +45,11 @@ describe LoanCsvExport do
     end
 
     it 'should return csv data with one row of data' do
-      csv.to_a.size.should eq(1)
+      expect(csv.to_a.size).to eq(1)
     end
 
     it 'should return csv data with correct header' do
-      header.should == %w(reference amount amount_demanded
+      expect(header).to eq(%w(reference amount amount_demanded
         borrower_demanded_on sortcode business_name cancelled_comment
         cancelled_on cancelled_reason collateral_exhausted
         company_registration created_at created_by current_refinanced_amount
@@ -77,112 +77,112 @@ describe LoanCsvExport do
         state_aid_is_valid trading_date trading_name transferred_from
         turnover updated_at viable_proposition would_you_lend not_insolvent 
         lender_reference settled_amount cumulative_pre_claim_limit_realised_amount
-        cumulative_post_claim_limit_realised_amount)
+        cumulative_post_claim_limit_realised_amount))
     end
 
     it 'should return correct csv data for loans' do
-      row['reference'].should == 'ABC2345-01'
-      row['amount'].should == '12345.00'
-      row['amount_demanded'].should == ''
-      row['borrower_demanded_on'].should == ''
-      row['sortcode'].should == ''
-      row['business_name'].should == 'Acme'
-      row['cancelled_comment'].should == ''
-      row['cancelled_on'].should == ''
-      row['cancelled_reason'].should == ''
-      row['collateral_exhausted'].should == 'Yes'
-      row['company_registration'].should == ''
-      row['created_at'].should == '01/10/2012 16:23:45'
-      row['created_by'].should == 'Joe Bloggs'
-      row['current_refinanced_amount'].should == ''
-      row['debtor_book_coverage'].should == ''
-      row['debtor_book_topup'].should == ''
-      row['declaration_signed'].should == ''
-      row['dti_break_costs'].should == ''
-      row['dti_amount_claimed'].should == '123.45'
-      row['dti_ded_code'].should == ''
-      row['dti_demand_outstanding'].should == ''
-      row['dti_demanded_on'].should == ''
-      row['dti_interest'].should == ''
-      row['dti_reason'].should == ''
-      row['facility_letter_date'].should == ''
-      row['facility_letter_sent'].should == ''
-      row['fees'].should == '50000.00'
-      row['final_refinanced_amount'].should == ''
-      row['first_pp_received'].should == 'Yes'
-      row['generic1'].should == ''
-      row['generic2'].should == ''
-      row['generic3'].should == ''
-      row['generic4'].should == ''
-      row['generic5'].should == ''
-      row['guarantee_rate'].should == '75.0'
-      row['guaranteed_on'].should == ''
-      row['initial_draw_date'].should == '01/10/2012'
-      row['initial_draw_amount'].should == '10000.00'
-      row['interest_rate'].should == ''
-      row['interest_rate_type'].should == ''
-      row['invoice_discount_limit'].should == ''
-      row['legacy_small_loan'].should == 'No'
-      row['legal_form'].should == 'Sole Trader'
-      row['lender'].should == 'Little Tinkers'
-      row['lending_limit'].should == 'Lending Limit'
-      row['loan_category'].should == 'Type A - New Term Loan with No Security'
-      row['loan_sub_category'].should == 'Bonds & Guarantees (Performance Bonds, VAT Deferment etc.)'
-      row['loan_scheme'].should == 'E'
-      row['loan_source'].should == 'S'
-      row['maturity_date'].should == '22/02/2022'
-      row['next_borrower_demand_seq'].should == ''
-      row['next_change_history_seq'].should == ''
-      row['next_in_calc_seq'].should == ''
-      row['next_in_realise_seq'].should == ''
-      row['next_in_recover_seq'].should == ''
-      row['no_claim_on'].should == ''
-      row['non_val_postcode'].should == ''
-      row['notified_aid'].should == '0'
-      row['original_overdraft_proportion'].should == ''
-      row['outstanding_amount'].should == ''
-      row['overdraft_limit'].should == ''
-      row['overdraft_maintained'].should == ''
-      row['personal_guarantee_required'].should == 'No'
-      row['postcode'].should == 'EC1R 4RP'
-      row['premium_rate'].should == '2.0'
-      row['previous_borrowing'].should == 'Yes'
-      row['private_residence_charge_required'].should == 'No'
-      row['realised_money_date'].should == ''
-      row['reason'].should == 'Start-up costs'
-      row['received_declaration'].should == 'Yes'
-      row['recovery_on'].should == ''
-      row['refinance_security_proportion'].should == ''
-      row['remove_guarantee_on'].should == ''
-      row['remove_guarantee_outstanding_amount'].should == ''
-      row['remove_guarantee_reason'].should == ''
-      row['repaid_on'].should == ''
-      row['repayment_duration'].should == '24'
-      row['repayment_frequency'].should == 'Monthly'
-      row['security_proportion'].should == ''
-      row['settled_on'].should == ''
-      row['sic_code'].should == sic.code
-      row['sic_desc'].should == sic.description
-      row['sic_eligible'].should == 'Yes'
-      row['sic_notified_aid'].should == ''
-      row['sic_parent_desc'].should == ''
-      row['signed_direct_debit_received'].should == 'Yes'
-      row['standard_cap'].should == ''
-      row['state'].should == 'guaranteed'
-      row['state_aid'].should == '10000.00'
-      row['state_aid_is_valid'].should == 'Yes'
-      row['trading_date'].should == '09/09/1999'
-      row['trading_name'].should == 'Emca'
-      row['transferred_from'].should == ''
-      row['turnover'].should == '12345.00'
-      row['updated_at'].should == '01/10/2012 16:23:45'
-      row['viable_proposition'].should == 'Yes'
-      row['would_you_lend'].should == 'Yes'
-      row['not_insolvent'].should == 'Yes'
-      row['lender_reference'].should == 'lenderref1'
-      row['settled_amount'].should == '100.00'
-      row['cumulative_pre_claim_limit_realised_amount'].should == '300.00'
-      row['cumulative_post_claim_limit_realised_amount'].should == '200.00'
+      expect(row['reference']).to eq('ABC2345-01')
+      expect(row['amount']).to eq('12345.00')
+      expect(row['amount_demanded']).to eq('')
+      expect(row['borrower_demanded_on']).to eq('')
+      expect(row['sortcode']).to eq('')
+      expect(row['business_name']).to eq('Acme')
+      expect(row['cancelled_comment']).to eq('')
+      expect(row['cancelled_on']).to eq('')
+      expect(row['cancelled_reason']).to eq('')
+      expect(row['collateral_exhausted']).to eq('Yes')
+      expect(row['company_registration']).to eq('')
+      expect(row['created_at']).to eq('01/10/2012 16:23:45')
+      expect(row['created_by']).to eq('Joe Bloggs')
+      expect(row['current_refinanced_amount']).to eq('')
+      expect(row['debtor_book_coverage']).to eq('')
+      expect(row['debtor_book_topup']).to eq('')
+      expect(row['declaration_signed']).to eq('')
+      expect(row['dti_break_costs']).to eq('')
+      expect(row['dti_amount_claimed']).to eq('123.45')
+      expect(row['dti_ded_code']).to eq('')
+      expect(row['dti_demand_outstanding']).to eq('')
+      expect(row['dti_demanded_on']).to eq('')
+      expect(row['dti_interest']).to eq('')
+      expect(row['dti_reason']).to eq('')
+      expect(row['facility_letter_date']).to eq('')
+      expect(row['facility_letter_sent']).to eq('')
+      expect(row['fees']).to eq('50000.00')
+      expect(row['final_refinanced_amount']).to eq('')
+      expect(row['first_pp_received']).to eq('Yes')
+      expect(row['generic1']).to eq('')
+      expect(row['generic2']).to eq('')
+      expect(row['generic3']).to eq('')
+      expect(row['generic4']).to eq('')
+      expect(row['generic5']).to eq('')
+      expect(row['guarantee_rate']).to eq('75.0')
+      expect(row['guaranteed_on']).to eq('')
+      expect(row['initial_draw_date']).to eq('01/10/2012')
+      expect(row['initial_draw_amount']).to eq('10000.00')
+      expect(row['interest_rate']).to eq('')
+      expect(row['interest_rate_type']).to eq('')
+      expect(row['invoice_discount_limit']).to eq('')
+      expect(row['legacy_small_loan']).to eq('No')
+      expect(row['legal_form']).to eq('Sole Trader')
+      expect(row['lender']).to eq('Little Tinkers')
+      expect(row['lending_limit']).to eq('Lending Limit')
+      expect(row['loan_category']).to eq('Type A - New Term Loan with No Security')
+      expect(row['loan_sub_category']).to eq('Bonds & Guarantees (Performance Bonds, VAT Deferment etc.)')
+      expect(row['loan_scheme']).to eq('E')
+      expect(row['loan_source']).to eq('S')
+      expect(row['maturity_date']).to eq('22/02/2022')
+      expect(row['next_borrower_demand_seq']).to eq('')
+      expect(row['next_change_history_seq']).to eq('')
+      expect(row['next_in_calc_seq']).to eq('')
+      expect(row['next_in_realise_seq']).to eq('')
+      expect(row['next_in_recover_seq']).to eq('')
+      expect(row['no_claim_on']).to eq('')
+      expect(row['non_val_postcode']).to eq('')
+      expect(row['notified_aid']).to eq('0')
+      expect(row['original_overdraft_proportion']).to eq('')
+      expect(row['outstanding_amount']).to eq('')
+      expect(row['overdraft_limit']).to eq('')
+      expect(row['overdraft_maintained']).to eq('')
+      expect(row['personal_guarantee_required']).to eq('No')
+      expect(row['postcode']).to eq('EC1R 4RP')
+      expect(row['premium_rate']).to eq('2.0')
+      expect(row['previous_borrowing']).to eq('Yes')
+      expect(row['private_residence_charge_required']).to eq('No')
+      expect(row['realised_money_date']).to eq('')
+      expect(row['reason']).to eq('Start-up costs')
+      expect(row['received_declaration']).to eq('Yes')
+      expect(row['recovery_on']).to eq('')
+      expect(row['refinance_security_proportion']).to eq('')
+      expect(row['remove_guarantee_on']).to eq('')
+      expect(row['remove_guarantee_outstanding_amount']).to eq('')
+      expect(row['remove_guarantee_reason']).to eq('')
+      expect(row['repaid_on']).to eq('')
+      expect(row['repayment_duration']).to eq('24')
+      expect(row['repayment_frequency']).to eq('Monthly')
+      expect(row['security_proportion']).to eq('')
+      expect(row['settled_on']).to eq('')
+      expect(row['sic_code']).to eq(sic.code)
+      expect(row['sic_desc']).to eq(sic.description)
+      expect(row['sic_eligible']).to eq('Yes')
+      expect(row['sic_notified_aid']).to eq('')
+      expect(row['sic_parent_desc']).to eq('')
+      expect(row['signed_direct_debit_received']).to eq('Yes')
+      expect(row['standard_cap']).to eq('')
+      expect(row['state']).to eq('guaranteed')
+      expect(row['state_aid']).to eq('10000.00')
+      expect(row['state_aid_is_valid']).to eq('Yes')
+      expect(row['trading_date']).to eq('09/09/1999')
+      expect(row['trading_name']).to eq('Emca')
+      expect(row['transferred_from']).to eq('')
+      expect(row['turnover']).to eq('12345.00')
+      expect(row['updated_at']).to eq('01/10/2012 16:23:45')
+      expect(row['viable_proposition']).to eq('Yes')
+      expect(row['would_you_lend']).to eq('Yes')
+      expect(row['not_insolvent']).to eq('Yes')
+      expect(row['lender_reference']).to eq('lenderref1')
+      expect(row['settled_amount']).to eq('100.00')
+      expect(row['cumulative_pre_claim_limit_realised_amount']).to eq('300.00')
+      expect(row['cumulative_post_claim_limit_realised_amount']).to eq('200.00')
     end
   end
 end

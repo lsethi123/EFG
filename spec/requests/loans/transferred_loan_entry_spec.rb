@@ -29,22 +29,22 @@ describe 'Transferred loan entry' do
 
     click_button 'Submit'
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
     loan.reload
-    loan.state.should == Loan::Completed
+    expect(loan.state).to eq(Loan::Completed)
     expect(loan.declaration_signed).to eql(true)
-    loan.sortcode.should == '03-12-45'
-    loan.lender_reference.should == 'lenderref1'
-    loan.repayment_frequency_id.should == 3
-    loan.repayment_duration.should == MonthDuration.new(18)
-    loan.generic1.should == 'Generic 1'
-    loan.generic2.should == 'Generic 2'
-    loan.generic3.should == 'Generic 3'
-    loan.generic4.should == 'Generic 4'
-    loan.generic5.should == 'Generic 5'
-    loan.premium_schedule.should be_present
-    loan.modified_by.should == current_user
+    expect(loan.sortcode).to eq('03-12-45')
+    expect(loan.lender_reference).to eq('lenderref1')
+    expect(loan.repayment_frequency_id).to eq(3)
+    expect(loan.repayment_duration).to eq(MonthDuration.new(18))
+    expect(loan.generic1).to eq('Generic 1')
+    expect(loan.generic2).to eq('Generic 2')
+    expect(loan.generic3).to eq('Generic 3')
+    expect(loan.generic4).to eq('Generic 4')
+    expect(loan.generic5).to eq('Generic 5')
+    expect(loan.premium_schedule).to be_present
+    expect(loan.modified_by).to eq(current_user)
 
     should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
   end

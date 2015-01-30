@@ -24,19 +24,19 @@ describe LegacyLoanReference do
     it "should increment loan reference without initial version number" do
       loan_reference = LegacyLoanReference.new('100009')
 
-      loan_reference.increment.should == '100009-02'
+      expect(loan_reference.increment).to eq('100009-02')
     end
 
     it "should return increment loan reference with initial version number" do
       loan_reference = LegacyLoanReference.new('100009-02')
 
-      loan_reference.increment.should == '100009-03'
+      expect(loan_reference.increment).to eq('100009-03')
     end
 
     it "should increment loan reference into double digits" do
       loan_reference = LegacyLoanReference.new('100009-09')
 
-      loan_reference.increment.should == '100009-10'
+      expect(loan_reference.increment).to eq('100009-10')
     end
 
     it "should not increment loan reference repeatedly" do
@@ -45,7 +45,7 @@ describe LegacyLoanReference do
 
       2.times { incremented_reference = loan_reference.increment }
 
-      incremented_reference.should == '100009-02'
+      expect(incremented_reference).to eq('100009-02')
     end
   end
 

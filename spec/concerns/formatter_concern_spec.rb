@@ -19,9 +19,9 @@ describe FormatterConcern do
     it 'passes through the formatter and returns' do
       value = double
       formatted = double
-      instance.should_receive(:read_attribute).with(:foo).and_return(value)
-      Formatter.should_receive(:format).with(value).and_return(formatted)
-      instance.foo.should == formatted
+      expect(instance).to receive(:read_attribute).with(:foo).and_return(value)
+      expect(Formatter).to receive(:format).with(value).and_return(formatted)
+      expect(instance.foo).to eq(formatted)
     end
   end
 
@@ -29,8 +29,8 @@ describe FormatterConcern do
     it 'passes through the formatter and writes' do
       value = double
       formatted = double
-      Formatter.should_receive(:parse).with(value).and_return(formatted)
-      instance.should_receive(:write_attribute).with(:foo, formatted)
+      expect(Formatter).to receive(:parse).with(value).and_return(formatted)
+      expect(instance).to receive(:write_attribute).with(:foo, formatted)
       instance.foo = value
     end
   end

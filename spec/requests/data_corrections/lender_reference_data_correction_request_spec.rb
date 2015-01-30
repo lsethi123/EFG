@@ -15,15 +15,15 @@ describe 'Lender Reference Data Correction' do
     click_button 'Submit'
 
     data_correction = loan.data_corrections.last!
-    data_correction.change_type.should == ChangeType::LenderReference
-    data_correction.created_by.should == current_user
-    data_correction.date_of_change.should == Date.current
-    data_correction.modified_date.should == Date.current
-    data_correction.old_lender_reference.should == 'LENDER SAYS'
-    data_correction.lender_reference.should == 'NEW REFERENCE'
+    expect(data_correction.change_type).to eq(ChangeType::LenderReference)
+    expect(data_correction.created_by).to eq(current_user)
+    expect(data_correction.date_of_change).to eq(Date.current)
+    expect(data_correction.modified_date).to eq(Date.current)
+    expect(data_correction.old_lender_reference).to eq('LENDER SAYS')
+    expect(data_correction.lender_reference).to eq('NEW REFERENCE')
 
     loan.reload
-    loan.lender_reference.should == 'NEW REFERENCE'
-    loan.modified_by.should == current_user
+    expect(loan.lender_reference).to eq('NEW REFERENCE')
+    expect(loan.modified_by).to eq(current_user)
   end
 end

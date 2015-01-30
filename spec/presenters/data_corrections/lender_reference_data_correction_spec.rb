@@ -5,12 +5,12 @@ describe LenderReferenceDataCorrection do
     let(:presenter) { FactoryGirl.build(:lender_reference_data_correction) }
 
     it 'has a valid factory' do
-      presenter.should be_valid
+      expect(presenter).to be_valid
     end
 
     it 'requires a lender_reference' do
       presenter.lender_reference = ''
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
     end
   end
 
@@ -22,27 +22,27 @@ describe LenderReferenceDataCorrection do
     context 'success' do
       it 'creates a DataCorrection and updates the loan' do
         presenter.lender_reference = 'Bar'
-        presenter.save.should == true
+        expect(presenter.save).to eq(true)
 
         data_correction = loan.data_corrections.last!
-        data_correction.created_by.should == user
-        data_correction.change_type.should == ChangeType::LenderReference
-        data_correction.lender_reference.should == 'Bar'
-        data_correction.old_lender_reference.should == 'Foo'
+        expect(data_correction.created_by).to eq(user)
+        expect(data_correction.change_type).to eq(ChangeType::LenderReference)
+        expect(data_correction.lender_reference).to eq('Bar')
+        expect(data_correction.old_lender_reference).to eq('Foo')
 
         loan.reload
-        loan.lender_reference.should == 'Bar'
-        loan.modified_by.should == user
+        expect(loan.lender_reference).to eq('Bar')
+        expect(loan.modified_by).to eq(user)
       end
     end
 
     context 'failure' do
       it 'does not update loan' do
         presenter.lender_reference = nil
-        presenter.save.should == false
+        expect(presenter.save).to eq(false)
         loan.reload
 
-        loan.lender_reference.should == 'Foo'
+        expect(loan.lender_reference).to eq('Foo')
       end
     end
   end

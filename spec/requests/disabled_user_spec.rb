@@ -14,14 +14,14 @@ describe 'disabled user' do
     current_user.save!
 
     click_link 'New Loan Application'
-    page.should have_content('Your account has been disabled')
+    expect(page).to have_content('Your account has been disabled')
 
     # navigation should not be present
-    page.should_not have_content('Search')
+    expect(page).not_to have_content('Search')
 
     # ensure user can logout
     click_link 'Logout'
-    page.should have_content(I18n.t('devise.failure.unauthenticated'))
+    expect(page).to have_content(I18n.t('devise.failure.unauthenticated'))
   end
 
   it 'when logging in' do
@@ -33,7 +33,7 @@ describe 'disabled user' do
     fill_in 'user_password', with: current_user.password
     click_button 'Sign In'
 
-    page.should have_content('Your account has been disabled')
+    expect(page).to have_content('Your account has been disabled')
   end
 
 end

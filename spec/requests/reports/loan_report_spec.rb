@@ -22,11 +22,11 @@ describe 'Loan report' do
       fill_in_valid_details
       click_button "Submit"
 
-      page.should have_content "Data extract found 1 row"
+      expect(page).to have_content "Data extract found 1 row"
 
       click_button "Download Report"
 
-      page.response_headers['Content-Type'].should include('text/csv')
+      expect(page.response_headers['Content-Type']).to include('text/csv')
     end
 
     it "should only allow selection of loans created by any user belonging to that lender" do
@@ -37,22 +37,22 @@ describe 'Loan report' do
       navigate_to_loan_report_form
 
       loan1.lender.lender_users.each do |user|
-        page.should have_css("#loan_report_created_by_id option", text: user.name)
+        expect(page).to have_css("#loan_report_created_by_id option", text: user.name)
       end
 
       loan2.lender.lender_users.each do |another_lender_user|
-        page.should_not have_css("#loan_report_created_by_id option", text: another_lender_user.name)
+        expect(page).not_to have_css("#loan_report_created_by_id option", text: another_lender_user.name)
       end
 
       fill_in_valid_details
       select "Peter Parker", from: "loan_report[created_by_id]"
       click_button "Submit"
-      page.should have_content "Data extract found 1 row"
+      expect(page).to have_content "Data extract found 1 row"
     end
 
     it "shouldn't show lender selection'" do
       navigate_to_loan_report_form
-      page.should_not have_css('label[for=loan_report_lender_ids]')
+      expect(page).not_to have_css('label[for=loan_report_lender_ids]')
     end
 
     context 'with "EFG only" loan scheme access' do
@@ -63,7 +63,7 @@ describe 'Loan report' do
 
       it 'should not allow selecting which loan schemes to report on' do
         navigate_to_loan_report_form
-        page.should_not have_css("#loan_report_loan_scheme")
+        expect(page).not_to have_css("#loan_report_loan_scheme")
       end
     end
   end
@@ -86,11 +86,11 @@ describe 'Loan report' do
 
       click_button "Submit"
 
-      page.should have_content "Data extract found 2 rows"
+      expect(page).to have_content "Data extract found 2 rows"
 
       click_button "Download Report"
 
-      page.response_headers['Content-Type'].should include('text/csv')
+      expect(page.response_headers['Content-Type']).to include('text/csv')
     end
 
     it "should allow selection of 'All' lenders" do
@@ -99,19 +99,19 @@ describe 'Loan report' do
       select 'All', from: "loan_report[lender_ids][]"
       click_button "Submit"
 
-      page.should have_content "Data extract found 3 rows"
+      expect(page).to have_content "Data extract found 3 rows"
     end
 
     it "should not show created by form field" do
-      page.should_not have_css("#loan_report_created_by_id option")
+      expect(page).not_to have_css("#loan_report_created_by_id option")
     end
 
     it "should show validation errors" do
       click_button "Submit"
 
       # 2 errors - no lender selected, no loan type selected
-      page.should have_css('label[for=loan_report_lender_ids] + .controls .help-inline')
-      page.should have_css('input[name="loan_report[loan_types][]"] + .help-inline')
+      expect(page).to have_css('label[for=loan_report_lender_ids] + .controls .help-inline')
+      expect(page).to have_css('input[name="loan_report[loan_types][]"] + .help-inline')
     end
 
   end
@@ -128,12 +128,12 @@ describe 'Loan report' do
 
     it "should allow access to loan reports" do
       navigate_to_loan_report_form
-      page.should have_css("#loan_report_facility_letter_start_date")
+      expect(page).to have_css("#loan_report_facility_letter_start_date")
     end
 
     it "should not show created by form field" do
       navigate_to_loan_report_form
-      page.should_not have_css("#loan_report_created_by_id option")
+      expect(page).not_to have_css("#loan_report_created_by_id option")
     end
 
   end

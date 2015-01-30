@@ -14,19 +14,19 @@ describe ReprofileDrawsLoanChange do
 
     it 'creates a LoanChange, a PremiumSchedule, and updates the loan' do
       Timecop.freeze(2013, 3, 1) do
-        presenter.save.should == true
+        expect(presenter.save).to eq(true)
       end
 
       loan_change = loan.loan_changes.last!
-      loan_change.change_type.should == ChangeType::ReprofileDraws
-      loan_change.created_by.should == user
+      expect(loan_change.change_type).to eq(ChangeType::ReprofileDraws)
+      expect(loan_change.created_by).to eq(user)
 
       loan.reload
-      loan.modified_by.should == user
+      expect(loan.modified_by).to eq(user)
 
       premium_schedule = loan.premium_schedules.last!
-      premium_schedule.premium_cheque_month.should == '04/2013'
-      premium_schedule.repayment_duration.should == 21
+      expect(premium_schedule.premium_cheque_month).to eq('04/2013')
+      expect(premium_schedule.repayment_duration).to eq(21)
     end
   end
 end

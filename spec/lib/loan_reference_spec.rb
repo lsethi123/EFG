@@ -22,7 +22,7 @@ describe LoanReference do
 
   it 'possible reference characters and numbers, before version number, do not include 1, 0, I or O' do
     %w(1 0 I O).each do |char|
-      LoanReference::LETTERS_AND_NUMBERS.should_not include(char)
+      expect(LoanReference::LETTERS_AND_NUMBERS).not_to include(char)
     end
   end
 
@@ -30,13 +30,13 @@ describe LoanReference do
     let(:loan) { FactoryGirl.build(:loan) }
 
     it "should return reference in format {letters/numbers}{separator}{version number}" do
-      LoanReference.generate.should match(/\A[\dA-Z]{7}\+\d{2}\z/)
+      expect(LoanReference.generate).to match(/\A[\dA-Z]{7}\+\d{2}\z/)
     end
 
     it "should not end in E+{numbers}" do
       LoanReference.stub(:random_string).and_return('AABBCCE', 'DDEEFFE', 'ABCDEFG')
 
-      LoanReference.generate.should == 'ABCDEFG+01'
+      expect(LoanReference.generate).to eq('ABCDEFG+01')
     end
   end
 
@@ -44,13 +44,13 @@ describe LoanReference do
     let(:loan_reference) { LoanReference.new('ABCDEFG+01') }
 
     it "should return incremented loan reference" do
-      loan_reference.increment.should == 'ABCDEFG+02'
+      expect(loan_reference.increment).to eq('ABCDEFG+02')
     end
 
     it "should increment loan reference into double digits" do
       loan_reference = LoanReference.new('ABCDEFG+09')
 
-      loan_reference.increment.should == 'ABCDEFG+10'
+      expect(loan_reference.increment).to eq('ABCDEFG+10')
     end
 
     it "should not increment loan reference repeatedly" do
@@ -58,7 +58,7 @@ describe LoanReference do
 
       2.times { reference = loan_reference.increment }
 
-      reference.should == 'ABCDEFG+02'
+      expect(reference).to eq('ABCDEFG+02')
     end
   end
 

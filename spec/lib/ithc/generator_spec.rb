@@ -52,11 +52,11 @@ describe "Generator.seed " do
     end
 
     it "should not create a LenderAdmin" do
-      seed["LenderAdmin"].should be nil
+      expect(seed["LenderAdmin"]).to be nil
     end
 
     it "should not create a LenderUser" do
-      seed["LenderUser"].should be nil
+      expect(seed["LenderUser"]).to be nil
     end
   end
 end

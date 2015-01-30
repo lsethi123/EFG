@@ -5,7 +5,7 @@ describe LoanRealisation do
     let(:loan_realisation) { FactoryGirl.build(:loan_realisation) }
 
     it 'should have a valid factory' do
-      loan_realisation.should be_valid
+      expect(loan_realisation).to be_valid
     end
 
     it 'strictly requires a realised loan' do
@@ -17,7 +17,7 @@ describe LoanRealisation do
 
     it 'must have a realisation statement' do
       loan_realisation.realisation_statement = nil
-      loan_realisation.should_not be_valid
+      expect(loan_realisation).not_to be_valid
     end
 
     it 'strictly requires a created by user' do

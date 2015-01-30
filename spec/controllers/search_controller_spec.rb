@@ -18,7 +18,7 @@ describe SearchController do
     it 'assigns loans for the current lender' do
       dispatch(reference: loan.reference)
 
-      assigns[:results].should include(loan)
+      expect(assigns[:results]).to include(loan)
     end
 
     it 'does not return loans from another lender' do
@@ -26,7 +26,7 @@ describe SearchController do
       other_lender_loan = FactoryGirl.create(:loan, reference: "ABC12345", lender: other_lender)
 
       dispatch reference: "ABC"
-      assigns[:results].should_not include(other_lender_loan)
+      expect(assigns[:results]).not_to include(other_lender_loan)
     end
   end
 end

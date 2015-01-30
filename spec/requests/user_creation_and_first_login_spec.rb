@@ -27,10 +27,10 @@ describe 'User creation and first login' do
     lender_admin = LenderAdmin.last!
 
     admin_audit = AdminAudit.last!
-    admin_audit.action.should == AdminAudit::UserCreated
-    admin_audit.auditable.should == lender_admin
-    admin_audit.modified_by.should == cfe_admin
-    admin_audit.modified_on.should == Date.current
+    expect(admin_audit.action).to eq(AdminAudit::UserCreated)
+    expect(admin_audit.auditable).to eq(lender_admin)
+    expect(admin_audit.modified_by).to eq(cfe_admin)
+    expect(admin_audit.modified_on).to eq(Date.current)
 
     click_link "Logout"
 
@@ -39,29 +39,29 @@ describe 'User creation and first login' do
     fill_in 'user_username', with: lender_admin.username
     click_button 'Sign In'
 
-    page.should have_content('Invalid username or password')
+    expect(page).to have_content('Invalid username or password')
 
     fill_in 'user_username', with: lender_admin.username
     fill_in 'user_password', with: 'whatever'
     click_button 'Sign In'
 
-    page.should have_content('Invalid username or password')
+    expect(page).to have_content('Invalid username or password')
 
     # newly created lender admin sets password
     visit edit_user_password_path(reset_password_token: raw_reset_password_token)
 
     # check validation
     click_button 'Change Password'
-    page.should have_content("can't be blank")
+    expect(page).to have_content("can't be blank")
 
     fill_in 'user[password]', with: 'new-password'
     click_button 'Change Password'
-    page.should have_content("doesn't match confirmation")
+    expect(page).to have_content("doesn't match confirmation")
 
     fill_in 'user[password]', with: 'new-password'
     fill_in 'user[password_confirmation]', with: 'wrong'
     click_button 'Change Password'
-    page.should have_content("doesn't match confirmation")
+    expect(page).to have_content("doesn't match confirmation")
 
     # valid new password
     new_password = 'new-password-W1bbL3'
@@ -69,13 +69,13 @@ describe 'User creation and first login' do
     fill_in 'user[password_confirmation]', with: new_password
     click_button 'Change Password'
 
-    page.should have_content('Your password was set successfully. You are now signed in.')
+    expect(page).to have_content('Your password was set successfully. You are now signed in.')
 
     admin_audit = AdminAudit.last!
-    admin_audit.action.should == AdminAudit::UserInitialLogin
-    admin_audit.auditable.should == lender_admin
-    admin_audit.modified_by.should == lender_admin
-    admin_audit.modified_on.should == Date.current
+    expect(admin_audit.action).to eq(AdminAudit::UserInitialLogin)
+    expect(admin_audit.auditable).to eq(lender_admin)
+    expect(admin_audit.modified_by).to eq(lender_admin)
+    expect(admin_audit.modified_on).to eq(Date.current)
 
     # user logs out and logs in again with new password
     click_link "Logout"
@@ -84,7 +84,7 @@ describe 'User creation and first login' do
     fill_in 'user_password', with: new_password
     click_button 'Sign In'
 
-    page.should have_content('Signed in successfully')
+    expect(page).to have_content('Signed in successfully')
   end
 
 end

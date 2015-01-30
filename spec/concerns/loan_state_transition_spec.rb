@@ -59,7 +59,7 @@ describe LoanStateTransition do
       presenter = klass.new(loan)
       presenter.save
 
-      loan.state.should == Loan::Offered
+      expect(loan.state).to eq(Loan::Offered)
     end
   end
 end

@@ -8,25 +8,25 @@ describe SettleLoan do
 
     it "must have a settled_amount" do
       presenter.settled_amount = nil
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
     end
 
     it "must have a settled_amount greater than or equal to 0" do
       presenter.settled_amount = Money.new(-1)
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
 
       presenter.settled_amount = Money.new(0)
-      presenter.should be_valid
+      expect(presenter).to be_valid
     end
 
     it "must have a settled_amount less than or equal to the claimed amount" do
       loan.dti_amount_claimed = Money.new(4824_95)
 
       presenter.settled_amount = Money.new(4824_96)
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
 
       presenter.settled_amount = Money.new(4824_95)
-      presenter.should be_valid
+      expect(presenter).to be_valid
     end
   end
 
@@ -35,27 +35,27 @@ describe SettleLoan do
     let(:presenter) { SettleLoan.new(loan) }
 
     it "delegates id" do
-      presenter.id.should == loan.id
+      expect(presenter.id).to eq(loan.id)
     end
 
     it "delegates business name" do
-      presenter.business_name.should == loan.business_name
+      expect(presenter.business_name).to eq(loan.business_name)
     end
 
     it "delegates corrected?" do
-      presenter.corrected?.should == loan.corrected?
+      expect(presenter.corrected?).to eq(loan.corrected?)
     end
 
     it "delegates dti_amount_claimed" do
-      presenter.dti_amount_claimed.should == loan.dti_amount_claimed
+      expect(presenter.dti_amount_claimed).to eq(loan.dti_amount_claimed)
     end
 
     it "delegates dti_demanded_on" do
-      presenter.dti_demanded_on.should == loan.dti_demanded_on
+      expect(presenter.dti_demanded_on).to eq(loan.dti_demanded_on)
     end
 
     it "delegates reference" do
-      presenter.reference.should == loan.reference
+      expect(presenter.reference).to eq(loan.reference)
     end
   end
 
@@ -64,12 +64,12 @@ describe SettleLoan do
     let(:presenter) { SettleLoan.new(loan) }
 
     it "is false by default" do
-      presenter.should_not be_settled
+      expect(presenter).not_to be_settled
     end
 
     it "can be set" do
       presenter.settled = true
-      presenter.should be_settled
+      expect(presenter).to be_settled
     end
   end
 
@@ -78,12 +78,12 @@ describe SettleLoan do
     let(:presenter) { SettleLoan.new(loan) }
 
     it "defaults to the dti_claimed_amount" do
-      presenter.settled_amount.should == Money.new(15_594_80)
+      expect(presenter.settled_amount).to eq(Money.new(15_594_80))
     end
 
     it "can be set" do
       presenter.settled_amount = '10,000.00'
-      presenter.settled_amount.should == Money.new(10_000_00)
+      expect(presenter.settled_amount).to eq(Money.new(10_000_00))
     end
   end
 
@@ -107,11 +107,11 @@ describe SettleLoan do
 
           loan.reload
 
-          loan.state.should == Loan::Settled
-          loan.settled_on.should == Date.new(2013, 1, 22)
-          loan.invoice.should == invoice
-          loan.updated_at.should == Time.new(2013, 1, 22, 11, 49, 0)
-          loan.modified_by_id.should == creator.id
+          expect(loan.state).to eq(Loan::Settled)
+          expect(loan.settled_on).to eq(Date.new(2013, 1, 22))
+          expect(loan.invoice).to eq(invoice)
+          expect(loan.updated_at).to eq(Time.new(2013, 1, 22, 11, 49, 0))
+          expect(loan.modified_by_id).to eq(creator.id)
         end
       end
 
@@ -119,7 +119,7 @@ describe SettleLoan do
         presenter.settle!(invoice, creator)
 
         loan.reload
-        loan.settled_amount.should == Money.new(340_12)
+        expect(loan.settled_amount).to eq(Money.new(340_12))
       end
 
       it "logs the loan state changes" do
@@ -137,7 +137,7 @@ describe SettleLoan do
       end
 
       it "raises an NotMarkedAsSettled exception" do
-        presenter.should_not be_settled
+        expect(presenter).not_to be_settled
         expect {
           presenter.settle!(invoice, creator)
         }.to raise_error(SettleLoan::NotMarkedAsSettled)

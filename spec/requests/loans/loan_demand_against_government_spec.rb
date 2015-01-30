@@ -19,19 +19,19 @@ describe 'loan demand against government' do
     select_option_value ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
     click_button 'Submit'
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
     loan.reload
 
-    page.should have_content(I18n.t('activemodel.loan_demand_against_government.amount_claimed', amount: loan.dti_amount_claimed.format))
+    expect(page).to have_content(I18n.t('activemodel.loan_demand_against_government.amount_claimed', amount: loan.dti_amount_claimed.format))
 
-    loan.state.should == Loan::Demanded
-    loan.dti_demand_outstanding.should == Money.new(10_000_00)
-    loan.dti_amount_claimed.should_not be_nil
-    loan.dti_demanded_on.should == Date.current
-    loan.ded_code.should == ded_code
-    loan.dti_reason.should == 'Something'
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Demanded)
+    expect(loan.dti_demand_outstanding).to eq(Money.new(10_000_00))
+    expect(loan.dti_amount_claimed).not_to be_nil
+    expect(loan.dti_demanded_on).to eq(Date.current)
+    expect(loan.ded_code).to eq(ded_code)
+    expect(loan.dti_reason).to eq('Something')
+    expect(loan.modified_by).to eq(current_user)
 
     should_log_loan_state_change(loan, Loan::Demanded, 13, current_user)
   end
@@ -50,25 +50,25 @@ describe 'loan demand against government' do
 
     click_button 'Submit'
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
     loan.reload
-    loan.dti_interest.should == Money.new(5000_00)
-    loan.dti_break_costs.should == Money.new(2000_00)
-    loan.dti_amount_claimed.should_not be_nil
+    expect(loan.dti_interest).to eq(Money.new(5000_00))
+    expect(loan.dti_break_costs).to eq(Money.new(2000_00))
+    expect(loan.dti_amount_claimed).not_to be_nil
   end
 
   it 'does not continue with invalid values' do
     visit loan_path(loan)
     click_link 'Demand Against Guarantee'
 
-    loan.state.should == Loan::LenderDemand
+    expect(loan.state).to eq(Loan::LenderDemand)
     expect {
       click_button 'Submit'
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == loan_demand_against_government_path(loan)
+    expect(current_path).to eq(loan_demand_against_government_path(loan))
   end
 
 end

@@ -7,16 +7,16 @@ describe UsernamesReminderMailer do
 
   describe '#usernames_reminder' do
     it 'has the correct to email address' do
-      mailer.to.should == ['me@example.com']
+      expect(mailer.to).to eq(['me@example.com'])
     end
 
     it 'contains the usernames specified' do
-      mailer.body.should include('user1')
-      mailer.body.should include('user2')
+      expect(mailer.body).to include('user1')
+      expect(mailer.body).to include('user2')
     end
 
     it 'has the correct from email address' do
-      Devise.mailer_sender.should match mailer.from[0]
+      expect(Devise.mailer_sender).to match mailer.from[0]
     end
   end
 end

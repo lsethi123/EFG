@@ -5,7 +5,7 @@ describe Recovery do
     let(:recovery) { FactoryGirl.build(:recovery) }
 
     it 'has a valid Factory' do
-      recovery.should be_valid
+      expect(recovery).to be_valid
     end
 
     it 'strictly requires a loan' do
@@ -24,13 +24,13 @@ describe Recovery do
 
     it 'requires recovered_on' do
       recovery.recovered_on = ''
-      recovery.should_not be_valid
+      expect(recovery).not_to be_valid
     end
 
     it 'recovered_on must be after its loan was settled' do
       recovery.loan.settled_on = Date.current
       recovery.recovered_on = 1.day.ago
-      recovery.should_not be_valid
+      expect(recovery).not_to be_valid
     end
 
     context 'EFG' do
@@ -47,7 +47,7 @@ describe Recovery do
       ).each do |attr|
         it "requires #{attr}" do
           recovery.send("#{attr}=", '')
-          recovery.should_not be_valid
+          expect(recovery).not_to be_valid
         end
       end
     end
@@ -66,7 +66,7 @@ describe Recovery do
         ).each do |attr|
           it "requires #{attr}" do
             recovery.send("#{attr}=", '')
-            recovery.should_not be_valid
+            expect(recovery).not_to be_valid
           end
         end
       end
@@ -97,8 +97,8 @@ describe Recovery do
         recovery.linked_security_proceeds = Money.new(1_000_00)
         recovery.calculate
 
-        recovery.realisations_attributable.should == Money.new(2_000_00)
-        recovery.amount_due_to_dti.should == Money.new(1_500_00)
+        expect(recovery.realisations_attributable).to eq(Money.new(2_000_00))
+        expect(recovery.amount_due_to_dti).to eq(Money.new(1_500_00))
       end
 
       it 'works' do
@@ -107,8 +107,8 @@ describe Recovery do
         recovery.linked_security_proceeds = Money.new(5_678_00)
         recovery.calculate
 
-        recovery.realisations_attributable.should == Money.new(8_765_00)
-        recovery.amount_due_to_dti.should == Money.new(6_573_75)
+        expect(recovery.realisations_attributable).to eq(Money.new(8_765_00))
+        expect(recovery.amount_due_to_dti).to eq(Money.new(6_573_75))
       end
 
       it 'ensures positive values' do
@@ -117,8 +117,8 @@ describe Recovery do
         recovery.linked_security_proceeds = Money.new(0)
         recovery.calculate
 
-        recovery.realisations_attributable.should == Money.new(0)
-        recovery.amount_due_to_dti.should == Money.new(0)
+        expect(recovery.realisations_attributable).to eq(Money.new(0))
+        expect(recovery.amount_due_to_dti).to eq(Money.new(0))
       end
 
       it 'does not allow recovered amount to be greater than remaining unrecovered amount (i.e. dti_amount_claimed - previous recoveries)' do
@@ -129,7 +129,7 @@ describe Recovery do
         recovery.linked_security_proceeds = Money.new(5_001_00)
         recovery.calculate
 
-        recovery.errors[:base].should_not be_empty
+        expect(recovery.errors[:base]).not_to be_empty
       end
     end
 
@@ -151,8 +151,8 @@ describe Recovery do
         recovery.additional_break_costs = Money.new(456_00)
         recovery.calculate
 
-        recovery.amount_due_to_sec_state.should == Money.new(175_28)
-        recovery.amount_due_to_dti.should == Money.new(976_28)
+        expect(recovery.amount_due_to_sec_state).to eq(Money.new(175_28))
+        expect(recovery.amount_due_to_dti).to eq(Money.new(976_28))
       end
 
       it 'works without "additional" monies' do
@@ -160,8 +160,8 @@ describe Recovery do
         recovery.total_liabilities_after_demand = Money.new(234_00)
         recovery.calculate
 
-        recovery.amount_due_to_sec_state.should == Money.new(175_28)
-        recovery.amount_due_to_dti.should == Money.new(175_28)
+        expect(recovery.amount_due_to_sec_state).to eq(Money.new(175_28))
+        expect(recovery.amount_due_to_dti).to eq(Money.new(175_28))
       end
 
       it 'does not allow recovered amount to be greater than remaining unrecovered amount (i.e. dti_amount_claimed - previous recoveries)' do
@@ -170,7 +170,7 @@ describe Recovery do
         recovery.linked_security_proceeds = Money.new(0)
         recovery.calculate
 
-        recovery.errors[:base].should_not be_empty
+        expect(recovery.errors[:base]).not_to be_empty
       end
     end
 
@@ -191,8 +191,8 @@ describe Recovery do
         recovery.additional_break_costs = Money.new(456_00)
         recovery.calculate
 
-        recovery.amount_due_to_sec_state.should == Money.new(170_83)
-        recovery.amount_due_to_dti.should == Money.new(971_83)
+        expect(recovery.amount_due_to_sec_state).to eq(Money.new(170_83))
+        expect(recovery.amount_due_to_dti).to eq(Money.new(971_83))
       end
 
       it 'works without "additional" monies' do
@@ -200,8 +200,8 @@ describe Recovery do
         recovery.total_liabilities_after_demand = Money.new(234_00)
         recovery.calculate
 
-        recovery.amount_due_to_sec_state.should == Money.new(170_83)
-        recovery.amount_due_to_dti.should == Money.new(170_83)
+        expect(recovery.amount_due_to_sec_state).to eq(Money.new(170_83))
+        expect(recovery.amount_due_to_dti).to eq(Money.new(170_83))
       end
 
       it 'does not allow recovered amount to be greater than remaining unrecovered amount (i.e. dti_amount_claimed - previous recoveries)' do
@@ -210,7 +210,7 @@ describe Recovery do
         recovery.linked_security_proceeds = Money.new(0)
         recovery.calculate
 
-        recovery.errors[:base].should_not be_empty
+        expect(recovery.errors[:base]).not_to be_empty
       end
     end
   end
@@ -229,7 +229,7 @@ describe Recovery do
 
       it 'updates the loan state to recovered' do
         recovery.save_and_update_loan
-        loan.reload.state.should == Loan::Recovered
+        expect(loan.reload.state).to eq(Loan::Recovered)
       end
 
       it 'stores who last modified the loan' do
@@ -239,7 +239,7 @@ describe Recovery do
 
       it 'stores the recovered date on the loan' do
         recovery.save_and_update_loan
-        loan.reload.recovery_on.should == recovery.recovered_on
+        expect(loan.reload.recovery_on).to eq(recovery.recovered_on)
       end
 
       it 'creates a new loan state change record for the state change' do
@@ -248,8 +248,8 @@ describe Recovery do
         }.to change(LoanStateChange, :count).by(1)
 
         state_change = loan.state_changes.last
-        state_change.event_id.should == 20
-        state_change.state.should == Loan::Recovered
+        expect(state_change.event_id).to eq(20)
+        expect(state_change.state).to eq(Loan::Recovered)
       end
     end
 
@@ -263,7 +263,7 @@ describe Recovery do
       }
 
       it 'returns false' do
-        recovery.save_and_update_loan.should == false
+        expect(recovery.save_and_update_loan).to eq(false)
       end
     end
   end
@@ -275,8 +275,8 @@ describe Recovery do
       recovery1 = FactoryGirl.create(:recovery)
       recovery2 = FactoryGirl.create(:recovery, loan: recovery1.loan)
 
-      recovery1.seq.should == 1
-      recovery2.seq.should == 2
+      expect(recovery1.seq).to eq(1)
+      expect(recovery2.seq).to eq(2)
     end
   end
 end

@@ -15,13 +15,13 @@ describe AskForHelpMailer do
     let(:email) { AskForHelpMailer.ask_an_expert_email(ask_an_expert) }
 
     it do
-      email.body.should include(user.name)
-      email.body.should include('Hello')
-      Devise.mailer_sender.should match email.from[0]
-      email.reply_to.should == [user.email]
-      email.subject.should include('EFG')
-      email.to.should include(expert_user1.email)
-      email.to.should include(expert_user2.email)
+      expect(email.body).to include(user.name)
+      expect(email.body).to include('Hello')
+      expect(Devise.mailer_sender).to match email.from[0]
+      expect(email.reply_to).to eq([user.email])
+      expect(email.subject).to include('EFG')
+      expect(email.to).to include(expert_user1.email)
+      expect(email.to).to include(expert_user2.email)
     end
   end
 
@@ -42,14 +42,14 @@ describe AskForHelpMailer do
     let(:email) { AskForHelpMailer.ask_cfe_email(ask_cfe) }
 
     it do
-      email.body.should include(user.name)
-      email.body.should include('Excellent!')
-      email.body.should include('Lynx, 1.2.3')
-      email.body.should include('Foo, ABC')
-      Devise.mailer_sender.should match email.from[0]
-      email.reply_to.should == [user.email]
-      email.subject.should include('EFG')
-      email.to.should == [ EFG::Application.config.cfe_support_email ]
+      expect(email.body).to include(user.name)
+      expect(email.body).to include('Excellent!')
+      expect(email.body).to include('Lynx, 1.2.3')
+      expect(email.body).to include('Foo, ABC')
+      expect(Devise.mailer_sender).to match email.from[0]
+      expect(email.reply_to).to eq([user.email])
+      expect(email.subject).to include('EFG')
+      expect(email.to).to eq([ EFG::Application.config.cfe_support_email ])
     end
   end
 end

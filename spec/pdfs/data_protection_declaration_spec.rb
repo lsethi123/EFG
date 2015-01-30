@@ -16,21 +16,21 @@ describe DataProtectionDeclaration do
   describe "#render" do
 
     it "should contain a title" do
-      pdf_content.should include(I18n.t('pdfs.data_protection.title').upcase)
+      expect(pdf_content).to include(I18n.t('pdfs.data_protection.title').upcase)
     end
 
     it "should contain body text" do
-      pdf_content.should include(I18n.t('pdfs.data_protection.declaration'))
-      pdf_content.should include(I18n.t('pdfs.data_protection.declaration_list').gsub("\n", ''))
+      expect(pdf_content).to include(I18n.t('pdfs.data_protection.declaration'))
+      expect(pdf_content).to include(I18n.t('pdfs.data_protection.declaration_list').gsub("\n", ''))
     end
 
     it "should contain signature text" do
-      pdf_content.scan(/Signed________/).size.should == 4
-      pdf_content.scan(/Print name________/).size.should == 4
-      pdf_content.scan(/Position________/).size.should == 4
-      pdf_content.scan(/Date________/).size.should == 4
+      expect(pdf_content.scan(/Signed________/).size).to eq(4)
+      expect(pdf_content.scan(/Print name________/).size).to eq(4)
+      expect(pdf_content.scan(/Position________/).size).to eq(4)
+      expect(pdf_content.scan(/Date________/).size).to eq(4)
 
-      pdf_content.should include(I18n.t('pdfs.data_protection.signatories'))
+      expect(pdf_content).to include(I18n.t('pdfs.data_protection.signatories'))
     end
 
   end

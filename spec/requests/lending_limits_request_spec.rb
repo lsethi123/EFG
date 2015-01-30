@@ -24,7 +24,7 @@ describe 'LendingLimits' do
 
     it 'does not continue with invalid values' do
       click_button 'Create Lending Limit'
-      current_path.should == lender_lending_limits_path(lender)
+      expect(current_path).to eq(lender_lending_limits_path(lender))
     end
 
     it do
@@ -37,20 +37,20 @@ describe 'LendingLimits' do
       click_button 'Create Lending Limit'
 
       lending_limit = LendingLimit.last
-      lending_limit.lender.should == lender
-      lending_limit.phase.should == phase
-      lending_limit.modified_by.should == current_user
-      lending_limit.active.should == true
-      lending_limit.name.should == 'This year'
-      lending_limit.starts_on.should == Date.new(2012, 1, 1)
-      lending_limit.ends_on.should == Date.new(2012, 12, 31)
-      lending_limit.allocation.should == Money.new(5_000_000_00)
+      expect(lending_limit.lender).to eq(lender)
+      expect(lending_limit.phase).to eq(phase)
+      expect(lending_limit.modified_by).to eq(current_user)
+      expect(lending_limit.active).to eq(true)
+      expect(lending_limit.name).to eq('This year')
+      expect(lending_limit.starts_on).to eq(Date.new(2012, 1, 1))
+      expect(lending_limit.ends_on).to eq(Date.new(2012, 12, 31))
+      expect(lending_limit.allocation).to eq(Money.new(5_000_000_00))
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LendingLimitCreated
-      admin_audit.auditable.should == lending_limit
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LendingLimitCreated)
+      expect(admin_audit.auditable).to eq(lending_limit)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -65,9 +65,9 @@ describe 'LendingLimits' do
     end
 
     it do
-      page.should_not have_selector('input[id^=lending_limit_allocation_type_id]')
-      page.should_not have_selector('#lending_limit_ends_on')
-      page.should_not have_selector('#lending_limit_starts_on')
+      expect(page).not_to have_selector('input[id^=lending_limit_allocation_type_id]')
+      expect(page).not_to have_selector('#lending_limit_ends_on')
+      expect(page).not_to have_selector('#lending_limit_starts_on')
 
       fill_in :name, 'Updated'
       select :phase_id, 'Phase 1 (FY 2009/10)'
@@ -75,18 +75,18 @@ describe 'LendingLimits' do
       click_button 'Update Lending Limit'
 
       lending_limit.reload
-      lending_limit.lender.should == lender
-      lending_limit.phase.should == phase
-      lending_limit.modified_by.should == current_user
-      lending_limit.active.should == true
-      lending_limit.name.should == 'Updated'
-      lending_limit.allocation.should == Money.new(9_999_99)
+      expect(lending_limit.lender).to eq(lender)
+      expect(lending_limit.phase).to eq(phase)
+      expect(lending_limit.modified_by).to eq(current_user)
+      expect(lending_limit.active).to eq(true)
+      expect(lending_limit.name).to eq('Updated')
+      expect(lending_limit.allocation).to eq(Money.new(9_999_99))
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LendingLimitEdited
-      admin_audit.auditable.should == lending_limit
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LendingLimitEdited)
+      expect(admin_audit.auditable).to eq(lending_limit)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -104,14 +104,14 @@ describe 'LendingLimits' do
       click_button 'Activate Lending Limit'
 
       lending_limit.reload
-      lending_limit.active.should == true
-      lending_limit.modified_by.should == current_user
+      expect(lending_limit.active).to eq(true)
+      expect(lending_limit.modified_by).to eq(current_user)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LendingLimitActivated
-      admin_audit.auditable.should == lending_limit
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LendingLimitActivated)
+      expect(admin_audit.auditable).to eq(lending_limit)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -129,14 +129,14 @@ describe 'LendingLimits' do
       click_button 'Deactivate Lending Limit'
 
       lending_limit.reload
-      lending_limit.active.should == false
-      lending_limit.modified_by.should == current_user
+      expect(lending_limit.active).to eq(false)
+      expect(lending_limit.modified_by).to eq(current_user)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LendingLimitRemoved
-      admin_audit.auditable.should == lending_limit
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LendingLimitRemoved)
+      expect(admin_audit.auditable).to eq(lending_limit)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 

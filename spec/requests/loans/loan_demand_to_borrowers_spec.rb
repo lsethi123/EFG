@@ -25,20 +25,20 @@ describe 'loan demand to borrower' do
 
     loan = Loan.last
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
-    loan.state.should == Loan::LenderDemand
-    loan.borrower_demanded_on.should == Date.current
-    loan.amount_demanded.should == Money.new(10_000_00) # 10000.00
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::LenderDemand)
+    expect(loan.borrower_demanded_on).to eq(Date.current)
+    expect(loan.amount_demanded).to eq(Money.new(10_000_00)) # 10000.00
+    expect(loan.modified_by).to eq(current_user)
 
     should_log_loan_state_change(loan, Loan::LenderDemand, 10, current_user)
 
     demand_to_borrower = loan.demand_to_borrowers.last!
-    demand_to_borrower.created_by.should == current_user
-    demand_to_borrower.date_of_demand.should == Date.current
-    demand_to_borrower.demanded_amount.should == Money.new(10_000_00)
-    demand_to_borrower.modified_date.should == Date.current
+    expect(demand_to_borrower.created_by).to eq(current_user)
+    expect(demand_to_borrower.date_of_demand).to eq(Date.current)
+    expect(demand_to_borrower.demanded_amount).to eq(Money.new(10_000_00))
+    expect(demand_to_borrower.modified_date).to eq(Date.current)
   end
 
   it 'does not display previous DemandToBorrow details' do
@@ -46,20 +46,20 @@ describe 'loan demand to borrower' do
 
     visit loan_path(loan)
     click_link 'Demand to Borrower'
-    page.find('#loan_demand_to_borrower_amount_demanded').value.should be_blank
+    expect(page.find('#loan_demand_to_borrower_amount_demanded').value).to be_blank
   end
 
   it 'does not continue with invalid values' do
     visit loan_path(loan)
     click_link 'Demand to Borrower'
 
-    loan.state.should == Loan::Guaranteed
+    expect(loan.state).to eq(Loan::Guaranteed)
     expect {
       click_button 'Submit'
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == loan_demand_to_borrower_path(loan)
+    expect(current_path).to eq(loan_demand_to_borrower_path(loan))
   end
 
 end

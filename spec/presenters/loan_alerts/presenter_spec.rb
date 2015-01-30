@@ -19,7 +19,7 @@ describe LoanAlerts::Presenter do
 
   describe "#alerts_grouped_by_priority" do
     it "should create high priority, medium priority and low priority loan alert groups" do
-      LoanAlerts::Group.should_receive(:new).exactly(3).times
+      expect(LoanAlerts::Group).to receive(:new).exactly(3).times
 
       presenter.alerts_grouped_by_priority
     end
@@ -27,8 +27,8 @@ describe LoanAlerts::Presenter do
     it "should return an array of loan alert groups" do
       result = presenter.alerts_grouped_by_priority
 
-      result.should be_instance_of(Array)
-      result.each { |r| r.should be_instance_of(LoanAlerts::Group) }
+      expect(result).to be_instance_of(Array)
+      result.each { |r| expect(r).to be_instance_of(LoanAlerts::Group) }
     end
   end
 

@@ -18,9 +18,9 @@ describe "loan lookup" do
 
     lookup_loan(loan1.reference[1,5])
 
-    page.should have_content("2 results found")
-    page.should have_content(loan1.reference)
-    page.should have_content(loan2.reference)
+    expect(page).to have_content("2 results found")
+    expect(page).to have_content(loan1.reference)
+    expect(page).to have_content(loan2.reference)
   end
 
   it "should redirect to loan detail page when a single loan is found" do
@@ -28,8 +28,8 @@ describe "loan lookup" do
 
     lookup_loan(loan1.reference)
 
-    page.should have_content("Loan Summary for #{loan1.reference}")
-    page.should have_css("#lookup_term[value='#{loan1.reference}']")
+    expect(page).to have_content("Loan Summary for #{loan1.reference}")
+    expect(page).to have_css("#lookup_term[value='#{loan1.reference}']")
   end
 
   it "should cater for no search results" do
@@ -37,7 +37,7 @@ describe "loan lookup" do
 
     lookup_loan("wrong")
 
-    page.should have_content("0 results found")
+    expect(page).to have_content("0 results found")
   end
 
   private

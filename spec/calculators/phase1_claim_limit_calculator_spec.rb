@@ -45,7 +45,7 @@ describe "Claim Limit Phase 1" do
   describe "#total_amount" do
     # £300,000 (6 loans each with £50,000 drawn) x 0.0975
     it "returns the cumulative drawn amount x 9.75%" do
-      claim_limit.total_amount.should == Money.new(29_250_00)
+      expect(claim_limit.total_amount).to eq(Money.new(29_250_00))
     end
   end
 
@@ -53,7 +53,7 @@ describe "Claim Limit Phase 1" do
     context "when a positive number" do
       # £29,250.00 (claim limit) + £1000 (total pre-claim realisations) - £9,375 (total settled amount)
       it "returns the claim limit amount + pre-claim limit realisations - total settled amount" do
-        claim_limit.amount_remaining.should == Money.new(20_875_00)
+        expect(claim_limit.amount_remaining).to eq(Money.new(20_875_00))
       end
     end
 
@@ -63,7 +63,7 @@ describe "Claim Limit Phase 1" do
       end
 
       it "returns 0" do
-        claim_limit.amount_remaining.should == Money.new(0)
+        expect(claim_limit.amount_remaining).to eq(Money.new(0))
       end
     end
   end
@@ -71,7 +71,7 @@ describe "Claim Limit Phase 1" do
   describe "#percentage_remaining" do
     context "when claim_limit and claim_limit_remaining are greater than 0" do
       it "returns the percentage of remaining claim limit" do
-        claim_limit.percentage_remaining.should == 71
+        expect(claim_limit.percentage_remaining).to eq(71)
       end
     end
 
@@ -81,7 +81,7 @@ describe "Claim Limit Phase 1" do
       end
 
       it "returns 0" do
-        claim_limit.percentage_remaining.should == 0
+        expect(claim_limit.percentage_remaining).to eq(0)
       end
     end
 
@@ -91,7 +91,7 @@ describe "Claim Limit Phase 1" do
       end
 
       it "returns 100" do
-        claim_limit.percentage_remaining.should == 100
+        expect(claim_limit.percentage_remaining).to eq(100)
       end
     end
   end

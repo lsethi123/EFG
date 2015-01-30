@@ -14,8 +14,8 @@ describe 'CfeUser management' do
     end
 
     it do
-      page.should have_content('Barry White')
-      page.should_not have_content('David Bowie')
+      expect(page).to have_content('Barry White')
+      expect(page).not_to have_content('David Bowie')
     end
 
     it_should_behave_like 'an admin viewing active and disabled users' do
@@ -48,23 +48,23 @@ describe 'CfeUser management' do
         click_button 'Create CfE User'
       }.to change(CfeUser, :count).by(1)
 
-      page.should have_content('Bob Flemming')
-      page.should have_content('bob.flemming@example.com')
+      expect(page).to have_content('Bob Flemming')
+      expect(page).to have_content('bob.flemming@example.com')
 
       user = CfeUser.last!
-      user.created_by.should == current_user
-      user.modified_by.should == current_user
+      expect(user.created_by).to eq(current_user)
+      expect(user.modified_by).to eq(current_user)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserCreated
-      admin_audit.auditable.should == user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserCreated)
+      expect(admin_audit.auditable).to eq(user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
 
       # verify email is sent to user
       emails = ActionMailer::Base.deliveries
-      emails.size.should == 1
-      emails.first.to.should == [ user.email ]
+      expect(emails.size).to eq(1)
+      expect(emails.first.to).to eq([ user.email ])
     end
   end
 
@@ -84,16 +84,16 @@ describe 'CfeUser management' do
       click_button 'Update CfE User'
 
       user.reload
-      user.email.should == 'bill.example@example.com'
-      user.first_name.should == 'Bill'
-      user.last_name.should == 'Example'
-      user.modified_by.should == current_user
+      expect(user.email).to eq('bill.example@example.com')
+      expect(user.first_name).to eq('Bill')
+      expect(user.last_name).to eq('Example')
+      expect(user.modified_by).to eq(current_user)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserEdited
-      admin_audit.auditable.should == user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserEdited)
+      expect(admin_audit.auditable).to eq(user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -106,13 +106,13 @@ describe 'CfeUser management' do
       click_link 'Bob Flemming'
       click_button 'Unlock User'
 
-      user.reload.should_not be_locked
+      expect(user.reload).not_to be_locked
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserUnlocked
-      admin_audit.auditable.should == user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserUnlocked)
+      expect(admin_audit.auditable).to eq(user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -125,13 +125,13 @@ describe 'CfeUser management' do
       click_link 'Bob Flemming'
       click_button 'Disable User'
 
-      user.reload.should be_disabled
+      expect(user.reload).to be_disabled
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserDisabled
-      admin_audit.auditable.should == user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserDisabled)
+      expect(admin_audit.auditable).to eq(user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -145,13 +145,13 @@ describe 'CfeUser management' do
       click_link 'Bob Flemming'
       click_button 'Enable User'
 
-      user.reload.should_not be_disabled
+      expect(user.reload).not_to be_disabled
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserEnabled
-      admin_audit.auditable.should == user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserEnabled)
+      expect(admin_audit.auditable).to eq(user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -172,24 +172,24 @@ describe 'CfeUser management' do
     end
 
     it "can be sent from edit user page" do
-      user.reset_password_token.should be_nil
-      user.reset_password_sent_at.should be_nil
+      expect(user.reset_password_token).to be_nil
+      expect(user.reset_password_sent_at).to be_nil
 
       visit root_path
       click_link 'Manage CfE Users'
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
-      page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
+      expect(page).to have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
 
       user.reload
-      user.reset_password_token.should_not be_nil
-      user.reset_password_sent_at.should_not be_nil
+      expect(user.reset_password_token).not_to be_nil
+      expect(user.reset_password_sent_at).not_to be_nil
 
       # verify email is sent to user
       emails = ActionMailer::Base.deliveries
-      emails.size.should == 1
-      emails.first.to.should == [ user.email ]
+      expect(emails.size).to eq(1)
+      expect(emails.first.to).to eq([ user.email ])
     end
 
     it "can be sent from user list page" do
@@ -197,9 +197,9 @@ describe 'CfeUser management' do
       click_link 'Manage CfE Users'
       click_button 'Send Reset Password Email'
 
-      page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
-      page.should have_content(I18n.t('manage_users.password_set_time_remaining', time_left: '7 days'))
-      page.should_not have_css('input', text: 'Send Reset Password Email')
+      expect(page).to have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
+      expect(page).to have_content(I18n.t('manage_users.password_set_time_remaining', time_left: '7 days'))
+      expect(page).not_to have_css('input', text: 'Send Reset Password Email')
     end
 
     # many imported users will not have an email address
@@ -212,8 +212,8 @@ describe 'CfeUser management' do
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
-      page.should have_content("can't be blank")
-      ActionMailer::Base.deliveries.should be_empty
+      expect(page).to have_content("can't be blank")
+      expect(ActionMailer::Base.deliveries).to be_empty
     end
   end
 

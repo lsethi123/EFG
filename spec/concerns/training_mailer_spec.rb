@@ -14,7 +14,7 @@ describe TrainingMailer do
     end
 
     it "should prepend [TRAINING] to the subject" do
-      mailer.test.subject.should == '[TRAINING] Test Mail'
+      expect(mailer.test.subject).to eq('[TRAINING] Test Mail')
     end
   end
 

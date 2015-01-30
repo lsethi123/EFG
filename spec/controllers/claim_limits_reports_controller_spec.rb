@@ -26,12 +26,12 @@ describe ClaimLimitsReportsController do
         end
 
         it "renders CSV loan data" do
-          response.content_type.should == 'text/csv'
+          expect(response.content_type).to eq('text/csv')
         end
 
         it "sets filename for CSV" do
           expected_filename = "lender_claim_limits_#{Date.current.strftime('%Y-%m-%d')}.csv"
-          response.headers['Content-Disposition'].should include(%Q(filename="#{expected_filename}"))
+          expect(response.headers['Content-Disposition']).to include(%Q(filename="#{expected_filename}"))
         end
       end
 
@@ -40,7 +40,7 @@ describe ClaimLimitsReportsController do
         let!(:inactive_lender) { FactoryGirl.create(:lender, :disabled) }
 
         it "includes all lenders in report" do
-          ClaimLimitCalculator.should_receive(:all_with_amount).with([active_lender, inactive_lender])
+          expect(ClaimLimitCalculator).to receive(:all_with_amount).with([active_lender, inactive_lender])
           dispatch
         end
       end

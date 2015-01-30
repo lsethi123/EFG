@@ -21,29 +21,29 @@ describe LoanStates do
     end
 
     it "should return loans grouped by state" do
-      loan_states.size.should == 2
-      loan_states.first.state.should == Loan::Guaranteed
-      loan_states.last.state.should == Loan::Demanded
+      expect(loan_states.size).to eq(2)
+      expect(loan_states.first.state).to eq(Loan::Guaranteed)
+      expect(loan_states.last.state).to eq(Loan::Demanded)
     end
 
     it "should have legacy sflg loan count" do
-      loan_states.first.legacy_sflg_loans_count.should == 1
-      loan_states.last.legacy_sflg_loans_count.should == 2
+      expect(loan_states.first.legacy_sflg_loans_count).to eq(1)
+      expect(loan_states.last.legacy_sflg_loans_count).to eq(2)
     end
 
     it "should have sflg loan count" do
-      loan_states.first.sflg_loans_count.should == 1
-      loan_states.last.sflg_loans_count.should == 0
+      expect(loan_states.first.sflg_loans_count).to eq(1)
+      expect(loan_states.last.sflg_loans_count).to eq(0)
     end
 
     it "should have efg loan count" do
-      loan_states.first.efg_loans_count.should == 1
-      loan_states.last.efg_loans_count.should == 2
+      expect(loan_states.first.efg_loans_count).to eq(1)
+      expect(loan_states.last.efg_loans_count).to eq(2)
     end
 
     it "should have total loans count" do
-      loan_states.first.total_loans.should == 3
-      loan_states.last.total_loans.should == 4
+      expect(loan_states.first.total_loans).to eq(3)
+      expect(loan_states.last.total_loans).to eq(4)
     end
   end
 

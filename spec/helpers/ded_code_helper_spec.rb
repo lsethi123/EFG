@@ -24,10 +24,10 @@ describe DedCodeHelper do
     }
 
     it "should return hash of DED codes suitable for select menu" do
-      grouped_ded_codes.should == {
+      expect(grouped_ded_codes).to eq({
         'Loss of Market' => [ ['A.10.10 - Competition', 'A.10.10'] ],
         'Living beyond means' => [ ['B.10.99 - Not classified', 'B.10.99'] ]
-      }
+      })
     end
   end
 

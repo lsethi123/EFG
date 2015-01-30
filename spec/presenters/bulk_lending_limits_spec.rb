@@ -6,49 +6,49 @@ describe BulkLendingLimits do
     let(:bulk_lending_limits) { FactoryGirl.build(:bulk_lending_limits) }
 
     it "should have a valid factory" do
-      bulk_lending_limits.should be_valid
+      expect(bulk_lending_limits).to be_valid
     end
 
     it "should be invalid without a phase" do
       bulk_lending_limits.scheme_or_phase_id = nil
-      bulk_lending_limits.should_not be_valid
+      expect(bulk_lending_limits).not_to be_valid
     end
 
     it 'requires a starts_on date' do
       bulk_lending_limits.starts_on = nil
-      bulk_lending_limits.should_not be_valid
+      expect(bulk_lending_limits).not_to be_valid
     end
 
     it 'requires a ends_on date' do
       bulk_lending_limits.ends_on = nil
-      bulk_lending_limits.should_not be_valid
+      expect(bulk_lending_limits).not_to be_valid
     end
 
     it 'requires a valid allocation_type_id' do
       bulk_lending_limits.allocation_type_id = ''
-      bulk_lending_limits.should_not be_valid
+      expect(bulk_lending_limits).not_to be_valid
       bulk_lending_limits.allocation_type_id = '99'
-      bulk_lending_limits.should_not be_valid
+      expect(bulk_lending_limits).not_to be_valid
       bulk_lending_limits.allocation_type_id = '1'
-      bulk_lending_limits.should be_valid
+      expect(bulk_lending_limits).to be_valid
     end
 
     it 'requires a lending_limit_name' do
       bulk_lending_limits.lending_limit_name = ''
-      bulk_lending_limits.should_not be_valid
+      expect(bulk_lending_limits).not_to be_valid
     end
 
     it 'requires ends_on to be after starts_on' do
       bulk_lending_limits.starts_on = Date.new(2012, 1, 2)
       bulk_lending_limits.ends_on = Date.new(2012, 1, 1)
-      bulk_lending_limits.should_not be_valid
+      expect(bulk_lending_limits).not_to be_valid
     end
 
     it 'requires valid lender lending limits' do
       lender = bulk_lending_limits.lenders.first
       lender.allocation = nil
       lender.selected = true
-      bulk_lending_limits.should_not be_valid
+      expect(bulk_lending_limits).not_to be_valid
     end
   end
 
@@ -102,8 +102,8 @@ describe BulkLendingLimits do
 
     it "should use the order_by_name scope on Lenders" do
       scope = double('scope')
-      Lender.should_receive(:active).and_return(scope)
-      scope.should_receive(:order_by_name).and_return([lender])
+      expect(Lender).to receive(:active).and_return(scope)
+      expect(scope).to receive(:order_by_name).and_return([lender])
 
       subject
     end
@@ -163,14 +163,14 @@ describe BulkLendingLimits do
       lending_limits = LendingLimit.all
 
       lending_limits.each do |lending_limit|
-        lending_limit.starts_on.should == Date.new(2012, 1, 1)
-        lending_limit.ends_on.should == Date.new(2012, 12, 31)
-        lending_limit.name.should == 'lending limit name'
-        lending_limit.allocation_type_id.should == 1
+        expect(lending_limit.starts_on).to eq(Date.new(2012, 1, 1))
+        expect(lending_limit.ends_on).to eq(Date.new(2012, 12, 31))
+        expect(lending_limit.name).to eq('lending limit name')
+        expect(lending_limit.allocation_type_id).to eq(1)
       end
 
-      lending_limits.map(&:lender).should =~ [lender2, lender3]
-      lending_limits.to_a.count(&:active?).should == 1
+      expect(lending_limits.map(&:lender)).to match_array([lender2, lender3])
+      expect(lending_limits.to_a.count(&:active?)).to eq(1)
     end
 
     it "should create lending limits for selected lenders only" do
@@ -180,7 +180,7 @@ describe BulkLendingLimits do
     end
 
     it "logs AdminAudit::LendingLimitCreated" do
-      AdminAudit.should_receive(:log).with(AdminAudit::LendingLimitCreated, instance_of(LendingLimit), user)
+      expect(AdminAudit).to receive(:log).with(AdminAudit::LendingLimitCreated, instance_of(LendingLimit), user)
       bulk_lending_limits.save
     end
 
@@ -195,7 +195,7 @@ describe BulkLendingLimits do
         lending_limits = LendingLimit.all
 
         lending_limits.each do |lending_limit|
-          lending_limit.phase.should be_nil
+          expect(lending_limit.phase).to be_nil
         end
       end
     end

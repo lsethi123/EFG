@@ -5,7 +5,7 @@ describe AdminAudit do
     let(:admin_audit) { FactoryGirl.build(:admin_audit) }
 
     it 'has a valid factory' do
-      admin_audit.should be_valid
+      expect(admin_audit).to be_valid
     end
 
     it 'strictly requires action' do

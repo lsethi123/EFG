@@ -14,7 +14,7 @@ describe LoanAlerts::NotClosedLoanAlert do
     let!(:loan7) { FactoryGirl.create(:loan, :efg,  :guaranteed,                 maturity_date: 10.weeks.ago.to_date) }
 
     it 'fetches the loans from both guaranteed and offered, and sorts by maturity date' do
-      not_closed.loans.should == [loan1, loan2, loan3, loan4, loan5, loan6]
+      expect(not_closed.loans).to eq([loan1, loan2, loan3, loan4, loan5, loan6])
     end
   end
 end

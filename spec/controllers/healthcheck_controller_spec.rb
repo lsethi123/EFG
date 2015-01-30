@@ -4,7 +4,7 @@ describe HealthcheckController do
   describe "#index" do
     it "should return success" do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should fail when the database isn't available" do

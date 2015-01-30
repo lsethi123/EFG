@@ -9,7 +9,7 @@ describe 'data correction' do
 
       it "is visible when #{state}" do
         visit loan_path(loan)
-        page.should have_link('Data Correction')
+        expect(page).to have_link('Data Correction')
       end
     end
   end

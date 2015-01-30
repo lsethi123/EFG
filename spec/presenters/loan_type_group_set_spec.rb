@@ -7,14 +7,14 @@ describe LoanTypeGroupSet do
     describe ".for" do
       it "returns a Group subclass with a method defined for the objects name" do
         group = LoanTypeGroupSet::Group.for(:loans).new('SFLG Loans')
-        group.should respond_to(:loans)
+        expect(group).to respond_to(:loans)
       end
     end
 
     describe ".new" do
       it "initializes with a name" do
         group = LoanTypeGroupSet::Group.new('Legacy SFLG Loans')
-        group.name.should == 'Legacy SFLG Loans'
+        expect(group.name).to eq('Legacy SFLG Loans')
       end
     end
 
@@ -24,7 +24,7 @@ describe LoanTypeGroupSet do
       it "adds the the defined objects method" do
         recovery = double('Recovery')
         group << recovery
-        group.recoveries.should == [recovery]
+        expect(group.recoveries).to eq([recovery])
       end
     end
   end
@@ -47,21 +47,21 @@ describe LoanTypeGroupSet do
       expected_group_names << 'EFG Loans – Unknown Phase'
 
       group_names = set.groups.map(&:name).to_a
-      group_names.should == expected_group_names
+      expect(group_names).to eq(expected_group_names)
     end
 
     it "returns groups that respond to the objects name" do
       set.groups.each do |group|
-        group.should respond_to(:loans)
+        expect(group).to respond_to(:loans)
       end
     end
 
     context "without a mapper" do
       it "filters the objects into the appropriate groups" do
         groups = set.to_a
-        groups[0].loans.should =~ [legacy_loan_1, legacy_loan_2]
-        groups[1].loans.should =~ [sflg_loan_1, sflg_loan_2]
-        groups[2].loans.should =~ [efg_loan_1, efg_loan_2]
+        expect(groups[0].loans).to match_array([legacy_loan_1, legacy_loan_2])
+        expect(groups[1].loans).to match_array([sflg_loan_1, sflg_loan_2])
+        expect(groups[2].loans).to match_array([efg_loan_1, efg_loan_2])
       end
     end
 
@@ -78,9 +78,9 @@ describe LoanTypeGroupSet do
 
       it "filters the objects into the groups, using the mapper to determine the loan" do
         groups = set.to_a
-        groups[0].recoveries.should =~ [legacy_recovery_1, legacy_recovery_2]
-        groups[1].recoveries.should =~ [sflg_recovery_1, sflg_recovery_2]
-        groups[2].recoveries.should =~ [efg_recovery_1, efg_recovery_2]
+        expect(groups[0].recoveries).to match_array([legacy_recovery_1, legacy_recovery_2])
+        expect(groups[1].recoveries).to match_array([sflg_recovery_1, sflg_recovery_2])
+        expect(groups[2].recoveries).to match_array([efg_recovery_1, efg_recovery_2])
       end
     end
   end

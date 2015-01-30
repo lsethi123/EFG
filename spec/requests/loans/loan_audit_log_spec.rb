@@ -22,23 +22,23 @@ describe 'loan audit log' do
     click_link "View Audit Log"
 
     within "#loan_state_change0" do
-      page.should have_content('Check Eligibility')
-      page.should have_content(current_user.name)
+      expect(page).to have_content('Check Eligibility')
+      expect(page).to have_content(current_user.name)
     end
 
     within "#loan_state_change1" do
-      page.should have_content(LoanEvent::Complete.name)
-      page.should have_content(another_user.name)
+      expect(page).to have_content(LoanEvent::Complete.name)
+      expect(page).to have_content(another_user.name)
     end
 
     within "#loan_state_change2" do
-      page.should have_content(LoanEvent::OfferSchemeFacility.name)
-      page.should have_content(current_user.name)
+      expect(page).to have_content(LoanEvent::OfferSchemeFacility.name)
+      expect(page).to have_content(current_user.name)
     end
 
     within "#loan_state_change3" do
-      page.should have_content(LoanEvent::Guaranteed.name)
-      page.should have_content(another_user.name)
+      expect(page).to have_content(LoanEvent::Guaranteed.name)
+      expect(page).to have_content(another_user.name)
     end
   end
 

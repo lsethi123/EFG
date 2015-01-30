@@ -11,12 +11,12 @@ describe RepaymentDurationLoanChange do
 
       it 'is required' do
         presenter.added_months = nil
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       it 'must not be zero' do
         presenter.added_months = 0
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       [
@@ -31,10 +31,10 @@ describe RepaymentDurationLoanChange do
 
           it 'ensures added_months are in valid chunks' do
             presenter.added_months = 2
-            presenter.should_not be_valid
+            expect(presenter).not_to be_valid
 
             presenter.added_months = repayment_frequency.months_per_repayment_period
-            presenter.should be_valid
+            expect(presenter).to be_valid
           end
         end
       end
@@ -50,7 +50,7 @@ describe RepaymentDurationLoanChange do
 
           it 'works' do
             presenter.added_months = 2
-            presenter.should be_valid
+            expect(presenter).to be_valid
           end
         end
       end
@@ -72,10 +72,10 @@ describe RepaymentDurationLoanChange do
 
         it 'must be positive' do
           presenter.added_months = -18
-          presenter.should_not be_valid
+          expect(presenter).not_to be_valid
 
           presenter.added_months = -17
-          presenter.should be_valid
+          expect(presenter).to be_valid
         end
       end
     end
@@ -100,20 +100,20 @@ describe RepaymentDurationLoanChange do
 
           it 'must be more than zero months' do
             presenter.added_months = -60
-            presenter.should_not be_valid
+            expect(presenter).not_to be_valid
           end
 
           it 'must be at least 3 months' do
             presenter.added_months = -58
-            presenter.should_not be_valid
+            expect(presenter).not_to be_valid
           end
 
           it 'must be no more than 120 months' do
             presenter.added_months = 61
-            presenter.should_not be_valid
+            expect(presenter).not_to be_valid
 
             presenter.added_months = 60
-            presenter.should be_valid
+            expect(presenter).to be_valid
           end
         end
 
@@ -122,23 +122,23 @@ describe RepaymentDurationLoanChange do
 
           it 'must be more than zero months' do
             presenter.added_months = -60
-            presenter.should_not be_valid
+            expect(presenter).not_to be_valid
           end
 
           it 'must be at least 24 months' do
             presenter.added_months = -37
-            presenter.should_not be_valid
+            expect(presenter).not_to be_valid
 
             presenter.added_months = -36
-            presenter.should be_valid
+            expect(presenter).to be_valid
           end
 
           it 'must be no more than 120 months' do
             presenter.added_months = 61
-            presenter.should_not be_valid
+            expect(presenter).not_to be_valid
 
             presenter.added_months = 60
-            presenter.should be_valid
+            expect(presenter).to be_valid
           end
         end
 
@@ -147,7 +147,7 @@ describe RepaymentDurationLoanChange do
 
           it 'must be more than zero months' do
             presenter.added_months = -60
-            presenter.should_not be_valid
+            expect(presenter).not_to be_valid
           end
         end
       end
@@ -225,49 +225,49 @@ describe RepaymentDurationLoanChange do
 
       it 'creates a LoanChange and updates the loan' do
         presenter.added_months = 3
-        presenter.save.should == true
+        expect(presenter.save).to eq(true)
 
-        loan_change.old_maturity_date.should == Date.new(2015, 3, 2)
-        loan_change.maturity_date.should == Date.new(2015, 6, 2)
-        loan_change.old_repayment_duration.should == 60
-        loan_change.repayment_duration.should == 63
-        loan_change.created_by.should == user
+        expect(loan_change.old_maturity_date).to eq(Date.new(2015, 3, 2))
+        expect(loan_change.maturity_date).to eq(Date.new(2015, 6, 2))
+        expect(loan_change.old_repayment_duration).to eq(60)
+        expect(loan_change.repayment_duration).to eq(63)
+        expect(loan_change.created_by).to eq(user)
 
         loan.reload
-        loan.repayment_duration.total_months.should == 63
-        loan.maturity_date.should == Date.new(2015, 6, 2)
-        loan.modified_by.should == user
+        expect(loan.repayment_duration.total_months).to eq(63)
+        expect(loan.maturity_date).to eq(Date.new(2015, 6, 2))
+        expect(loan.modified_by).to eq(user)
 
         premium_schedule = loan.premium_schedules.last!
-        premium_schedule.premium_cheque_month.should == '06/2013'
-        premium_schedule.repayment_duration.should == 24
+        expect(premium_schedule.premium_cheque_month).to eq('06/2013')
+        expect(premium_schedule.repayment_duration).to eq(24)
       end
 
       it 'stores the correct change_type when extending' do
         presenter.added_months = 3
-        presenter.save.should == true
+        expect(presenter.save).to eq(true)
 
-        loan_change.change_type.should == ChangeType::ExtendTerm
+        expect(loan_change.change_type).to eq(ChangeType::ExtendTerm)
       end
 
       it 'stores the correct change_type when decreasing' do
         presenter.added_months = -3
-        presenter.save.should == true
+        expect(presenter.save).to eq(true)
 
-        loan_change.change_type.should == ChangeType::DecreaseTerm
+        expect(loan_change.change_type).to eq(ChangeType::DecreaseTerm)
       end
     end
 
     context 'failure' do
       before do
         presenter.added_months = nil
-        presenter.save.should == false
+        expect(presenter.save).to eq(false)
       end
 
       it 'does not update loan' do
         loan.reload
-        loan.repayment_duration.total_months.should == 60
-        loan.maturity_date.should == Date.new(2015, 3, 2)
+        expect(loan.repayment_duration.total_months).to eq(60)
+        expect(loan.maturity_date).to eq(Date.new(2015, 3, 2))
       end
     end
   end

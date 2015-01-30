@@ -19,6 +19,6 @@ describe Phase5StateAidCalculator do
   let(:state_aid_calculator) { Phase5StateAidCalculator.new(loan) }
 
   it 'calculates state aid in EUR' do
-    state_aid_calculator.state_aid_eur.should == Money.new(24_962_50, 'EUR')
+    expect(state_aid_calculator.state_aid_eur).to eq(Money.new(24_962_50, 'EUR'))
   end
 end

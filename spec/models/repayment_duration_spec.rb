@@ -10,13 +10,13 @@ describe RepaymentDuration do
 
       describe '#min_months' do
         it "should return minimum number of loans months based on loan category minimum term months" do
-          repayment_duration.min_months.should == 3
+          expect(repayment_duration.min_months).to eq(3)
         end
       end
 
       describe '#max_months' do
         it "should return maximum number of loans months based on loan category minimum term months" do
-          repayment_duration.max_months.should == 24
+          expect(repayment_duration.max_months).to eq(24)
         end
       end
     end
@@ -29,13 +29,13 @@ describe RepaymentDuration do
       context 'without loan category' do
         describe '#min_months' do
           it "should return default minimum number of loans months for SFLG loan" do
-            repayment_duration.min_months.should == 24
+            expect(repayment_duration.min_months).to eq(24)
           end
         end
 
         describe '#max_months' do
           it "should return default maximum number of loans months for SFLG loan" do
-            repayment_duration.max_months.should == 120
+            expect(repayment_duration.max_months).to eq(120)
           end
         end
       end
@@ -47,13 +47,13 @@ describe RepaymentDuration do
       context 'without loan category' do
         describe '#min_months' do
           it "should return default minimum number of loans months for EFG loan" do
-            repayment_duration.min_months.should == 3
+            expect(repayment_duration.min_months).to eq(3)
           end
         end
 
         describe '#max_months' do
           it "should return default maximum number of loans months for SFLG loan" do
-            repayment_duration.max_months.should == 120
+            expect(repayment_duration.max_months).to eq(120)
           end
         end
       end
@@ -65,13 +65,13 @@ describe RepaymentDuration do
 
     describe '#min_months' do
       it "should return 0 transferred loans have no start date limit" do
-        repayment_duration.min_months.should == 0
+        expect(repayment_duration.min_months).to eq(0)
       end
     end
 
     describe '#max_months' do
       it "should return default maximum number of loans months for EFG loan" do
-        repayment_duration.max_months.should == 120
+        expect(repayment_duration.max_months).to eq(120)
       end
     end
   end
@@ -86,7 +86,7 @@ describe RepaymentDuration do
       end
 
       it "should return the number of months from the initial draw date to the maturity date" do
-        repayment_duration.months_between_draw_date_and_maturity_date.should eql(97)
+        expect(repayment_duration.months_between_draw_date_and_maturity_date).to eql(97)
       end
     end
 
@@ -98,7 +98,7 @@ describe RepaymentDuration do
       end
 
       it "should return the number of months from the initial draw date to the maturity date" do
-        repayment_duration.months_between_draw_date_and_maturity_date.should eql(12)
+        expect(repayment_duration.months_between_draw_date_and_maturity_date).to eql(12)
       end
     end
 
@@ -110,7 +110,7 @@ describe RepaymentDuration do
       end
 
       it "should return the number of months from the initial draw date to the maturity date" do
-        repayment_duration.months_between_draw_date_and_maturity_date.should eql(13)
+        expect(repayment_duration.months_between_draw_date_and_maturity_date).to eql(13)
       end
     end
 
@@ -122,7 +122,7 @@ describe RepaymentDuration do
       end
 
       it "should return the number of months from the initial draw date to the maturity date" do
-        repayment_duration.months_between_draw_date_and_maturity_date.should eql(12)
+        expect(repayment_duration.months_between_draw_date_and_maturity_date).to eql(12)
       end
     end
   end

@@ -24,7 +24,7 @@ describe LoanTransfer::Sflg do
 
     it 'must have a facility letter date' do
       loan_transfer.facility_letter_date = nil
-      loan_transfer.should_not be_valid
+      expect(loan_transfer).not_to be_valid
     end
 
   end
@@ -50,24 +50,24 @@ describe LoanTransfer::Sflg do
       fields_to_compare = Loan.column_names - fields_not_copied
 
       fields_to_compare.each do |field|
-        original_loan.send(field).should eql(new_loan.send(field)), "#{field} from transferred loan does not match #{field} from original loan"
+        expect(original_loan.send(field)).to eql(new_loan.send(field)), "#{field} from transferred loan does not match #{field} from original loan"
       end
     end
 
     it 'should create a new loan state change record for the transferred loan' do
-      original_loan.state_changes.count.should == 1
+      expect(original_loan.state_changes.count).to eq(1)
 
       state_change = original_loan.state_changes.last
-      state_change.event.should == LoanEvent::Transfer
-      state_change.state.should == Loan::RepaidFromTransfer
+      expect(state_change.event).to eq(LoanEvent::Transfer)
+      expect(state_change.state).to eq(Loan::RepaidFromTransfer)
     end
 
     it 'should create a new loan state change record for the newly created loan' do
-      new_loan.state_changes.count.should == 1
+      expect(new_loan.state_changes.count).to eq(1)
 
       state_change = new_loan.state_changes.last
-      state_change.event.should == LoanEvent::Transfer
-      state_change.state.should == Loan::Incomplete
+      expect(state_change.event).to eq(LoanEvent::Transfer)
+      expect(state_change.state).to eq(Loan::Incomplete)
     end
 
   end

@@ -13,7 +13,7 @@ describe 'agreed draw' do
 
     it 'does not include the reprofile draws option' do
       visit loan_path(loan)
-      page.should_not have_content('Record Agreed Draw')
+      expect(page).not_to have_content('Record Agreed Draw')
     end
   end
 
@@ -30,12 +30,12 @@ describe 'agreed draw' do
       click_button 'Submit'
 
       loan_change = loan.loan_changes.last!
-      loan_change.change_type.should == ChangeType::RecordAgreedDraw
-      loan_change.date_of_change.should == Date.new(2011, 12, 1)
-      loan_change.amount_drawn.should == Money.new(12_345_67)
+      expect(loan_change.change_type).to eq(ChangeType::RecordAgreedDraw)
+      expect(loan_change.date_of_change).to eq(Date.new(2011, 12, 1))
+      expect(loan_change.amount_drawn).to eq(Money.new(12_345_67))
 
       loan.reload
-      loan.modified_by.should == current_user
+      expect(loan.modified_by).to eq(current_user)
     end
 
     it 'does not continue with invalid values' do

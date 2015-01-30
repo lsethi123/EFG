@@ -24,11 +24,11 @@ describe 'loan cancel' do
       click_button 'Submit'
 
       loan = Loan.last
-      loan.state.should == Loan::Cancelled
-      loan.cancelled_on.should == Date.current
-      loan.cancelled_reason_id.should == 4
-      loan.cancelled_comment.should == 'No comment'
-      loan.modified_by.should == current_user
+      expect(loan.state).to eq(Loan::Cancelled)
+      expect(loan.cancelled_on).to eq(Date.current)
+      expect(loan.cancelled_reason_id).to eq(4)
+      expect(loan.cancelled_comment).to eq('No comment')
+      expect(loan.modified_by).to eq(current_user)
 
       should_log_loan_state_change(loan, Loan::Cancelled, 3, current_user)
     end
@@ -38,13 +38,13 @@ describe 'loan cancel' do
     visit loan_path(loan)
     click_link 'Cancel Loan'
 
-    loan.state.should == Loan::Eligible
+    expect(loan.state).to eq(Loan::Eligible)
     expect {
       click_button 'Submit'
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == loan_cancel_path(loan)
+    expect(current_path).to eq(loan_cancel_path(loan))
   end
 
   private

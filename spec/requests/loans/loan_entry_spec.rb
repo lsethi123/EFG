@@ -22,26 +22,26 @@ describe 'loan entry' do
 
       loan = Loan.last
 
-      current_path.should == complete_loan_entry_path(loan)
+      expect(current_path).to eq(complete_loan_entry_path(loan))
 
-      loan.state.should == Loan::Completed
+      expect(loan.state).to eq(Loan::Completed)
       expect(loan.declaration_signed).to eql(true)
-      loan.business_name.should == 'Widgets Ltd.'
-      loan.trading_name.should == 'Brilliant Widgets'
-      loan.company_registration.should == '0123456789'
-      loan.postcode.should == 'N8 4HF'
-      loan.sortcode.should == '03-12-45'
-      loan.lender_reference.should == 'lenderref1'
-      loan.generic1.should == 'Generic 1'
-      loan.generic2.should == 'Generic 2'
-      loan.generic3.should == 'Generic 3'
-      loan.generic4.should == 'Generic 4'
-      loan.generic5.should == 'Generic 5'
-      loan.interest_rate_type.should == InterestRateType.find(1)
-      loan.interest_rate.should == 2.25
-      loan.fees.should == Money.new(12345)
-      loan.modified_by.should == current_user
-      loan.state_aid.should == Money.new(794_98, 'EUR')
+      expect(loan.business_name).to eq('Widgets Ltd.')
+      expect(loan.trading_name).to eq('Brilliant Widgets')
+      expect(loan.company_registration).to eq('0123456789')
+      expect(loan.postcode).to eq('N8 4HF')
+      expect(loan.sortcode).to eq('03-12-45')
+      expect(loan.lender_reference).to eq('lenderref1')
+      expect(loan.generic1).to eq('Generic 1')
+      expect(loan.generic2).to eq('Generic 2')
+      expect(loan.generic3).to eq('Generic 3')
+      expect(loan.generic4).to eq('Generic 4')
+      expect(loan.generic5).to eq('Generic 5')
+      expect(loan.interest_rate_type).to eq(InterestRateType.find(1))
+      expect(loan.interest_rate).to eq(2.25)
+      expect(loan.fees).to eq(Money.new(12345))
+      expect(loan.modified_by).to eq(current_user)
+      expect(loan.state_aid).to eq(Money.new(794_98, 'EUR'))
 
       should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
     end
@@ -57,20 +57,20 @@ describe 'loan entry' do
 
       loan = Loan.last
 
-      current_path.should == complete_loan_entry_path(loan)
-      loan.state_aid.should == Money.new(3_071_08, 'EUR')
+      expect(current_path).to eq(complete_loan_entry_path(loan))
+      expect(loan.state_aid).to eq(Money.new(3_071_08, 'EUR'))
     end
   end
 
   it 'does not continue with invalid values' do
     visit new_loan_entry_path(loan)
 
-    loan.state.should == Loan::Eligible
+    expect(loan.state).to eq(Loan::Eligible)
     expect {
       click_button 'Submit'
     }.not_to change(loan, :state)
 
-    current_path.should == loan_entry_path(loan)
+    expect(current_path).to eq(loan_entry_path(loan))
   end
 
   it 'saves the loan as Incomplete when it is invalid' do
@@ -79,10 +79,10 @@ describe 'loan entry' do
     click_button 'Save as Incomplete'
 
     loan.reload
-    loan.state.should == Loan::Incomplete
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Incomplete)
+    expect(loan.modified_by).to eq(current_user)
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
   end
 
   it 'progressing a loan from Incomplete to Completed' do
@@ -96,10 +96,10 @@ describe 'loan entry' do
 
     loan = Loan.last
 
-    current_path.should == complete_loan_entry_path(loan)
+    expect(current_path).to eq(complete_loan_entry_path(loan))
 
-    loan.state.should == Loan::Completed
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Completed)
+    expect(loan.modified_by).to eq(current_user)
   end
 
   it 'should show specific questions for loan category B' do
@@ -148,21 +148,21 @@ describe 'loan entry' do
     fill_in_valid_loan_entry_details_phase_5(loan)
 
     loan.reload
-    loan.state_aid.should == Money.new(3_071_08, 'EUR')
+    expect(loan.state_aid).to eq(Money.new(3_071_08, 'EUR'))
 
     fill_in "loan_entry_repayment_duration_months", with: loan.repayment_duration.total_months + 12
     click_button 'Submit'
 
-    page.should have_content("must be re-calculated when you change the loan term")
+    expect(page).to have_content("must be re-calculated when you change the loan term")
 
     calculate_state_aid(loan)
 
     click_button 'Submit'
 
     loan.reload
-    loan.state_aid.should == Money.new(2_616_10, 'EUR')
+    expect(loan.state_aid).to eq(Money.new(2_616_10, 'EUR'))
 
-    current_path.should == complete_loan_entry_path(loan)
+    expect(current_path).to eq(complete_loan_entry_path(loan))
   end
 
   context "when a sub-category is required" do
@@ -180,10 +180,10 @@ describe 'loan entry' do
       choose 'loan_entry_overdraft_maintained_true'
       click_button 'Submit'
 
-      current_path.should == complete_loan_entry_path(loan)
+      expect(current_path).to eq(complete_loan_entry_path(loan))
 
       loan.reload
-      loan.loan_sub_category_id.should == 3
+      expect(loan.loan_sub_category_id).to eq(3)
     end
   end
 
@@ -198,7 +198,7 @@ describe 'loan entry' do
     it "shows the correct state aid threshold in question text" do
       visit new_loan_entry_path(loan)
       expected_amount = Money.new(100_000_00, 'EUR').format(no_cents: true)
-      page.should have_content("no more than #{expected_amount}")
+      expect(page).to have_content("no more than #{expected_amount}")
     end
   end
 
@@ -220,11 +220,11 @@ describe 'loan entry' do
       ]
 
       field_names.all? do |field_name|
-        page.should have_css("#loan_entry_#{field_name}")
+        expect(page).to have_css("#loan_entry_#{field_name}")
       end
 
       (loan_category_fields - field_names).all? do |field_name|
-        page.should_not have_css("#loan_entry_#{field_name}")
+        expect(page).not_to have_css("#loan_entry_#{field_name}")
       end
     end
 

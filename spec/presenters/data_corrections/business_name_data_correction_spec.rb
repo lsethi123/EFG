@@ -5,12 +5,12 @@ describe BusinessNameDataCorrection do
     let(:presenter) { FactoryGirl.build(:business_name_data_correction) }
 
     it 'has a valid factory' do
-      presenter.should be_valid
+      expect(presenter).to be_valid
     end
 
     it 'requires a business_name' do
       presenter.business_name = ''
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
     end
   end
 
@@ -22,27 +22,27 @@ describe BusinessNameDataCorrection do
     context 'success' do
       it 'creates a DataCorrection and updates the loan' do
         presenter.business_name = 'Bar'
-        presenter.save.should == true
+        expect(presenter.save).to eq(true)
 
         data_correction = loan.data_corrections.last!
-        data_correction.created_by.should == user
-        data_correction.change_type.should == ChangeType::BusinessName
-        data_correction.business_name.should == 'Bar'
-        data_correction.old_business_name.should == 'Foo'
+        expect(data_correction.created_by).to eq(user)
+        expect(data_correction.change_type).to eq(ChangeType::BusinessName)
+        expect(data_correction.business_name).to eq('Bar')
+        expect(data_correction.old_business_name).to eq('Foo')
 
         loan.reload
-        loan.business_name.should == 'Bar'
-        loan.modified_by.should == user
+        expect(loan.business_name).to eq('Bar')
+        expect(loan.modified_by).to eq(user)
       end
     end
 
     context 'failure' do
       it 'does not update loan' do
         presenter.business_name = nil
-        presenter.save.should == false
+        expect(presenter.save).to eq(false)
         loan.reload
 
-        loan.business_name.should == 'Foo'
+        expect(loan.business_name).to eq('Foo')
       end
     end
   end

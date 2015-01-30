@@ -25,13 +25,13 @@ describe 'Change password' do
       click_button 'Update Password'
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserPasswordChanged
-      admin_audit.auditable.should == current_user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserPasswordChanged)
+      expect(admin_audit.auditable).to eq(current_user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
 
-      page.should have_content('Your password has been successfully changed')
-      page.current_url.should == root_url
+      expect(page).to have_content('Your password has been successfully changed')
+      expect(page.current_url).to eq(root_url)
 
       # sign in with new password
 
@@ -40,8 +40,8 @@ describe 'Change password' do
       fill_in 'user_password', with: new_password
       click_button 'Sign In'
 
-      page.should have_content(I18n.t('devise.sessions.signed_in'))
-      page.current_url.should == root_url
+      expect(page).to have_content(I18n.t('devise.sessions.signed_in'))
+      expect(page.current_url).to eq(root_url)
     end
 
     it "should not allow weak passwords" do
@@ -56,7 +56,7 @@ describe 'Change password' do
       fill_in "#{user_type}_password_confirmation", with: 'password'
       click_button 'Update Password'
 
-      page.should have_content(I18n.t('errors.messages.insufficient_entropy', entropy: 5, minimum_entropy: Devise::Models::Strengthened::MINIMUM_ENTROPY))
+      expect(page).to have_content(I18n.t('errors.messages.insufficient_entropy', entropy: 5, minimum_entropy: Devise::Models::Strengthened::MINIMUM_ENTROPY))
     end
 
     it "should not allow passwords to be changed to the same password" do
@@ -71,14 +71,14 @@ describe 'Change password' do
       fill_in "#{user_type}_password_confirmation", with: current_user.password
       click_button 'Update Password'
 
-      page.should have_content((I18n.t('errors.messages.taken_in_past')))
+      expect(page).to have_content((I18n.t('errors.messages.taken_in_past')))
     end
 
   end
 
   it 'cannot be accessed unless logged in' do
     visit edit_change_password_path
-    page.should have_content(I18n.t('devise.failure.unauthenticated'))
+    expect(page).to have_content(I18n.t('devise.failure.unauthenticated'))
   end
 
 end

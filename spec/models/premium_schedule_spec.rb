@@ -16,7 +16,7 @@ shared_examples_for 'a draw amount validator' do
       before { loan.amount = Money.new(8_000_00) }
 
       it 'is valid' do
-        subject.should be_valid
+        expect(subject).to be_valid
       end
     end
 
@@ -27,7 +27,7 @@ shared_examples_for 'a draw amount validator' do
       end
 
       it 'is valid' do
-        subject.should be_valid
+        expect(subject).to be_valid
       end
     end
   end
@@ -37,7 +37,7 @@ shared_examples_for 'a draw amount validator' do
 
     context 'and there are no nil draw amounts' do
       it 'is valid' do
-        subject.should be_valid
+        expect(subject).to be_valid
       end
     end
 
@@ -45,7 +45,7 @@ shared_examples_for 'a draw amount validator' do
       before { subject.fourth_draw_amount = nil }
 
       it 'is valid' do
-        subject.should be_valid
+        expect(subject).to be_valid
       end
     end
   end
@@ -55,7 +55,7 @@ shared_examples_for 'a draw amount validator' do
 
     context 'and there are no nil draw amounts' do
       it 'is not valid' do
-        subject.should_not be_valid
+        expect(subject).not_to be_valid
       end
     end
 
@@ -63,7 +63,7 @@ shared_examples_for 'a draw amount validator' do
       before { subject.fourth_draw_amount = nil }
 
       it 'is not valid' do
-        subject.should_not be_valid
+        expect(subject).not_to be_valid
       end
     end
   end
@@ -77,7 +77,7 @@ describe PremiumSchedule do
   describe 'validations' do
 
     it 'has a valid Factory' do
-      premium_schedule.should be_valid
+      expect(premium_schedule).to be_valid
     end
 
     it 'strictly requires a loan' do
@@ -94,40 +94,40 @@ describe PremiumSchedule do
     ).each do |attr|
       it "is invalid without #{attr}" do
         premium_schedule.send("#{attr}=", '')
-        premium_schedule.should_not be_valid
+        expect(premium_schedule).not_to be_valid
       end
     end
 
     it 'requires initial draw amount to be more than zero' do
       premium_schedule.initial_draw_amount = 0
-      premium_schedule.should_not be_valid
+      expect(premium_schedule).not_to be_valid
 
       premium_schedule.initial_draw_amount = 1
-      premium_schedule.should be_valid
+      expect(premium_schedule).to be_valid
     end
 
     it 'requires initial draw amount to be less than 9,999,999.99' do
       loan.amount = PremiumSchedule::MAX_INITIAL_DRAW
 
       premium_schedule.initial_draw_amount = PremiumSchedule::MAX_INITIAL_DRAW + Money.new(1)
-      premium_schedule.should_not be_valid
+      expect(premium_schedule).not_to be_valid
 
       premium_schedule.initial_draw_amount = PremiumSchedule::MAX_INITIAL_DRAW
-      premium_schedule.should be_valid
+      expect(premium_schedule).to be_valid
     end
 
     it 'requires an allowed calculation type' do
       premium_schedule.calc_type = nil
-      premium_schedule.should_not be_valid
+      expect(premium_schedule).not_to be_valid
 
       premium_schedule.calc_type = "Z"
-      premium_schedule.should_not be_valid
+      expect(premium_schedule).not_to be_valid
 
       premium_schedule.calc_type = PremiumSchedule::SCHEDULE_TYPE
-      premium_schedule.should be_valid
+      expect(premium_schedule).to be_valid
 
       premium_schedule.calc_type = PremiumSchedule::NOTIFIED_AID_TYPE
-      premium_schedule.should be_valid
+      expect(premium_schedule).to be_valid
     end
 
     %w(
@@ -138,21 +138,21 @@ describe PremiumSchedule do
     ).each do |attr|
       it "does not require #{attr} if not set" do
         premium_schedule.initial_capital_repayment_holiday = nil
-        premium_schedule.should be_valid
+        expect(premium_schedule).to be_valid
       end
 
       it "requires #{attr} to be 0 or greater if set" do
         premium_schedule.initial_capital_repayment_holiday = -1
-        premium_schedule.should_not be_valid
+        expect(premium_schedule).not_to be_valid
         premium_schedule.initial_capital_repayment_holiday = 0
-        premium_schedule.should be_valid
+        expect(premium_schedule).to be_valid
       end
 
       it "requires #{attr} to be 120 or less if set" do
         premium_schedule.initial_capital_repayment_holiday = 121
-        premium_schedule.should_not be_valid
+        expect(premium_schedule).not_to be_valid
         premium_schedule.initial_capital_repayment_holiday = 120
-        premium_schedule.should be_valid
+        expect(premium_schedule).to be_valid
       end
     end
 
@@ -170,7 +170,7 @@ describe PremiumSchedule do
 
       it "does not require initial draw year" do
         rescheduled_premium_schedule.initial_draw_year = nil
-        rescheduled_premium_schedule.should be_valid
+        expect(rescheduled_premium_schedule).to be_valid
       end
 
       %w(
@@ -180,47 +180,47 @@ describe PremiumSchedule do
       ).each do |attr|
         it "is invalid without #{attr}" do
           rescheduled_premium_schedule.send("#{attr}=", '')
-          rescheduled_premium_schedule.should_not be_valid
+          expect(rescheduled_premium_schedule).not_to be_valid
         end
       end
 
       it 'must have a correctly formatted premium_cheque_month' do
         rescheduled_premium_schedule.premium_cheque_month = 'blah'
-        rescheduled_premium_schedule.should_not be_valid
+        expect(rescheduled_premium_schedule).not_to be_valid
         rescheduled_premium_schedule.premium_cheque_month = '1/12'
-        rescheduled_premium_schedule.should_not be_valid
+        expect(rescheduled_premium_schedule).not_to be_valid
         rescheduled_premium_schedule.premium_cheque_month = '29/2015'
-        rescheduled_premium_schedule.should_not be_valid
+        expect(rescheduled_premium_schedule).not_to be_valid
         rescheduled_premium_schedule.premium_cheque_month = '09/2015'
-        rescheduled_premium_schedule.should be_valid
+        expect(rescheduled_premium_schedule).to be_valid
       end
 
       it "is not valid when premium cheque month is in the past" do
         rescheduled_premium_schedule.premium_cheque_month = "03/2012"
-        rescheduled_premium_schedule.should_not be_valid
+        expect(rescheduled_premium_schedule).not_to be_valid
       end
 
       it "is not valid when premium cheque month is current month" do
         rescheduled_premium_schedule.premium_cheque_month = Date.current.strftime('%m/%Y')
-        rescheduled_premium_schedule.should_not be_valid
+        expect(rescheduled_premium_schedule).not_to be_valid
       end
 
       it "is valid when premium cheque month is next month" do
         rescheduled_premium_schedule.premium_cheque_month = Date.current.next_month.strftime('%m/%Y')
-        rescheduled_premium_schedule.should be_valid
+        expect(rescheduled_premium_schedule).to be_valid
       end
 
       it "is valid when premium cheque month number is less than current month but in a future year" do
         Timecop.freeze(Date.new(2012, 8, 23)) do
           rescheduled_premium_schedule.premium_cheque_month = "07/2013"
-          rescheduled_premium_schedule.should be_valid
+          expect(rescheduled_premium_schedule).to be_valid
         end
       end
 
       it "is valid with differing values for loan amount and total draw amounth" do
         loan.amount = 10_000_00
         rescheduled_premium_schedule.initial_draw_amount = 10_00
-        rescheduled_premium_schedule.should be_valid
+        expect(rescheduled_premium_schedule).to be_valid
       end
     end
   end
@@ -229,9 +229,9 @@ describe PremiumSchedule do
     let(:premium_schedule) { FactoryGirl.build(:premium_schedule) }
 
     it "should be set before validation on create" do
-      premium_schedule.seq.should be_nil
+      expect(premium_schedule.seq).to be_nil
       premium_schedule.valid?
-      premium_schedule.seq.should == 0
+      expect(premium_schedule.seq).to eq(0)
     end
 
     it "should increment by 1 when state aid calculation for the same loan exists" do
@@ -240,7 +240,7 @@ describe PremiumSchedule do
 
       new_premium_schedule.valid?
 
-      new_premium_schedule.seq.should == 1
+      expect(new_premium_schedule.seq).to eq(1)
     end
   end
 
@@ -249,12 +249,12 @@ describe PremiumSchedule do
 
     it "should return true when reschedule calculation type" do
       premium_schedule.calc_type = PremiumSchedule::RESCHEDULE_TYPE
-      premium_schedule.should be_reschedule
+      expect(premium_schedule).to be_reschedule
     end
 
     it "should return false when schedule calculation type" do
       premium_schedule.calc_type = PremiumSchedule::SCHEDULE_TYPE
-      premium_schedule.should_not be_reschedule
+      expect(premium_schedule).not_to be_reschedule
     end
   end
 
@@ -268,7 +268,7 @@ describe PremiumSchedule do
 
       it 'calculates total premiums for legacy premium schedules' do
         premium_schedule.loan.premium_rate = 2.0
-        premium_schedule.total_premiums.should == Money.new(10_250_00)
+        expect(premium_schedule.total_premiums).to eq(Money.new(10_250_00))
       end
     end
 
@@ -285,12 +285,12 @@ describe PremiumSchedule do
       end
 
       it 'calculates total premiums for non-legacy premium schedules' do
-        premium_schedule.total_premiums.should == Money.new(10_250_00)
+        expect(premium_schedule.total_premiums).to eq(Money.new(10_250_00))
       end
 
       it 'returns a Money when repayment duration is 0' do
         premium_schedule.repayment_duration = 0
-        premium_schedule.total_premiums.should == Money.new(0)
+        expect(premium_schedule.total_premiums).to eq(Money.new(0))
       end
     end
   end
@@ -300,7 +300,7 @@ describe PremiumSchedule do
       let(:premium_schedule) { FactoryGirl.build(:premium_schedule, repayment_duration: 120) }
 
       it 'should not include first quarter when standard state aid calculation' do
-        premium_schedule.subsequent_premiums.size.should == 39
+        expect(premium_schedule.subsequent_premiums.size).to eq(39)
       end
     end
 
@@ -308,7 +308,7 @@ describe PremiumSchedule do
       let(:premium_schedule) { FactoryGirl.build(:rescheduled_premium_schedule, repayment_duration: 120) }
 
       it 'should include first quarter when rescheduled state aid calculation' do
-        premium_schedule.subsequent_premiums.size.should == 40
+        expect(premium_schedule.subsequent_premiums.size).to eq(40)
       end
     end
   end
@@ -329,7 +329,7 @@ describe PremiumSchedule do
         }
 
         it 'returns the correct total' do
-          premium_schedule.total_subsequent_premiums.should == Money.new(75_00)
+          expect(premium_schedule.total_subsequent_premiums).to eq(Money.new(75_00))
         end
       end
 
@@ -343,7 +343,7 @@ describe PremiumSchedule do
 
         it 'returns the correct total' do
           # Use eql since we explicitly want a Money object
-          premium_schedule.total_subsequent_premiums.should eql(Money.new(0))
+          expect(premium_schedule.total_subsequent_premiums).to eql(Money.new(0))
         end
       end
     end
@@ -356,19 +356,19 @@ describe PremiumSchedule do
     it 'returns a formatted date string 3 months from the initial draw date ' do
       loan.initial_draw_change.update_attribute :date_of_change, Date.new(2012, 2, 24)
 
-      premium_schedule.second_premium_collection_month.should == '05/2012'
+      expect(premium_schedule.second_premium_collection_month).to eq('05/2012')
     end
 
     it 'deals with end of month dates' do
       loan.initial_draw_change.update_attribute :date_of_change, Date.new(2011, 11, 30)
 
-      premium_schedule.second_premium_collection_month.should == '02/2012'
+      expect(premium_schedule.second_premium_collection_month).to eq('02/2012')
     end
 
     it 'returns nil if there is no initial draw date' do
       LoanModification.delete_all
 
-      premium_schedule.second_premium_collection_month.should be_nil
+      expect(premium_schedule.second_premium_collection_month).to be_nil
     end
   end
 
@@ -381,7 +381,7 @@ describe PremiumSchedule do
       }
 
       it 'returns the first premium amount' do
-        premium_schedule.initial_premium_cheque.should == premium_schedule.premiums.first
+        expect(premium_schedule.initial_premium_cheque).to eq(premium_schedule.premiums.first)
       end
     end
 
@@ -393,7 +393,7 @@ describe PremiumSchedule do
       }
 
       it 'returns 0 money' do
-        premium_schedule.initial_premium_cheque.should == Money.new(0)
+        expect(premium_schedule.initial_premium_cheque).to eq(Money.new(0))
       end
     end
   end
@@ -408,10 +408,10 @@ describe PremiumSchedule do
       }
 
       it 'returns an array containing one drawdown' do
-        drawdowns.size.should == 1
+        expect(drawdowns.size).to eq(1)
 
-        drawdowns[0].amount.should == Money.new(100_000_00)
-        drawdowns[0].month.should == 0
+        expect(drawdowns[0].amount).to eq(Money.new(100_000_00))
+        expect(drawdowns[0].month).to eq(0)
       end
     end
 
@@ -428,19 +428,19 @@ describe PremiumSchedule do
       }
 
       it 'returns an array containing all drawdowns' do
-        drawdowns.size.should == 4
+        expect(drawdowns.size).to eq(4)
 
-        drawdowns[0].amount.should == Money.new(100_000_00)
-        drawdowns[0].month.should == 0
+        expect(drawdowns[0].amount).to eq(Money.new(100_000_00))
+        expect(drawdowns[0].month).to eq(0)
 
-        drawdowns[1].amount.should == Money.new(75_000_00)
-        drawdowns[1].month.should == 2
+        expect(drawdowns[1].amount).to eq(Money.new(75_000_00))
+        expect(drawdowns[1].month).to eq(2)
 
-        drawdowns[2].amount.should == Money.new(50_000_00)
-        drawdowns[2].month.should == 4
+        expect(drawdowns[2].amount).to eq(Money.new(50_000_00))
+        expect(drawdowns[2].month).to eq(4)
 
-        drawdowns[3].amount.should == Money.new(25_000_00)
-        drawdowns[3].month.should == 6
+        expect(drawdowns[3].amount).to eq(Money.new(25_000_00))
+        expect(drawdowns[3].month).to eq(6)
       end
     end
   end
@@ -468,7 +468,7 @@ describe PremiumSchedule do
         }
 
         it 'returns the correct premium payments' do
-          premium_schedule.premiums.should == [
+          expect(premium_schedule.premiums).to eq([
             Money.new(47500),
             Money.new(66542),
             Money.new(62106),
@@ -485,7 +485,7 @@ describe PremiumSchedule do
             Money.new(13308),
             Money.new(8872),
             Money.new(4436),
-          ]
+          ])
         end
       end
 
@@ -499,12 +499,12 @@ describe PremiumSchedule do
         }
 
         it 'returns the correct premium payments, missing off the final one' do
-          premium_schedule.premiums.should == [
+          expect(premium_schedule.premiums).to eq([
             Money.new(18000),
             Money.new(14143),
             Money.new(10286),
             Money.new(6429),
-          ]
+          ])
         end
       end
     end
@@ -530,7 +530,7 @@ describe PremiumSchedule do
           it 'returns the correct premium payments' do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Quarterly.id
 
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(47500),
               Money.new(65625),
               Money.new(61250),
@@ -547,7 +547,7 @@ describe PremiumSchedule do
               Money.new(13125),
               Money.new(8750),
               Money.new(4375),
-            ]
+            ])
           end
         end
 
@@ -563,13 +563,13 @@ describe PremiumSchedule do
           it 'returns the correct premium payments (one more than the legacy calculation)' do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Quarterly.id
 
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(18000),
               Money.new(14143),
               Money.new(10286),
               Money.new(6429),
               Money.new(2571),
-            ]
+            ])
           end
         end
       end
@@ -594,7 +594,7 @@ describe PremiumSchedule do
           it 'returns the correct premium payments' do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Monthly.id
 
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(47500),
               Money.new(66542),
               Money.new(62106),
@@ -611,7 +611,7 @@ describe PremiumSchedule do
               Money.new(13308),
               Money.new(8872),
               Money.new(4436),
-            ]
+            ])
           end
         end
 
@@ -627,13 +627,13 @@ describe PremiumSchedule do
           it 'returns the correct premium payments (one more than the legacy calculation)' do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Monthly.id
 
-            premium_schedule.premiums.should == [
+            expect(premium_schedule.premiums).to eq([
               Money.new(18000),
               Money.new(14143),
               Money.new(10286),
               Money.new(6429),
               Money.new(2571),
-            ]
+            ])
           end
         end
       end
@@ -654,7 +654,7 @@ describe PremiumSchedule do
             }
 
             it 'returns the correct premium payments' do
-              premium_schedule.premiums.should == [
+              expect(premium_schedule.premiums).to eq([
                 Money.new(37500),
                 Money.new(37500),
                 Money.new(31250),
@@ -667,7 +667,7 @@ describe PremiumSchedule do
                 Money.new(12500),
                 Money.new(6250),
                 Money.new(6250),
-              ]
+              ])
             end
           end
 
@@ -682,7 +682,7 @@ describe PremiumSchedule do
             }
 
             it 'returns the correct premium payments' do
-              premium_schedule.premiums.should == [
+              expect(premium_schedule.premiums).to eq([
                 Money.new(25000),
                 Money.new(25000),
                 Money.new(25000),
@@ -695,7 +695,7 @@ describe PremiumSchedule do
                 Money.new(12500),
                 Money.new(6250),
                 Money.new(6250)
-              ]
+              ])
             end
           end
         end
@@ -717,7 +717,7 @@ describe PremiumSchedule do
             }
 
             it 'returns the correct premium payments' do
-              premium_schedule.premiums.should == [
+              expect(premium_schedule.premiums).to eq([
                 Money.new(125000),
                 Money.new(500000),
                 Money.new(375000),
@@ -726,7 +726,7 @@ describe PremiumSchedule do
                 Money.new(250000),
                 Money.new(125000),
                 Money.new(125000),
-              ]
+              ])
             end
           end
         end
@@ -748,7 +748,7 @@ describe PremiumSchedule do
             }
 
             it 'returns the correct premium payments' do
-              premium_schedule.premiums.should == [
+              expect(premium_schedule.premiums).to eq([
                 Money.new(175000),
                 Money.new(175000),
                 Money.new(175000),
@@ -757,7 +757,7 @@ describe PremiumSchedule do
                 Money.new(87500),
                 Money.new(87500),
                 Money.new(87500),
-              ]
+              ])
             end
           end
 
@@ -772,7 +772,7 @@ describe PremiumSchedule do
             }
 
             it 'returns the correct premium payments' do
-              premium_schedule.premiums.should == [
+              expect(premium_schedule.premiums).to eq([
                 Money.new(25000),
                 Money.new(25000),
                 Money.new(25000),
@@ -789,7 +789,7 @@ describe PremiumSchedule do
                 Money.new(12500),
                 Money.new(12500),
                 Money.new(12500)
-              ]
+              ])
             end
           end
         end
@@ -809,7 +809,7 @@ describe PremiumSchedule do
             }
 
             it 'returns the correct premium payments' do
-              premium_schedule.premiums.should == [
+              expect(premium_schedule.premiums).to eq([
                 Money.new(350000),
                 Money.new(400000),
                 Money.new(500000),
@@ -818,7 +818,7 @@ describe PremiumSchedule do
                 Money.new(250000),
                 Money.new(250000),
                 Money.new(250000),
-              ]
+              ])
             end
           end
         end
@@ -841,7 +841,7 @@ describe PremiumSchedule do
               }
 
               it 'returns the correct premium payments' do
-                premium_schedule.premiums.should == [
+                expect(premium_schedule.premiums).to eq([
                   Money.new(50000),
                   Money.new(150000),
                   Money.new(200000),
@@ -850,7 +850,7 @@ describe PremiumSchedule do
                   Money.new(100000),
                   Money.new(100000),
                   Money.new(100000),
-                ]
+                ])
               end
             end
 
@@ -866,7 +866,7 @@ describe PremiumSchedule do
               }
 
               it 'returns the correct premium payments' do
-                premium_schedule.premiums.should == [
+                expect(premium_schedule.premiums).to eq([
                   Money.new(85638),
                   Money.new(171275),
                   Money.new(171275),
@@ -890,7 +890,7 @@ describe PremiumSchedule do
                   Money.new(28546),
                   Money.new(28546),
                   Money.new(28546),
-                ]
+                ])
               end
             end
           end

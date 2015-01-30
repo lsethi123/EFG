@@ -9,7 +9,7 @@ describe UserManagementHelper do
       }
 
       it 'returns current_sign_in_at correctly formatted' do
-        most_recent_login_time(user).should == '01/02/2013 20:15:01'
+        expect(most_recent_login_time(user)).to eq('01/02/2013 20:15:01')
       end
     end
 
@@ -20,7 +20,7 @@ describe UserManagementHelper do
       }
 
       it 'returns nil' do
-        most_recent_login_time(user).should be_nil
+        expect(most_recent_login_time(user)).to be_nil
       end
     end
   end

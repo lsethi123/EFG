@@ -14,7 +14,7 @@ describe 'loan alerts' do
         visit root_path
         find('#not_closed_loan_alerts a.view-all').click
         first(:link, 'Export CSV').click
-        page.response_headers['Content-Type'].should include('text/csv')
+        expect(page.response_headers['Content-Type']).to include('text/csv')
       end
     end
   end

@@ -34,9 +34,9 @@ describe VerdeTransfer do
           subject { loan.state_changes.last }
 
           it do
-            subject.modified_by.should == system_user
-            subject.event.should == LoanEvent::EFGTransfer
-            subject.state.should == loan.state
+            expect(subject.modified_by).to eq(system_user)
+            expect(subject.event).to eq(LoanEvent::EFGTransfer)
+            expect(subject.state).to eq(loan.state)
           end
         end
       end
@@ -73,10 +73,10 @@ describe VerdeTransfer do
       end
 
       it 'assigns a matching lending limit from the new lender based on name' do
-        loan_1.lending_limit.should == new_lending_limit_1
-        loan_2.lending_limit.should == new_lending_limit_1
-        loan_3.lending_limit.should be_nil
-        loan_4.lending_limit.should be_nil
+        expect(loan_1.lending_limit).to eq(new_lending_limit_1)
+        expect(loan_2.lending_limit).to eq(new_lending_limit_1)
+        expect(loan_3.lending_limit).to be_nil
+        expect(loan_4.lending_limit).to be_nil
       end
     end
   end

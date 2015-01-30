@@ -8,7 +8,7 @@ describe 'Demanded Amount Data Correction' do
 
     it 'cannot change the demanded amount' do
       visit_data_corrections
-      page.should_not have_content('Demanded Amount')
+      expect(page).not_to have_content('Demanded Amount')
     end
   end
 
@@ -22,22 +22,22 @@ describe 'Demanded Amount Data Correction' do
       let(:loan) { FactoryGirl.create(:loan, :guaranteed, :demanded, lender: current_user.lender, dti_demand_outstanding: Money.new(1_000_00)) }
 
       it 'can update demanded_amount' do
-        page.should_not have_css('#data_correction_demanded_interest')
+        expect(page).not_to have_css('#data_correction_demanded_interest')
 
         fill_in 'demanded_amount', '2000'
         click_button 'Submit'
 
         data_correction = loan.data_corrections.last!
-        data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-        data_correction.dti_demand_out_amount.should == Money.new(2_000_00)
-        data_correction.change_type.should == ChangeType::DataCorrection
-        data_correction.date_of_change.should == Date.current
-        data_correction.modified_date.should == Date.current
-        data_correction.created_by.should == current_user
+        expect(data_correction.old_dti_demand_out_amount).to eq(Money.new(1_000_00))
+        expect(data_correction.dti_demand_out_amount).to eq(Money.new(2_000_00))
+        expect(data_correction.change_type).to eq(ChangeType::DataCorrection)
+        expect(data_correction.date_of_change).to eq(Date.current)
+        expect(data_correction.modified_date).to eq(Date.current)
+        expect(data_correction.created_by).to eq(current_user)
 
         loan.reload
-        loan.dti_demand_outstanding.should == Money.new(2_000_00)
-        loan.modified_by.should == current_user
+        expect(loan.dti_demand_outstanding).to eq(Money.new(2_000_00))
+        expect(loan.modified_by).to eq(current_user)
       end
     end
 
@@ -51,19 +51,19 @@ describe 'Demanded Amount Data Correction' do
           click_button 'Submit'
 
           data_correction = loan.data_corrections.last!
-          data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-          data_correction.dti_demand_out_amount.should == Money.new(2_000_00)
-          data_correction.old_dti_demand_interest.should == Money.new(100_00)
-          data_correction.dti_demand_interest.should == Money.new(1_000_00)
-          data_correction.change_type.should == ChangeType::DataCorrection
-          data_correction.date_of_change.should == Date.current
-          data_correction.modified_date.should == Date.current
-          data_correction.created_by.should == current_user
+          expect(data_correction.old_dti_demand_out_amount).to eq(Money.new(1_000_00))
+          expect(data_correction.dti_demand_out_amount).to eq(Money.new(2_000_00))
+          expect(data_correction.old_dti_demand_interest).to eq(Money.new(100_00))
+          expect(data_correction.dti_demand_interest).to eq(Money.new(1_000_00))
+          expect(data_correction.change_type).to eq(ChangeType::DataCorrection)
+          expect(data_correction.date_of_change).to eq(Date.current)
+          expect(data_correction.modified_date).to eq(Date.current)
+          expect(data_correction.created_by).to eq(current_user)
 
           loan.reload
-          loan.dti_demand_outstanding.should == Money.new(2_000_00)
-          loan.dti_interest.should == Money.new(1_000_00)
-          loan.modified_by.should == current_user
+          expect(loan.dti_demand_outstanding).to eq(Money.new(2_000_00))
+          expect(loan.dti_interest).to eq(Money.new(1_000_00))
+          expect(loan.modified_by).to eq(current_user)
         end
       end
     end

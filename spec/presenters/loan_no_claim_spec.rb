@@ -6,12 +6,12 @@ describe LoanNoClaim do
     let(:loan) { loan_no_claim.loan }
 
     it 'should have a valid factory' do
-      loan_no_claim.should be_valid
+      expect(loan_no_claim).to be_valid
     end
 
     it 'should be invalid without a no_claim date' do
       loan_no_claim.no_claim_on = ''
-      loan_no_claim.should_not be_valid
+      expect(loan_no_claim).not_to be_valid
     end
 
     it 'must have a no_claim_on gte last demand to borrower' do
@@ -19,7 +19,7 @@ describe LoanNoClaim do
       loan.save!
 
       loan_no_claim.no_claim_on = Date.new(2012, 6, 5)
-      loan_no_claim.should_not be_valid
+      expect(loan_no_claim).not_to be_valid
     end
   end
 end

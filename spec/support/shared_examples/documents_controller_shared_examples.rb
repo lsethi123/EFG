@@ -2,12 +2,12 @@ shared_examples_for "documents controller action" do
   it 'works with a loan from the same lender' do
     dispatch
 
-    response.should be_success
+    expect(response).to be_success
   end
 
   it 'renders PDF document' do
     dispatch
 
-    response.content_type.should == 'application/pdf'
+    expect(response.content_type).to eq('application/pdf')
   end
 end

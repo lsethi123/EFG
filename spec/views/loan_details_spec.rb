@@ -31,14 +31,14 @@ describe 'loans/details' do
       render
 
       # every loan displays loan entry details
-      rendered.should have_content(I18n.t("simple_form.labels.loan_entry.business_name"))
+      expect(rendered).to have_content(I18n.t("simple_form.labels.loan_entry.business_name"))
 
       visible_details.each do |key|
-        rendered.should have_content(I18n.t("simple_form.labels.#{key}"))
+        expect(rendered).to have_content(I18n.t("simple_form.labels.#{key}"))
       end
 
       not_visible_details.each do |key|
-        rendered.should_not have_content(I18n.t("simple_form.labels.#{key}"))
+        expect(rendered).not_to have_content(I18n.t("simple_form.labels.#{key}"))
       end
 
     end
@@ -180,7 +180,7 @@ describe 'loans/details' do
       loan.invoice = nil
       assign(:loan, loan)
       render
-      rendered.should_not have_content('invoice reference')
+      expect(rendered).not_to have_content('invoice reference')
     end
   end
 

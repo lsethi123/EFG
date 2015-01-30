@@ -27,9 +27,9 @@ describe "search" do
       click_button "Search"
     end
 
-    page.should have_content("1 result found")
-    page.should have_content(loan1.reference)
-    page.should_not have_content(loan2.reference)
+    expect(page).to have_content("1 result found")
+    expect(page).to have_content(loan1.reference)
+    expect(page).not_to have_content(loan2.reference)
   end
 
   it "should find multiple loans" do
@@ -41,9 +41,9 @@ describe "search" do
       click_button "Search"
     end
 
-    page.should have_content("2 results found")
-    page.should have_content(loan1.reference)
-    page.should have_content(loan2.reference)
+    expect(page).to have_content("2 results found")
+    expect(page).to have_content(loan1.reference)
+    expect(page).to have_content(loan2.reference)
   end
 
   %w(auditor_user cfe_user).each do |user_type|
@@ -62,8 +62,8 @@ describe "search" do
           click_button "Search"
         end
 
-        page.should have_content("1 result found")
-        page.should have_content(loan3.reference)
+        expect(page).to have_content("1 result found")
+        expect(page).to have_content(loan3.reference)
       end
 
       it 'should allow searching by all lenders' do
@@ -73,10 +73,10 @@ describe "search" do
           click_button "Search"
         end
 
-        page.should have_content("3 results found")
-        page.should have_content(loan1.reference)
-        page.should have_content(loan2.reference)
-        page.should have_content(loan3.reference)
+        expect(page).to have_content("3 results found")
+        expect(page).to have_content(loan1.reference)
+        expect(page).to have_content(loan2.reference)
+        expect(page).to have_content(loan3.reference)
       end
     end
   end

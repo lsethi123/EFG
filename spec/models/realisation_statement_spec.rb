@@ -5,7 +5,7 @@ describe RealisationStatement do
 
   describe "validations" do
     it 'should have a valid factory' do
-      realisation_statement.should be_valid
+      expect(realisation_statement).to be_valid
     end
 
     it 'must have a lender' do

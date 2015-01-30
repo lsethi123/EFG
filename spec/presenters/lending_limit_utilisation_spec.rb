@@ -21,38 +21,38 @@ describe LendingLimitUtilisation do
 
   describe '#cumulative_claims' do
     it 'with claimed loans' do
-      presenter.cumulative_claims.should == Money.new(178_124_68)
+      expect(presenter.cumulative_claims).to eq(Money.new(178_124_68))
     end
 
     it 'with no loans' do
-      presenter_with_no_loans.cumulative_claims.should == Money.new(0)
+      expect(presenter_with_no_loans.cumulative_claims).to eq(Money.new(0))
     end
   end
 
   describe '#cumulative_net_claims' do
     it do
-      presenter.cumulative_net_claims.should == Money.new(124_335_56)
+      expect(presenter.cumulative_net_claims).to eq(Money.new(124_335_56))
     end
 
     it 'with no loans' do
-      presenter_with_no_loans.cumulative_net_claims.should == Money.new(0)
+      expect(presenter_with_no_loans.cumulative_net_claims).to eq(Money.new(0))
     end
   end
 
   describe "#usage_amount" do
     it "should return sum of all loan amounts" do
-      presenter.usage_amount.should == Money.new(1_850_000_00)
+      expect(presenter.usage_amount).to eq(Money.new(1_850_000_00))
     end
 
     it "should return 0 when allocation has no loans" do
-      presenter_with_no_loans.usage_amount.should == Money.new(0)
+      expect(presenter_with_no_loans.usage_amount).to eq(Money.new(0))
     end
   end
 
   describe '#gross_utilisation_of_claim_limit' do
     context 'with no loans' do
       it do
-        presenter_with_no_loans.gross_utilisation_of_claim_limit.should == '0.00%'
+        expect(presenter_with_no_loans.gross_utilisation_of_claim_limit).to eq('0.00%')
       end
     end
 
@@ -62,13 +62,13 @@ describe LendingLimitUtilisation do
       end
 
       it do
-        presenter.gross_utilisation_of_claim_limit.should == '55.36%'
+        expect(presenter.gross_utilisation_of_claim_limit).to eq('55.36%')
       end
     end
 
     context 'with a usage_amount > £1 million' do
       it do
-        presenter.gross_utilisation_of_claim_limit.should == '77.98%'
+        expect(presenter.gross_utilisation_of_claim_limit).to eq('77.98%')
       end
     end
   end
@@ -76,7 +76,7 @@ describe LendingLimitUtilisation do
   describe '#net_utilisation_of_claim_limit' do
     context 'with no loans' do
       it do
-        presenter_with_no_loans.net_utilisation_of_claim_limit.should == '0.00%'
+        expect(presenter_with_no_loans.net_utilisation_of_claim_limit).to eq('0.00%')
       end
     end
 
@@ -86,24 +86,24 @@ describe LendingLimitUtilisation do
       end
 
       it do
-        presenter.net_utilisation_of_claim_limit.should == '17.61%'
+        expect(presenter.net_utilisation_of_claim_limit).to eq('17.61%')
       end
     end
 
     context 'with a usage_amount > £1 million' do
       it do
-        presenter.net_utilisation_of_claim_limit.should == '54.43%'
+        expect(presenter.net_utilisation_of_claim_limit).to eq('54.43%')
       end
     end
   end
 
   describe "#usage_percentage" do
     it "should return percentage of total allocation used" do
-      presenter.usage_percentage.should == '92.50%'
+      expect(presenter.usage_percentage).to eq('92.50%')
     end
 
     it "should return 0 when allocation has no loans" do
-      presenter_with_no_loans.usage_percentage.should == '0.00%'
+      expect(presenter_with_no_loans.usage_percentage).to eq('0.00%')
     end
   end
 end

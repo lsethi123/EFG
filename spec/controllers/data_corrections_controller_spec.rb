@@ -38,7 +38,7 @@ describe DataCorrectionsController do
 
           it do
             dispatch
-            response.should be_success
+            expect(response).to be_success
           end
         end
       end

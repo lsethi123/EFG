@@ -18,12 +18,12 @@ describe 'LenderAdmin management' do
       end
 
       it 'includes Lender Admins with links to edit' do
-        page.should have_content('Bankers')
-        page.should have_link(lender_admin.name, href: edit_lender_lender_admin_path(lender, lender_admin))
+        expect(page).to have_content('Bankers')
+        expect(page).to have_link(lender_admin.name, href: edit_lender_lender_admin_path(lender, lender_admin))
       end
 
       it 'does not include Lender Users' do
-        page.should_not have_content(lender_user.name)
+        expect(page).not_to have_content(lender_user.name)
       end
 
       it_should_behave_like 'an admin viewing active and disabled users' do
@@ -48,24 +48,24 @@ describe 'LenderAdmin management' do
       end
 
       it 'includes Lender Admins from my Lender' do
-        page.should have_content('Bankers')
-        page.should have_content(lender_admin.name)
+        expect(page).to have_content('Bankers')
+        expect(page).to have_content(lender_admin.name)
       end
 
       it 'includes a link to show visible Lender Admin' do
-        page.should have_link(lender_admin.name, href: lender_lender_admin_path(lender, lender_admin))
+        expect(page).to have_link(lender_admin.name, href: lender_lender_admin_path(lender, lender_admin))
       end
 
       it 'does not include a link to edit visible Lender Admin' do
-        page.should_not have_link(lender_admin.name, href: edit_lender_lender_admin_path(lender, lender_admin))
+        expect(page).not_to have_link(lender_admin.name, href: edit_lender_lender_admin_path(lender, lender_admin))
       end
 
       it 'does not include Lender Users' do
-        page.should_not have_content(lender_user.name)
+        expect(page).not_to have_content(lender_user.name)
       end
 
       it 'does not include Lender Admins from other Lender' do
-        page.should_not have_content(other_lender_admin.name)
+        expect(page).not_to have_content(other_lender_admin.name)
       end
 
       it_should_behave_like 'an admin viewing active and disabled users' do
@@ -99,25 +99,25 @@ describe 'LenderAdmin management' do
         click_button 'Create Lender Admin'
       }.to change(LenderAdmin, :count).by(1)
 
-      page.should have_content('Bankers')
-      page.should have_content('Bob Flemming')
-      page.should have_content('bob.flemming@example.com')
+      expect(page).to have_content('Bankers')
+      expect(page).to have_content('Bob Flemming')
+      expect(page).to have_content('bob.flemming@example.com')
 
       user = LenderAdmin.last!
-      user.lender.should == lender
-      user.created_by.should == current_user
-      user.modified_by.should == current_user
+      expect(user.lender).to eq(lender)
+      expect(user.created_by).to eq(current_user)
+      expect(user.modified_by).to eq(current_user)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserCreated
-      admin_audit.auditable.should == user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserCreated)
+      expect(admin_audit.auditable).to eq(user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
 
       # verify email is sent to user
       emails = ActionMailer::Base.deliveries
-      emails.size.should == 1
-      emails.first.to.should == [ user.email ]
+      expect(emails.size).to eq(1)
+      expect(emails.first.to).to eq([ user.email ])
     end
   end
 
@@ -129,7 +129,7 @@ describe 'LenderAdmin management' do
 
       click_link 'Bob Flemming'
 
-      page.should_not have_selector('#lender_admin_lender_id')
+      expect(page).not_to have_selector('#lender_admin_lender_id')
 
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'
@@ -138,16 +138,16 @@ describe 'LenderAdmin management' do
       click_button 'Update Lender Admin'
 
       user.reload
-      user.email.should == 'bill.example@example.com'
-      user.first_name.should == 'Bill'
-      user.last_name.should == 'Example'
-      user.modified_by.should == current_user
+      expect(user.email).to eq('bill.example@example.com')
+      expect(user.first_name).to eq('Bill')
+      expect(user.last_name).to eq('Example')
+      expect(user.modified_by).to eq(current_user)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserEdited
-      admin_audit.auditable.should == user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserEdited)
+      expect(admin_audit.auditable).to eq(user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -169,7 +169,7 @@ describe 'LenderAdmin management' do
         click_link 'Bob Flemming'
         click_button 'Unlock User'
 
-        lender_admin.reload.should_not be_locked
+        expect(lender_admin.reload).not_to be_locked
       end
     end
 
@@ -179,16 +179,16 @@ describe 'LenderAdmin management' do
         click_link 'Bob Flemming'
         click_button 'Unlock User'
 
-        lender_admin.reload.should_not be_locked
+        expect(lender_admin.reload).not_to be_locked
       end
     end
 
     after do
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserUnlocked
-      admin_audit.auditable.should == lender_admin
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserUnlocked)
+      expect(admin_audit.auditable).to eq(lender_admin)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -209,7 +209,7 @@ describe 'LenderAdmin management' do
         click_link 'Bob Flemming'
         click_button 'Disable User'
 
-        lender_admin.reload.should be_disabled
+        expect(lender_admin.reload).to be_disabled
       end
     end
 
@@ -219,16 +219,16 @@ describe 'LenderAdmin management' do
         click_link 'Bob Flemming'
         click_button 'Disable User'
 
-        lender_admin.reload.should be_disabled
+        expect(lender_admin.reload).to be_disabled
       end
     end
 
     after do
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserDisabled
-      admin_audit.auditable.should == lender_admin
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserDisabled)
+      expect(admin_audit.auditable).to eq(lender_admin)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -251,7 +251,7 @@ describe 'LenderAdmin management' do
         click_link 'Bob Flemming'
         click_button 'Enable User'
 
-        lender_admin.reload.should_not be_disabled
+        expect(lender_admin.reload).not_to be_disabled
       end
     end
 
@@ -262,16 +262,16 @@ describe 'LenderAdmin management' do
         click_link 'Bob Flemming'
         click_button 'Enable User'
 
-        lender_admin.reload.should_not be_disabled
+        expect(lender_admin.reload).not_to be_disabled
       end
     end
 
     after do
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::UserEnabled
-      admin_audit.auditable.should == lender_admin
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::UserEnabled)
+      expect(admin_audit.auditable).to eq(lender_admin)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -293,32 +293,32 @@ describe 'LenderAdmin management' do
     end
 
     it "can be sent from edit user page" do
-      user.reset_password_token.should be_nil
-      user.reset_password_sent_at.should be_nil
+      expect(user.reset_password_token).to be_nil
+      expect(user.reset_password_sent_at).to be_nil
 
       navigate_cfe_admin_to_lender_admins_for_lender lender
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
-      page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
+      expect(page).to have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
 
       user.reload
-      user.reset_password_token.should_not be_nil
-      user.reset_password_sent_at.should_not be_nil
+      expect(user.reset_password_token).not_to be_nil
+      expect(user.reset_password_sent_at).not_to be_nil
 
       # verify email is sent to user
       emails = ActionMailer::Base.deliveries
-      emails.size.should == 1
-      emails.first.to.should == [ user.email ]
+      expect(emails.size).to eq(1)
+      expect(emails.first.to).to eq([ user.email ])
     end
 
     it "can be sent from user list page" do
       navigate_cfe_admin_to_lender_admins_for_lender lender
       click_button 'Send Reset Password Email'
 
-      page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
-      page.should have_content(I18n.t('manage_users.password_set_time_remaining', time_left: '7 days'))
-      page.should_not have_css('input', text: 'Send Reset Password Email')
+      expect(page).to have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
+      expect(page).to have_content(I18n.t('manage_users.password_set_time_remaining', time_left: '7 days'))
+      expect(page).not_to have_css('input', text: 'Send Reset Password Email')
     end
 
     # many imported users will not have an email address
@@ -330,8 +330,8 @@ describe 'LenderAdmin management' do
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
-      page.should have_content("can't be blank")
-      ActionMailer::Base.deliveries.should be_empty
+      expect(page).to have_content("can't be blank")
+      expect(ActionMailer::Base.deliveries).to be_empty
     end
   end
 

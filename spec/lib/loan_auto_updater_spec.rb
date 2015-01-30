@@ -11,11 +11,11 @@ describe LoanAutoUpdater do
 
       expired_loan.reload
       loan_state_change = LoanStateChange.last
-      loan_state_change.loan.should == expired_loan
-      loan_state_change.state.should == expired_loan.state
-      (Time.zone.now.to_i - loan_state_change.modified_at.to_i).should be < 2
-      loan_state_change.modified_by.should == system_user
-      loan_state_change.event_id.should == expected_state_change_event_id
+      expect(loan_state_change.loan).to eq(expired_loan)
+      expect(loan_state_change.state).to eq(expired_loan.state)
+      expect(Time.zone.now.to_i - loan_state_change.modified_at.to_i).to be < 2
+      expect(loan_state_change.modified_by).to eq(system_user)
+      expect(loan_state_change.event_id).to eq(expected_state_change_event_id)
     end
 
     it "should not update loans belonging to lender excluded from loan auto-updating" do
@@ -46,8 +46,8 @@ describe LoanAutoUpdater do
     it "should update state of loans last updated more than 6 months ago to auto-cancelled" do
       dispatch
 
-      expired_loan.reload.state.should == Loan::AutoCancelled
-      not_yet_expired_loan.reload.state.should == Loan::Eligible
+      expect(expired_loan.reload.state).to eq(Loan::AutoCancelled)
+      expect(not_yet_expired_loan.reload.state).to eq(Loan::Eligible)
     end
 
     it_behaves_like "loan auto-update"
@@ -67,8 +67,8 @@ describe LoanAutoUpdater do
     it "should update state of loans with a facility letter date older than 6 months to auto-cancelled" do
       dispatch
 
-      expired_loan.reload.state.should == Loan::AutoCancelled
-      not_yet_expired_loan.reload.state.should == Loan::Offered
+      expect(expired_loan.reload.state).to eq(Loan::AutoCancelled)
+      expect(not_yet_expired_loan.reload.state).to eq(Loan::Offered)
     end
 
     it_behaves_like "loan auto-update"
@@ -88,8 +88,8 @@ describe LoanAutoUpdater do
       it "should not update loans as EFG loans have no time limit for demanding loans" do
         dispatch
 
-        efg_loan1.reload.state.should == Loan::LenderDemand
-        efg_loan2.reload.state.should == Loan::LenderDemand
+        expect(efg_loan1.reload.state).to eq(Loan::LenderDemand)
+        expect(efg_loan2.reload.state).to eq(Loan::LenderDemand)
       end
     end
 
@@ -102,8 +102,8 @@ describe LoanAutoUpdater do
         it "should update state of loans with a borrower demanded date older than a year to auto-removed" do
           dispatch
 
-          expired_loan.reload.state.should == Loan::AutoRemoved
-          not_yet_expired_loan.reload.state.should == Loan::LenderDemand
+          expect(expired_loan.reload.state).to eq(Loan::AutoRemoved)
+          expect(not_yet_expired_loan.reload.state).to eq(Loan::LenderDemand)
         end
 
         it_behaves_like "loan auto-update"
@@ -126,8 +126,8 @@ describe LoanAutoUpdater do
       it "should update state of loans with a maturity date older than 3 months to auto-removed" do
         dispatch
 
-        expired_loan.reload.state.should == Loan::AutoRemoved
-        not_yet_expired_loan.reload.state.should == Loan::Guaranteed
+        expect(expired_loan.reload.state).to eq(Loan::AutoRemoved)
+        expect(not_yet_expired_loan.reload.state).to eq(Loan::Guaranteed)
       end
 
       it_behaves_like "loan auto-update"
@@ -142,8 +142,8 @@ describe LoanAutoUpdater do
       it "should update state of loans with a maturity date older than 6 months to auto-removed" do
         dispatch
 
-        expired_loan.reload.state.should == Loan::AutoRemoved
-        not_yet_expired_loan.reload.state.should == Loan::LenderDemand
+        expect(expired_loan.reload.state).to eq(Loan::AutoRemoved)
+        expect(not_yet_expired_loan.reload.state).to eq(Loan::LenderDemand)
       end
 
       it "should not update loans not in guaranteed or lender demand state" do

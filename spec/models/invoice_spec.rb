@@ -5,7 +5,7 @@ describe Invoice do
     let(:invoice) { FactoryGirl.build(:invoice) }
 
     it "should have a valid factory" do
-      invoice.should be_valid
+      expect(invoice).to be_valid
     end
 
     it "must have a lender" do
@@ -76,9 +76,9 @@ describe Invoice do
     let(:invoice) { FactoryGirl.build(:invoice) }
 
     it "should be set on creation" do
-      invoice.xref.should be_blank
+      expect(invoice.xref).to be_blank
       invoice.save!
-      invoice.xref.should_not be_blank
+      expect(invoice.xref).not_to be_blank
     end
 
     it "should be unique" do
@@ -88,12 +88,12 @@ describe Invoice do
       another_invoice.stub(:random_xref).and_return(invoice.xref, '789012-INV')
 
       another_invoice.save!
-      another_invoice.xref.should == '789012-INV'
+      expect(another_invoice.xref).to eq('789012-INV')
     end
 
     it "should have 6 random numbers followed by '-INV'" do
       invoice.save!
-      invoice.xref.should match(/\d{6}-INV/)
+      expect(invoice.xref).to match(/\d{6}-INV/)
     end
   end
 end

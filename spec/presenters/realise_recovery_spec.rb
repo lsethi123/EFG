@@ -8,19 +8,19 @@ describe RealiseRecovery do
     it "is realised if set as post_claim_limit" do
       realise_recovery.realised = nil
       realise_recovery.post_claim_limit = true
-      realise_recovery.should be_realised
+      expect(realise_recovery).to be_realised
     end
 
     it "is realised if realised, without post_claim_limit" do
       realise_recovery.realised = true
       realise_recovery.post_claim_limit = nil
-      realise_recovery.should be_realised
+      expect(realise_recovery).to be_realised
     end
 
     it "isn't realised when not realised and not set as post_claim_limit" do
       realise_recovery.realised = nil
       realise_recovery.post_claim_limit = nil
-      realise_recovery.should_not be_realised
+      expect(realise_recovery).not_to be_realised
     end
   end
 
@@ -40,7 +40,7 @@ describe RealiseRecovery do
         run
         recovery.reload
 
-        recovery.realisation_statement.should == realisation_statement
+        expect(recovery.realisation_statement).to eq(realisation_statement)
       end
 
       it "marks the recovery as realised" do
@@ -55,28 +55,28 @@ describe RealiseRecovery do
           run
           realisation = LoanRealisation.last
 
-          realisation.realised_loan.should == recovery.loan
+          expect(realisation.realised_loan).to eq(recovery.loan)
         end
 
         it "sets the creator to the modifier  " do
           run
           realisation = LoanRealisation.last
 
-          realisation.created_by.should == modifier
+          expect(realisation.created_by).to eq(modifier)
         end
 
         it "sets the realised amount to the recovery's amount due" do
           run
           realisation = LoanRealisation.last
 
-          realisation.realised_amount.should == recovery.amount_due_to_dti
+          expect(realisation.realised_amount).to eq(recovery.amount_due_to_dti)
         end
 
         it "sets the realised_on to today's date" do
           Timecop.freeze(2013, 4, 22, 17, 18, 0) { run }
           realisation = LoanRealisation.last
 
-          realisation.realised_on.should == Date.new(2013, 4, 22)
+          expect(realisation.realised_on).to eq(Date.new(2013, 4, 22))
         end
 
         it "sets the post claim limit to false if not selected" do

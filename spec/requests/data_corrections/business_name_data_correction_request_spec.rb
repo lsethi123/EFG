@@ -15,15 +15,15 @@ describe 'Business Name Data Correction' do
     click_button 'Submit'
 
     data_correction = loan.data_corrections.last!
-    data_correction.change_type.should == ChangeType::BusinessName
-    data_correction.created_by.should == current_user
-    data_correction.date_of_change.should == Date.current
-    data_correction.modified_date.should == Date.current
-    data_correction.old_business_name.should == 'Foo'
-    data_correction.business_name.should == 'Bar'
+    expect(data_correction.change_type).to eq(ChangeType::BusinessName)
+    expect(data_correction.created_by).to eq(current_user)
+    expect(data_correction.date_of_change).to eq(Date.current)
+    expect(data_correction.modified_date).to eq(Date.current)
+    expect(data_correction.old_business_name).to eq('Foo')
+    expect(data_correction.business_name).to eq('Bar')
 
     loan.reload
-    loan.business_name.should == 'Bar'
-    loan.modified_by.should == current_user
+    expect(loan.business_name).to eq('Bar')
+    expect(loan.modified_by).to eq(current_user)
   end
 end

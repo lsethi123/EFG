@@ -70,7 +70,7 @@ describe ActiveModel::Validations::EmailValidator do
 
       it 'does not add errors' do
         validator.validate(person)
-        person.errors.to_a.should == []
+        expect(person.errors.to_a).to eq([])
       end
     end
 
@@ -85,7 +85,7 @@ describe ActiveModel::Validations::EmailValidator do
 
       it 'skips adding errors is email is nil' do
         validator.validate(person)
-        person.errors.to_a.should == []
+        expect(person.errors.to_a).to eq([])
       end
     end
 
@@ -100,14 +100,14 @@ describe ActiveModel::Validations::EmailValidator do
 
       it 'skips adding errors is email is nil' do
         validator.validate(person)
-        person.errors.to_a.should == []
+        expect(person.errors.to_a).to eq([])
       end
     end
 
     context 'with no message provided' do
       it 'adds a symbol to errors for I18n lookup' do
         validator.validate(person)
-        person.errors.to_a.should == ['Email is invalid']
+        expect(person.errors.to_a).to eq(['Email is invalid'])
       end
     end
 
@@ -118,7 +118,7 @@ describe ActiveModel::Validations::EmailValidator do
 
       it 'uses the message you specify' do
         validator.validate(person)
-        person.errors.to_a.should == ['Email is kinda odd looking']
+        expect(person.errors.to_a).to eq(['Email is kinda odd looking'])
       end
     end
   end

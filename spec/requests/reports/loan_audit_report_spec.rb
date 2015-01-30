@@ -23,11 +23,11 @@ describe 'Loan audit report' do
 
       click_button "Submit"
 
-      page.should have_content "Data extract found 2 rows"
+      expect(page).to have_content "Data extract found 2 rows"
 
       click_button "Download Report"
 
-      page.response_headers['Content-Type'].should include('text/csv')
+      expect(page.response_headers['Content-Type']).to include('text/csv')
     end
 
   end

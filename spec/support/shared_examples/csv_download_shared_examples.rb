@@ -7,7 +7,7 @@ shared_examples_for 'a CSV download' do
         content_disposition = response.headers['Content-Disposition']
         filename = /\bfilename="([^"]+)"/.match(content_disposition)[1]
 
-        File.extname(filename).should == '.csv'
+        expect(File.extname(filename)).to eq('.csv')
       end
     end
   end

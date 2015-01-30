@@ -28,18 +28,18 @@ describe 'loan change' do
       end
 
       loan_change = loan.loan_changes.last!
-      loan_change.change_type.should == ChangeType::LumpSumRepayment
-      loan_change.date_of_change.should == Date.new(2011, 12, 1)
-      loan_change.lump_sum_repayment.should == Money.new(1_234_56)
+      expect(loan_change.change_type).to eq(ChangeType::LumpSumRepayment)
+      expect(loan_change.date_of_change).to eq(Date.new(2011, 12, 1))
+      expect(loan_change.lump_sum_repayment).to eq(Money.new(1_234_56))
 
       premium_schedule = loan.premium_schedules.last!
-      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
-      premium_schedule.premium_cheque_month.should == '03/2012'
-      premium_schedule.repayment_duration.should == 33
+      expect(premium_schedule.initial_draw_amount).to eq(Money.new(65_432_10))
+      expect(premium_schedule.premium_cheque_month).to eq('03/2012')
+      expect(premium_schedule.repayment_duration).to eq(33)
 
       loan.reload
-      loan.maturity_date.should == Date.new(2014, 12, 25)
-      loan.modified_by.should == current_user
+      expect(loan.maturity_date).to eq(Date.new(2014, 12, 25))
+      expect(loan.modified_by).to eq(current_user)
     end
   end
 
@@ -61,20 +61,20 @@ describe 'loan change' do
         end
 
         loan_change = loan.loan_changes.last!
-        loan_change.change_type.should == ChangeType::ExtendTerm
-        loan_change.date_of_change.should == Date.new(2010, 9, 11)
-        loan_change.old_repayment_duration.should == 60
-        loan_change.repayment_duration.should == 63
+        expect(loan_change.change_type).to eq(ChangeType::ExtendTerm)
+        expect(loan_change.date_of_change).to eq(Date.new(2010, 9, 11))
+        expect(loan_change.old_repayment_duration).to eq(60)
+        expect(loan_change.repayment_duration).to eq(63)
 
         premium_schedule = loan.premium_schedules.last!
-        premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
-        premium_schedule.premium_cheque_month.should == '12/2010'
-        premium_schedule.repayment_duration.should == 51
+        expect(premium_schedule.initial_draw_amount).to eq(Money.new(65_432_10))
+        expect(premium_schedule.premium_cheque_month).to eq('12/2010')
+        expect(premium_schedule.repayment_duration).to eq(51)
 
         loan.reload
-        loan.modified_by.should == current_user
-        loan.repayment_duration.total_months.should == 63
-        loan.maturity_date.should == Date.new(2015, 3, 25)
+        expect(loan.modified_by).to eq(current_user)
+        expect(loan.repayment_duration.total_months).to eq(63)
+        expect(loan.maturity_date).to eq(Date.new(2015, 3, 25))
       end
     end
 
@@ -95,7 +95,7 @@ describe 'loan change' do
             click_button 'Submit'
           end
 
-          page.should have_content(I18n.t('validators.phase6_amount.amount.invalid'))
+          expect(page).to have_content(I18n.t('validators.phase6_amount.amount.invalid'))
         end
       end
 
@@ -111,7 +111,7 @@ describe 'loan change' do
             click_button 'Submit'
           end
 
-          page.should have_content(I18n.t('validators.repayment_duration.repayment_duration.invalid'))
+          expect(page).to have_content(I18n.t('validators.repayment_duration.repayment_duration.invalid'))
         end
       end
     end
@@ -135,25 +135,25 @@ describe 'loan change' do
       click_button 'Submit'
 
       loan_change = loan.loan_changes.last!
-      loan_change.change_type.should == ChangeType::RepaymentFrequency
-      loan_change.date_of_change.should == Date.new(2010, 9, 11)
-      loan_change.repayment_frequency_id.should == RepaymentFrequency::Monthly.id
-      loan_change.old_repayment_frequency_id.should == RepaymentFrequency::Quarterly.id
+      expect(loan_change.change_type).to eq(ChangeType::RepaymentFrequency)
+      expect(loan_change.date_of_change).to eq(Date.new(2010, 9, 11))
+      expect(loan_change.repayment_frequency_id).to eq(RepaymentFrequency::Monthly.id)
+      expect(loan_change.old_repayment_frequency_id).to eq(RepaymentFrequency::Quarterly.id)
 
       premium_schedule = loan.premium_schedules.last!
-      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
-      premium_schedule.premium_cheque_month.should == '12/2010'
-      premium_schedule.repayment_duration.should == 48
+      expect(premium_schedule.initial_draw_amount).to eq(Money.new(65_432_10))
+      expect(premium_schedule.premium_cheque_month).to eq('12/2010')
+      expect(premium_schedule.repayment_duration).to eq(48)
 
       loan.reload
-      loan.modified_by.should == current_user
-      loan.repayment_frequency_id.should == RepaymentFrequency::Monthly.id
+      expect(loan.modified_by).to eq(current_user)
+      expect(loan.repayment_frequency_id).to eq(RepaymentFrequency::Monthly.id)
 
       click_link 'Loan Changes'
       click_link 'Repayment frequency'
 
-      page.should have_content('Monthly')
-      page.should have_content('Quarterly')
+      expect(page).to have_content('Monthly')
+      expect(page).to have_content('Quarterly')
     end
   end
 
@@ -179,25 +179,25 @@ describe 'loan change' do
       end
 
       loan_change = loan.loan_changes.last!
-      loan_change.change_type.should == ChangeType::ReprofileDraws
-      loan_change.date_of_change.should == Date.new(2010, 9, 11)
+      expect(loan_change.change_type).to eq(ChangeType::ReprofileDraws)
+      expect(loan_change.date_of_change).to eq(Date.new(2010, 9, 11))
 
       premium_schedule = loan.premium_schedules.last!
-      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
-      premium_schedule.premium_cheque_month.should == '12/2010'
-      premium_schedule.repayment_duration.should == 48
-      premium_schedule.initial_capital_repayment_holiday.should == 3
-      premium_schedule.second_draw_amount.should == Money.new(5_000_00)
-      premium_schedule.second_draw_months.should == 6
-      premium_schedule.third_draw_amount.should == Money.new(5_000_00)
-      premium_schedule.third_draw_months.should == 12
-      premium_schedule.fourth_draw_amount.should == Money.new(5_000_00)
-      premium_schedule.fourth_draw_months.should == 18
+      expect(premium_schedule.initial_draw_amount).to eq(Money.new(65_432_10))
+      expect(premium_schedule.premium_cheque_month).to eq('12/2010')
+      expect(premium_schedule.repayment_duration).to eq(48)
+      expect(premium_schedule.initial_capital_repayment_holiday).to eq(3)
+      expect(premium_schedule.second_draw_amount).to eq(Money.new(5_000_00))
+      expect(premium_schedule.second_draw_months).to eq(6)
+      expect(premium_schedule.third_draw_amount).to eq(Money.new(5_000_00))
+      expect(premium_schedule.third_draw_months).to eq(12)
+      expect(premium_schedule.fourth_draw_amount).to eq(Money.new(5_000_00))
+      expect(premium_schedule.fourth_draw_months).to eq(18)
 
       loan.reload
-      loan.modified_by.should == current_user
-      loan.repayment_duration.total_months.should == 60
-      loan.maturity_date.should == Date.new(2014, 12, 25)
+      expect(loan.modified_by).to eq(current_user)
+      expect(loan.repayment_duration.total_months).to eq(60)
+      expect(loan.maturity_date).to eq(Date.new(2014, 12, 25))
     end
   end
 

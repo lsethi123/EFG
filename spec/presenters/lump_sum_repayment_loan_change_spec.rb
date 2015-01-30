@@ -10,12 +10,12 @@ describe LumpSumRepaymentLoanChange do
 
       it 'is required' do
         presenter.lump_sum_repayment = nil
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       it 'must be greater than zero' do
         presenter.lump_sum_repayment = '0'
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       it 'must not be greater than the cumulative_drawn_amount (including previous repayments)' do
@@ -23,10 +23,10 @@ describe LumpSumRepaymentLoanChange do
         loan.stub(:cumulative_lump_sum_amount).and_return(Money.new(1_000_00))
 
         presenter.lump_sum_repayment = '5,000.01'
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
 
         presenter.lump_sum_repayment = '5,000'
-        presenter.should be_valid
+        expect(presenter).to be_valid
       end
     end
   end
@@ -45,31 +45,31 @@ describe LumpSumRepaymentLoanChange do
         presenter.lump_sum_repayment = Money.new(1_000_00)
 
         Timecop.freeze(2013, 3, 1) do
-          presenter.save.should == true
+          expect(presenter.save).to eq(true)
         end
 
         loan_change = loan.loan_changes.last!
-        loan_change.change_type.should == ChangeType::LumpSumRepayment
-        loan_change.lump_sum_repayment.should == Money.new(1_000_00)
-        loan_change.created_by.should == user
+        expect(loan_change.change_type).to eq(ChangeType::LumpSumRepayment)
+        expect(loan_change.lump_sum_repayment).to eq(Money.new(1_000_00))
+        expect(loan_change.created_by).to eq(user)
 
         loan.reload
-        loan.modified_by.should == user
-        loan.cumulative_lump_sum_amount.should == Money.new(1_000_00)
+        expect(loan.modified_by).to eq(user)
+        expect(loan.cumulative_lump_sum_amount).to eq(Money.new(1_000_00))
 
         premium_schedule = loan.premium_schedules.last!
-        premium_schedule.premium_cheque_month.should == '05/2013'
-        premium_schedule.repayment_duration.should == 57
+        expect(premium_schedule.premium_cheque_month).to eq('05/2013')
+        expect(premium_schedule.repayment_duration).to eq(57)
       end
     end
 
     context 'failure' do
       it 'does not update loan' do
         presenter.lump_sum_repayment = nil
-        presenter.save.should == false
+        expect(presenter.save).to eq(false)
 
         loan.reload
-        loan.modified_by.should_not == user
+        expect(loan.modified_by).not_to eq(user)
       end
     end
   end

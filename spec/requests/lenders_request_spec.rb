@@ -20,7 +20,7 @@ describe 'lenders' do
 
       click_button 'Create Lender'
 
-      current_path.should == lenders_path
+      expect(current_path).to eq(lenders_path)
     end
 
     it do
@@ -36,21 +36,21 @@ describe 'lenders' do
       click_button 'Create Lender'
 
       lender = Lender.last!
-      lender.created_by.should == current_user
-      lender.modified_by.should == current_user
-      lender.name.should == 'Bankers'
-      lender.organisation_reference_code.should == 'BK'
-      lender.loan_scheme.should == 'E'
-      lender.primary_contact_name.should == 'Bob Flemming'
-      lender.primary_contact_phone.should == '0123456789'
-      lender.primary_contact_email.should == 'bob@example.com'
-      lender.can_use_add_cap.should == false
+      expect(lender.created_by).to eq(current_user)
+      expect(lender.modified_by).to eq(current_user)
+      expect(lender.name).to eq('Bankers')
+      expect(lender.organisation_reference_code).to eq('BK')
+      expect(lender.loan_scheme).to eq('E')
+      expect(lender.primary_contact_name).to eq('Bob Flemming')
+      expect(lender.primary_contact_phone).to eq('0123456789')
+      expect(lender.primary_contact_email).to eq('bob@example.com')
+      expect(lender.can_use_add_cap).to eq(false)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LenderCreated
-      admin_audit.auditable.should == lender
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LenderCreated)
+      expect(admin_audit.auditable).to eq(lender)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -69,7 +69,7 @@ describe 'lenders' do
 
       click_button 'Update Lender'
 
-      current_path.should == lender_path(lender)
+      expect(current_path).to eq(lender_path(lender))
     end
 
     it do
@@ -85,19 +85,19 @@ describe 'lenders' do
       click_button 'Update Lender'
 
       lender.reload
-      lender.modified_by.should == current_user
-      lender.name.should == 'Blankers'
-      lender.organisation_reference_code.should == 'BLK'
-      lender.primary_contact_name.should == 'Flob Bemming'
-      lender.primary_contact_phone.should == '987654321'
-      lender.primary_contact_email.should == 'flob@example.com'
-      lender.can_use_add_cap.should == true
+      expect(lender.modified_by).to eq(current_user)
+      expect(lender.name).to eq('Blankers')
+      expect(lender.organisation_reference_code).to eq('BLK')
+      expect(lender.primary_contact_name).to eq('Flob Bemming')
+      expect(lender.primary_contact_phone).to eq('987654321')
+      expect(lender.primary_contact_email).to eq('flob@example.com')
+      expect(lender.can_use_add_cap).to eq(true)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LenderEdited
-      admin_audit.auditable.should == lender
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LenderEdited)
+      expect(admin_audit.auditable).to eq(lender)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -112,14 +112,14 @@ describe 'lenders' do
       dispatch
       click_button 'Activate Lender'
       lender.reload
-      lender.disabled.should == false
-      lender.modified_by.should == current_user
+      expect(lender.disabled).to eq(false)
+      expect(lender.modified_by).to eq(current_user)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LenderEnabled
-      admin_audit.auditable.should == lender
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LenderEnabled)
+      expect(admin_audit.auditable).to eq(lender)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -134,14 +134,14 @@ describe 'lenders' do
       dispatch
       click_button 'Deactivate Lender'
       lender.reload
-      lender.disabled.should == true
-      lender.modified_by.should == current_user
+      expect(lender.disabled).to eq(true)
+      expect(lender.modified_by).to eq(current_user)
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LenderDisabled
-      admin_audit.auditable.should == lender
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LenderDisabled)
+      expect(admin_audit.auditable).to eq(lender)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 

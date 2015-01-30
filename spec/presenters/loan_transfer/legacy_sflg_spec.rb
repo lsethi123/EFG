@@ -27,7 +27,7 @@ describe LoanTransfer::LegacySflg do
 
     it 'must have an initial draw date' do
       loan_transfer.initial_draw_date = nil
-      loan_transfer.should_not be_valid
+      expect(loan_transfer).not_to be_valid
     end
 
   end
@@ -43,7 +43,7 @@ describe LoanTransfer::LegacySflg do
     end
 
     it "should clear state aid value" do
-      new_loan.state_aid.should be_blank
+      expect(new_loan.state_aid).to be_blank
     end
 
     it "should set state aid to be valid" do
@@ -51,7 +51,7 @@ describe LoanTransfer::LegacySflg do
     end
 
     it "should set notified aid to zero" do
-      new_loan.notified_aid.should == 0
+      expect(new_loan.notified_aid).to eq(0)
     end
 
     it "should set declaration signed to true" do
@@ -71,7 +71,7 @@ describe LoanTransfer::LegacySflg do
     end
 
     it "should clear facility letter date" do
-      new_loan.facility_letter_date.should be_nil
+      expect(new_loan.facility_letter_date).to be_nil
     end
 
     it "should set would you lend to true" do
@@ -91,24 +91,24 @@ describe LoanTransfer::LegacySflg do
       fields_to_compare = Loan.column_names - fields_not_copied
 
       fields_to_compare.each do |field|
-        original_loan.send(field).should eql(new_loan.send(field)), "#{field} from transferred loan does not match #{field} from original loan"
+        expect(original_loan.send(field)).to eql(new_loan.send(field)), "#{field} from transferred loan does not match #{field} from original loan"
       end
     end
 
     it 'should create a new loan state change record for the transferred loan' do
-      original_loan.state_changes.count.should == 1
+      expect(original_loan.state_changes.count).to eq(1)
 
       state_change = original_loan.state_changes.last
-      state_change.event_id.should == 23
-      state_change.state.should == Loan::RepaidFromTransfer
+      expect(state_change.event_id).to eq(23)
+      expect(state_change.state).to eq(Loan::RepaidFromTransfer)
     end
 
     it 'should create a new loan state change record for the newly created loan' do
-      new_loan.state_changes.count.should == 1
+      expect(new_loan.state_changes.count).to eq(1)
 
       state_change = new_loan.state_changes.last
-      state_change.event_id.should == 23
-      state_change.state.should == Loan::Incomplete
+      expect(state_change.event_id).to eq(23)
+      expect(state_change.state).to eq(Loan::Incomplete)
     end
 
   end

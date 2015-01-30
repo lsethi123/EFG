@@ -82,7 +82,7 @@ describe 'Loan lifecycle' do
         fill_in 'loan_demand_against_government_dti_break_costs', with: 2000 # sflg specific field
         click_button "Submit"
 
-        current_url.should == loan_url(loan)
+        expect(current_url).to eq(loan_url(loan))
 
         login_as_cfe_user
 
@@ -111,7 +111,7 @@ describe 'Loan lifecycle' do
 
         realise_recovery(loan)
 
-        loan.reload.state.should == Loan::Realised
+        expect(loan.reload.state).to eq(Loan::Realised)
       end
     end
   end
@@ -135,10 +135,10 @@ describe 'Loan lifecycle' do
     fill_in 'loan_change_initial_draw_amount', with: '9,876.54'
     click_button 'Submit'
 
-    current_url.should == loan_url(loan)
+    expect(current_url).to eq(loan_url(loan))
 
     click_link 'Generate Premium Schedule'
-    page.should have_content('£9,876.54')
+    expect(page).to have_content('£9,876.54')
     click_link "Loan #{loan.reference}"
   end
 
@@ -154,13 +154,13 @@ describe 'Loan lifecycle' do
     fill_in "data_correction_sortcode", with: '654321'
     click_button "Submit"
 
-    current_url.should == loan_url(loan)
+    expect(current_url).to eq(loan_url(loan))
 
     click_link 'Loan Changes'
     click_link 'Data correction'
 
-    page.should have_content('03-12-45')
-    page.should have_content('654321')
+    expect(page).to have_content('03-12-45')
+    expect(page).to have_content('654321')
 
     click_link 'Loan Summary'
   end
@@ -170,7 +170,7 @@ describe 'Loan lifecycle' do
     fill_in_valid_demand_to_borrower_details
     click_button "Submit"
 
-    current_url.should == loan_url(loan)
+    expect(current_url).to eq(loan_url(loan))
   end
 
   def satisfy_lender_demand(loan)
@@ -178,7 +178,7 @@ describe 'Loan lifecycle' do
     fill_in 'loan_satisfy_lender_demand_date_of_change', with: Date.current.to_s(:screen)
     click_button 'Submit'
 
-    current_url.should == loan_url(loan)
+    expect(current_url).to eq(loan_url(loan))
   end
 
   def settle_loan(loan)
@@ -231,14 +231,14 @@ describe 'Loan lifecycle' do
     click_button 'Check'
 
     loan = Loan.last
-    current_url.should == loan_eligibility_decision_url(loan.id)
+    expect(current_url).to eq(loan_eligibility_decision_url(loan.id))
 
     # Loan Entry
     click_link "View Loan Summary"
     click_link "Loan Entry"
     send("fill_in_valid_loan_entry_details_phase_#{phase}", loan)
     click_button "Submit"
-    current_url.should == complete_loan_entry_url(loan)
+    expect(current_url).to eq(complete_loan_entry_url(loan))
 
     click_link "View Loan Summary"
 
@@ -250,13 +250,13 @@ describe 'Loan lifecycle' do
     click_link "Offer Scheme Facility"
     fill_in_valid_loan_offer_details(loan)
     click_button "Submit"
-    current_url.should == loan_url(loan)
+    expect(current_url).to eq(loan_url(loan))
 
     # Guarantee & Initial Draw
     click_link "Guarantee & Initial Draw"
     fill_in_valid_loan_guarantee_details
     click_button "Submit"
-    current_url.should == loan_url(loan)
+    expect(current_url).to eq(loan_url(loan))
 
     # Loan Change
     reprofile_draws(loan)
@@ -278,7 +278,7 @@ describe 'Loan lifecycle' do
     fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
     click_button "Submit"
 
-    current_url.should == loan_url(loan)
+    expect(current_url).to eq(loan_url(loan))
 
     login_as_cfe_user
 
@@ -307,7 +307,7 @@ describe 'Loan lifecycle' do
 
     realise_recovery(loan)
 
-    loan.reload.state.should == Loan::Realised
+    expect(loan.reload.state).to eq(Loan::Realised)
   end
 
   def next_quarter_month_name(date)

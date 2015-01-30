@@ -21,14 +21,14 @@ describe 'ask British Business Bank' do
         fill_in 'ask_cfe_message', with: 'blah blah'
         click_button 'Submit'
 
-        ActionMailer::Base.deliveries.size.should == 1
+        expect(ActionMailer::Base.deliveries.size).to eq(1)
 
         email = ActionMailer::Base.deliveries.last
-        email.reply_to.should == [current_user.email]
-        email.body.should include('blah blah')
-        email.body.should include(current_user.name)
+        expect(email.reply_to).to eq([current_user.email])
+        expect(email.body).to include('blah blah')
+        expect(email.body).to include(current_user.name)
 
-        page.should have_content('Thanks')
+        expect(page).to have_content('Thanks')
       end
     end
   end
@@ -38,7 +38,7 @@ describe 'ask British Business Bank' do
 
     it 'does nothing' do
       click_button 'Submit'
-      ActionMailer::Base.deliveries.size.should == 0
+      expect(ActionMailer::Base.deliveries.size).to eq(0)
     end
   end
 end

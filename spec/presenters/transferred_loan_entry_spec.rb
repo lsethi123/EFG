@@ -16,35 +16,35 @@ describe TransferredLoanEntry do
     let!(:transferred_loan_entry) { FactoryGirl.build(:transferred_loan_entry) }
 
     it "should have a valid factory" do
-      transferred_loan_entry.should be_valid
+      expect(transferred_loan_entry).to be_valid
     end
 
     it "should be invalid if the declaration hasn't been signed" do
       transferred_loan_entry.declaration_signed = false
-      transferred_loan_entry.should_not be_valid
+      expect(transferred_loan_entry).not_to be_valid
     end
 
     it "should be invalid without a amount" do
       transferred_loan_entry.amount = ''
-      transferred_loan_entry.should_not be_valid
+      expect(transferred_loan_entry).not_to be_valid
     end
 
     it "should be invalid without a repayment duration" do
       transferred_loan_entry.repayment_duration = ''
-      transferred_loan_entry.should_not be_valid
+      expect(transferred_loan_entry).not_to be_valid
     end
 
     it "should be invalid without a repayment frequency" do
       transferred_loan_entry.repayment_frequency_id = nil
-      transferred_loan_entry.should_not be_valid
+      expect(transferred_loan_entry).not_to be_valid
     end
 
     it "should be invalid without a state aid calculation" do
       PremiumSchedule.delete_all
       transferred_loan_entry.loan.reload
 
-      transferred_loan_entry.should_not be_valid
-      transferred_loan_entry.errors[:state_aid].should == ['must be calculated']
+      expect(transferred_loan_entry).not_to be_valid
+      expect(transferred_loan_entry.errors[:state_aid]).to eq(['must be calculated'])
     end
 
     it_behaves_like 'loan presenter that validates loan repayment frequency' do

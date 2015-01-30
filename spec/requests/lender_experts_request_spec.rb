@@ -19,8 +19,8 @@ describe 'lenders' do
         click_link 'Expert Users'
       end
 
-      page.should have_content(expert_user1.name)
-      page.should_not have_content(expert_user2.name)
+      expect(page).to have_content(expert_user1.name)
+      expect(page).not_to have_content(expert_user2.name)
     end
   end
 

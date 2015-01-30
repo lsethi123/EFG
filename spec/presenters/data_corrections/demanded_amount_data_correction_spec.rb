@@ -6,7 +6,7 @@ describe DemandedAmountDataCorrection do
     let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction) }
 
     it 'has a valid factory' do
-      presenter.should be_valid
+      expect(presenter).to be_valid
     end
 
     it 'strictly requires the loan to be Demanded' do
@@ -19,7 +19,7 @@ describe DemandedAmountDataCorrection do
     it 'requires a change' do
       presenter.demanded_amount = ''
       presenter.demanded_interest = ''
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
     end
 
     context '#demanded_amount=' do
@@ -27,17 +27,17 @@ describe DemandedAmountDataCorrection do
 
       it 'must not be negative' do
         presenter.demanded_amount = Money.new(-1)
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       it 'must not be the same value' do
         presenter.demanded_amount = loan.dti_demand_outstanding
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       it 'must not be greater than the cumulative_drawn_amount' do
         presenter.demanded_amount = loan.cumulative_drawn_amount + Money.new(1)
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
     end
 
@@ -46,17 +46,17 @@ describe DemandedAmountDataCorrection do
 
       it 'must not be negative' do
         presenter.demanded_interest = Money.new(-1)
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       it 'must not be the same value' do
         presenter.demanded_interest = loan.dti_interest
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
 
       it 'must be lte to original loan amount when amount is not being changed' do
         presenter.demanded_interest = loan.amount + Money.new(1)
-        presenter.should_not be_valid
+        expect(presenter).not_to be_valid
       end
     end
   end
@@ -72,30 +72,30 @@ describe DemandedAmountDataCorrection do
         it 'creates a DataCorrection and updates the loan' do
           presenter.demanded_amount = '1,234.56'
           presenter.demanded_interest = '123.45' # ignored
-          presenter.save.should == true
+          expect(presenter.save).to eq(true)
 
           data_correction = loan.data_corrections.last!
-          data_correction.created_by.should == user
-          data_correction.dti_demand_out_amount.should == Money.new(1_234_56)
-          data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-          data_correction.dti_demand_interest.should be_nil
-          data_correction.old_dti_demand_interest.should be_nil
+          expect(data_correction.created_by).to eq(user)
+          expect(data_correction.dti_demand_out_amount).to eq(Money.new(1_234_56))
+          expect(data_correction.old_dti_demand_out_amount).to eq(Money.new(1_000_00))
+          expect(data_correction.dti_demand_interest).to be_nil
+          expect(data_correction.old_dti_demand_interest).to be_nil
 
           loan.reload
-          loan.dti_demand_outstanding.should == Money.new(1_234_56)
-          loan.dti_interest.should be_nil
-          loan.last_modified_at.should_not == 1.year.ago
-          loan.modified_by.should == user
+          expect(loan.dti_demand_outstanding).to eq(Money.new(1_234_56))
+          expect(loan.dti_interest).to be_nil
+          expect(loan.last_modified_at).not_to eq(1.year.ago)
+          expect(loan.modified_by).to eq(user)
         end
       end
 
       context 'failure' do
         it 'does not update the loan' do
           presenter.demanded_amount = ''
-          presenter.save.should == false
+          expect(presenter.save).to eq(false)
 
           loan.reload
-          loan.dti_demand_outstanding.should == Money.new(1_000_00)
+          expect(loan.dti_demand_outstanding).to eq(Money.new(1_000_00))
         end
       end
     end
@@ -107,27 +107,27 @@ describe DemandedAmountDataCorrection do
         it 'also updates demand_interest' do
           presenter.demanded_amount = '1,234.56'
           presenter.demanded_interest = '123.45'
-          presenter.save.should == true
+          expect(presenter.save).to eq(true)
 
           data_correction = loan.data_corrections.last!
-          data_correction.dti_demand_out_amount.should == Money.new(1_234_56)
-          data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-          data_correction.dti_demand_interest.should == Money.new(123_45)
-          data_correction.old_dti_demand_interest.should == Money.new(100_00)
+          expect(data_correction.dti_demand_out_amount).to eq(Money.new(1_234_56))
+          expect(data_correction.old_dti_demand_out_amount).to eq(Money.new(1_000_00))
+          expect(data_correction.dti_demand_interest).to eq(Money.new(123_45))
+          expect(data_correction.old_dti_demand_interest).to eq(Money.new(100_00))
 
           loan.reload
-          loan.dti_demand_outstanding.should == Money.new(1_234_56)
-          loan.dti_interest.should == Money.new(123_45)
+          expect(loan.dti_demand_outstanding).to eq(Money.new(1_234_56))
+          expect(loan.dti_interest).to eq(Money.new(123_45))
         end
 
         it 'can update values to zero' do
           presenter.demanded_amount = '0'
           presenter.demanded_interest = '0'
-          presenter.save.should == true
+          expect(presenter.save).to eq(true)
 
           loan.reload
-          loan.dti_demand_outstanding.should == Money.new(0)
-          loan.dti_interest.should == Money.new(0)
+          expect(loan.dti_demand_outstanding).to eq(Money.new(0))
+          expect(loan.dti_interest).to eq(Money.new(0))
         end
       end
 
@@ -135,11 +135,11 @@ describe DemandedAmountDataCorrection do
         it 'does not update the loan' do
           presenter.demanded_amount = ''
           presenter.demanded_interest = ''
-          presenter.save.should == false
+          expect(presenter.save).to eq(false)
 
           loan.reload
-          loan.dti_demand_outstanding.should == Money.new(1_000_00)
-          loan.dti_interest.should == Money.new(100_00)
+          expect(loan.dti_demand_outstanding).to eq(Money.new(1_000_00))
+          expect(loan.dti_interest).to eq(Money.new(100_00))
         end
       end
     end

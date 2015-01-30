@@ -5,7 +5,7 @@ shared_examples_for 'LoanModification' do
     let(:loan_modification) { FactoryGirl.build(described_class.name.underscore) }
 
     it 'has a valid Factory' do
-      loan_modification.should be_valid
+      expect(loan_modification).to be_valid
     end
 
     it 'strictly requires a loan' do
@@ -24,7 +24,7 @@ shared_examples_for 'LoanModification' do
 
     it 'requires a date_of_change' do
       loan_modification.date_of_change = ''
-      loan_modification.should_not be_valid
+      expect(loan_modification).not_to be_valid
     end
 
     it 'strictly requires a modified_date' do

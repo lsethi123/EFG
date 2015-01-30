@@ -13,7 +13,7 @@ describe 'Claim limits report' do
       visit root_path
       click_link 'Generate Claim Limits Report'
 
-      page.response_headers['Content-Type'].should include('text/csv')
+      expect(page.response_headers['Content-Type']).to include('text/csv')
     end
   end
 

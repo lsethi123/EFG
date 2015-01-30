@@ -12,7 +12,7 @@ describe ClaimLimitCalculator do
     let(:calculators) { ClaimLimitCalculator.all_with_amount([ lender ]) }
 
     it "returns array of claim limit calculators, excluding any with 0 amount" do
-      calculators.size.should == 1
+      expect(calculators.size).to eq(1)
     end
   end
 
@@ -34,7 +34,7 @@ describe ClaimLimitCalculator do
     let!(:not_included) { FactoryGirl.create(:loan_change, :lender_demand_satisfied, amount_drawn: Money.new(100_00), loan: guaranteed_loan) }
 
     it "includes the drawn amounts for all relevant loan changes" do
-      calculator.cumulative_drawn_amount.should eq(Money.new(1_111_110_00) + guaranteed_loan.initial_draw_change.amount_drawn)
+      expect(calculator.cumulative_drawn_amount).to eq(Money.new(1_111_110_00) + guaranteed_loan.initial_draw_change.amount_drawn)
     end
   end
 

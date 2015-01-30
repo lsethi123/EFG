@@ -5,12 +5,12 @@ describe SortcodeDataCorrection do
     let(:presenter) { FactoryGirl.build(:sortcode_data_correction) }
 
     it 'has a valid factory' do
-      presenter.should be_valid
+      expect(presenter).to be_valid
     end
 
     it 'requires a sortcode' do
       presenter.sortcode = ''
-      presenter.should_not be_valid
+      expect(presenter).not_to be_valid
     end
   end
 
@@ -22,28 +22,28 @@ describe SortcodeDataCorrection do
     context 'success' do
       it 'creates a DataCorrection and updates the loan' do
         presenter.sortcode = '654321'
-        presenter.save.should == true
+        expect(presenter.save).to eq(true)
 
         data_correction = loan.data_corrections.last!
-        data_correction.change_type.should == ChangeType::DataCorrection
-        data_correction.created_by.should == user
-        data_correction.sortcode.should == '654321'
-        data_correction.old_sortcode.should == '123456'
+        expect(data_correction.change_type).to eq(ChangeType::DataCorrection)
+        expect(data_correction.created_by).to eq(user)
+        expect(data_correction.sortcode).to eq('654321')
+        expect(data_correction.old_sortcode).to eq('123456')
 
         loan.reload
-        loan.last_modified_at.should_not == 1.year.ago
-        loan.modified_by.should == user
-        loan.sortcode.should == '654321'
+        expect(loan.last_modified_at).not_to eq(1.year.ago)
+        expect(loan.modified_by).to eq(user)
+        expect(loan.sortcode).to eq('654321')
       end
     end
 
     context 'failure' do
       it 'does not update the loan' do
         presenter.sortcode = ''
-        presenter.save.should == false
+        expect(presenter.save).to eq(false)
 
         loan.reload
-        loan.sortcode.should == '123456'
+        expect(loan.sortcode).to eq('123456')
       end
     end
   end

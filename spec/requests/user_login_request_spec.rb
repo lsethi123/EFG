@@ -11,18 +11,18 @@ describe 'user login' do
 
       # incorrect authentication details for locked account shows generic flash message
       unsuccessfully_login(user)
-      page.should have_content(I18n.t('devise.failure.locked'))
+      expect(page).to have_content(I18n.t('devise.failure.locked'))
 
       # correct authentication details allows login
       # but all pages redirect to page informing user their account is locked
       submit_sign_in_form user.username, user.password
-      page.should have_content('Your account has been locked')
-      page.current_path.should == account_locked_path
+      expect(page).to have_content('Your account has been locked')
+      expect(page.current_path).to eq(account_locked_path)
 
       # check other pages aren't accessible
       visit loan_states_path
-      page.should have_content('Your account has been locked')
-      page.current_path.should == account_locked_path
+      expect(page).to have_content('Your account has been locked')
+      expect(page.current_path).to eq(account_locked_path)
     end
 
     it 'should reset failed attempts after successfully logging into unlocked account' do
@@ -36,12 +36,12 @@ describe 'user login' do
       end
 
       user.reload
-      user.failed_attempts.should == failed_login_attempts
+      expect(user.failed_attempts).to eq(failed_login_attempts)
 
       successfully_login(user)
 
       user.reload
-      user.failed_attempts.should == 0
+      expect(user.failed_attempts).to eq(0)
     end
 
     it 'should not reset failed attempts after successfully logging into locked account' do
@@ -50,13 +50,13 @@ describe 'user login' do
       unsuccessfully_login_until_locked(user)
 
       user.reload
-      user.failed_attempts.should_not == 0
+      expect(user.failed_attempts).not_to eq(0)
 
       successfully_login(user)
-      page.should have_content('Your account has been locked')
+      expect(page).to have_content('Your account has been locked')
 
       user.reload
-      user.failed_attempts.should_not == 0
+      expect(user.failed_attempts).not_to eq(0)
     end
   end
 
@@ -65,7 +65,7 @@ describe 'user login' do
       it 'should be able to login' do
         visit root_path
         submit_sign_in_form user.username, 'password'
-        page.should have_content(I18n.t('devise.failure.invalid'))
+        expect(page).to have_content(I18n.t('devise.failure.invalid'))
       end
     end
 

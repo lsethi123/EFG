@@ -14,11 +14,11 @@ describe 'loan no claim' do
 
     loan = Loan.last
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
-    loan.state.should == Loan::NotDemanded
-    loan.no_claim_on.should == Date.new(2012, 6, 1)
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::NotDemanded)
+    expect(loan.no_claim_on).to eq(Date.new(2012, 6, 1))
+    expect(loan.modified_by).to eq(current_user)
 
     should_log_loan_state_change(loan, Loan::NotDemanded, 11, current_user)
   end
@@ -27,13 +27,13 @@ describe 'loan no claim' do
     visit loan_path(loan)
     click_link 'No Claim'
 
-    loan.state.should == Loan::LenderDemand
+    expect(loan.state).to eq(Loan::LenderDemand)
     expect {
       click_button 'Submit'
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == loan_no_claim_path(loan)
+    expect(current_path).to eq(loan_no_claim_path(loan))
   end
 
   private

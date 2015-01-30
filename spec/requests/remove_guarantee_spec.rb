@@ -19,11 +19,11 @@ describe 'Remove Guarantee' do
     fill_in 'loan_remove_guarantee_remove_guarantee_reason', with: 'n/a/'
     click_button 'Remove Guarantee'
 
-    page.should have_content('The Guarantee has been removed in respect of this facility.')
+    expect(page).to have_content('The Guarantee has been removed in respect of this facility.')
 
     loan.reload
-    loan.state.should == Loan::Removed
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Removed)
+    expect(loan.modified_by).to eq(current_user)
 
     should_log_loan_state_change(loan, Loan::Removed, 15, current_user)
   end

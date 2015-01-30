@@ -15,11 +15,11 @@ describe LenderLendingLimit do
 
     it "should be valid with valid attributes" do
       subject.allocation = 213
-      subject.should be_valid
+      expect(subject).to be_valid
     end
 
     it "should be invalid without an allocation" do
-      subject.should_not be_valid
+      expect(subject).not_to be_valid
     end
   end
 

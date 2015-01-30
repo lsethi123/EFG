@@ -16,7 +16,7 @@ describe 'Sending usernames reminder' do
       fill_in 'Email', with: user.email
       click_button 'Send Username Reminder'
 
-      page.should have_content(I18n.t('manage_users.usernames_reminder_sent'))
+      expect(page).to have_content(I18n.t('manage_users.usernames_reminder_sent'))
     end
   end
 
@@ -25,7 +25,7 @@ describe 'Sending usernames reminder' do
       fill_in 'Email', with: 'no_such_user@example.com'
       click_button 'Send Username Reminder'
 
-      page.should have_content(I18n.t('manage_users.usernames_reminder_sent'))
+      expect(page).to have_content(I18n.t('manage_users.usernames_reminder_sent'))
     end
   end
 end

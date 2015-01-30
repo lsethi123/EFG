@@ -20,7 +20,7 @@ describe "bulk creation of lending limits" do
 
       click_button 'Create Lending Limits'
 
-      current_path.should == bulk_lending_limits_path
+      expect(current_path).to eq(bulk_lending_limits_path)
     end
 
     it do
@@ -39,8 +39,8 @@ describe "bulk creation of lending limits" do
       click_button 'Create Lending Limits'
 
       lending_limit_audits = AdminAudit.where(action: AdminAudit::LendingLimitCreated)
-      lending_limit_audits.count.should == 2
-      lending_limit_audits.map(&:auditable).should =~ LendingLimit.all
+      expect(lending_limit_audits.count).to eq(2)
+      expect(lending_limit_audits.map(&:auditable)).to match_array(LendingLimit.all)
 
       lending_limit_audits.each do |lending_limit|
         expect(lending_limit.modified_by).to eql(current_user)
@@ -50,16 +50,16 @@ describe "bulk creation of lending limits" do
         expect(lending_limit.modified_on).to eql(Date.current)
       end
 
-      phase.lending_limits.count.should == 2
+      expect(phase.lending_limits.count).to eq(2)
 
       phase.lending_limits.each do |lending_limit|
-        lending_limit.name.should == 'This year'
-        lending_limit.starts_on.should == Date.new(2012, 1, 1)
-        lending_limit.ends_on.should == Date.new(2012, 12, 31)
+        expect(lending_limit.name).to eq('This year')
+        expect(lending_limit.starts_on).to eq(Date.new(2012, 1, 1))
+        expect(lending_limit.ends_on).to eq(Date.new(2012, 12, 31))
       end
 
-      phase.lending_limits.map(&:lender).should =~ [lender1, lender3]
-      phase.lending_limits.map(&:active).should =~ [true, false]
+      expect(phase.lending_limits.map(&:lender)).to match_array([lender1, lender3])
+      expect(phase.lending_limits.map(&:active)).to match_array([true, false])
     end
   end
 

@@ -62,33 +62,33 @@ describe RepaymentFrequencyLoanChange do
         presenter.repayment_frequency_id = RepaymentFrequency::Quarterly.id
 
         Timecop.freeze(2013, 3, 1) do
-          presenter.save.should == true
+          expect(presenter.save).to eq(true)
         end
 
         loan_change = loan.loan_changes.last!
-        loan_change.change_type.should == ChangeType::RepaymentFrequency
-        loan_change.repayment_frequency_id.should == RepaymentFrequency::Quarterly.id
-        loan_change.old_repayment_frequency_id.should == RepaymentFrequency::Annually.id
-        loan_change.created_by.should == user
+        expect(loan_change.change_type).to eq(ChangeType::RepaymentFrequency)
+        expect(loan_change.repayment_frequency_id).to eq(RepaymentFrequency::Quarterly.id)
+        expect(loan_change.old_repayment_frequency_id).to eq(RepaymentFrequency::Annually.id)
+        expect(loan_change.created_by).to eq(user)
 
         loan.reload
-        loan.modified_by.should == user
-        loan.repayment_frequency_id.should == RepaymentFrequency::Quarterly.id
+        expect(loan.modified_by).to eq(user)
+        expect(loan.repayment_frequency_id).to eq(RepaymentFrequency::Quarterly.id)
 
         premium_schedule = loan.premium_schedules.last!
-        premium_schedule.premium_cheque_month.should == '05/2013'
-        premium_schedule.repayment_duration.should == 57
+        expect(premium_schedule.premium_cheque_month).to eq('05/2013')
+        expect(premium_schedule.repayment_duration).to eq(57)
       end
     end
 
     context 'failure' do
       it 'does not update loan' do
         presenter.repayment_frequency_id = nil
-        presenter.save.should == false
+        expect(presenter.save).to eq(false)
 
         loan.reload
-        loan.modified_by.should_not == user
-        loan.repayment_frequency_id.should == RepaymentFrequency::Annually.id
+        expect(loan.modified_by).not_to eq(user)
+        expect(loan.repayment_frequency_id).to eq(RepaymentFrequency::Annually.id)
       end
     end
   end

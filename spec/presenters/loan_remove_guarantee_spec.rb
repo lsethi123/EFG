@@ -13,38 +13,38 @@ describe LoanRemoveGuarantee do
     end
 
     it 'should have a valid factory' do
-      loan_remove_guarantee.should be_valid
+      expect(loan_remove_guarantee).to be_valid
     end
 
     it 'should be invalid without remove guarantee on' do
       loan_remove_guarantee.remove_guarantee_on = nil
-      loan_remove_guarantee.should_not be_valid
+      expect(loan_remove_guarantee).not_to be_valid
     end
 
     it 'should be invalid without remove guarantee outstanding amount' do
       loan_remove_guarantee.remove_guarantee_outstanding_amount = nil
-      loan_remove_guarantee.should_not be_valid
+      expect(loan_remove_guarantee).not_to be_valid
     end
 
     it 'should be invalid without a cancelled date' do
       loan_remove_guarantee.remove_guarantee_reason = nil
-      loan_remove_guarantee.should_not be_valid
+      expect(loan_remove_guarantee).not_to be_valid
     end
 
     it "should be invalid when remove guarantee outstanding amount is greater than total amount drawn" do
       loan_remove_guarantee.remove_guarantee_outstanding_amount = loan.amount + Money.new(1_00)
-      loan_remove_guarantee.should_not be_valid
+      expect(loan_remove_guarantee).not_to be_valid
 
       loan_remove_guarantee.remove_guarantee_outstanding_amount = loan.amount
-      loan_remove_guarantee.should be_valid
+      expect(loan_remove_guarantee).to be_valid
     end
 
     it "should be invalid when remove guarantee date is before initial draw date" do
       loan_remove_guarantee.remove_guarantee_on = loan.initial_draw_change.date_of_change - 1.day
-      loan_remove_guarantee.should_not be_valid
+      expect(loan_remove_guarantee).not_to be_valid
 
       loan_remove_guarantee.remove_guarantee_on = loan.initial_draw_change.date_of_change
-      loan_remove_guarantee.should be_valid
+      expect(loan_remove_guarantee).to be_valid
     end
   end
 

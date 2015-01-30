@@ -35,15 +35,15 @@ describe "loan settled" do
         fill_in_valid_details
         click_button 'Select Loans'
 
-        page.should have_content('BSPFDNH-01')
-        page.should have_content('3PEZRGB-01')
-        page.should have_content('LOGIHLJ-02')
-        page.should_not have_content('MF6XT4Z-01')
-        page.should_not have_content('HJD4JF8-01')
+        expect(page).to have_content('BSPFDNH-01')
+        expect(page).to have_content('3PEZRGB-01')
+        expect(page).to have_content('LOGIHLJ-02')
+        expect(page).not_to have_content('MF6XT4Z-01')
+        expect(page).not_to have_content('HJD4JF8-01')
 
-        page.should have_content('lenderref1')
+        expect(page).to have_content('lenderref1')
 
-        page.should have_css("tr td:nth-child(2)", text: "*", count: 1)
+        expect(page).to have_css("tr td:nth-child(2)", text: "*", count: 1)
 
         within('#settle_loan_1') do
           find('input[type=checkbox]').set(true)
@@ -58,37 +58,37 @@ describe "loan settled" do
       end
 
       invoice = Invoice.last
-      invoice.lender.should == lender1
-      invoice.reference.should == '2006-SADHJ'
-      invoice.period_covered_quarter.should == 'December'
-      invoice.period_covered_year.should == '2011'
-      invoice.received_on.should == Date.new(2012, 01, 06)
-      invoice.created_by.should == current_user
+      expect(invoice.lender).to eq(lender1)
+      expect(invoice.reference).to eq('2006-SADHJ')
+      expect(invoice.period_covered_quarter).to eq('December')
+      expect(invoice.period_covered_year).to eq('2011')
+      expect(invoice.received_on).to eq(Date.new(2012, 01, 06))
+      expect(invoice.created_by).to eq(current_user)
 
-      invoice.settled_loans.should =~ [loan1, loan3]
+      expect(invoice.settled_loans).to match_array([loan1, loan3])
 
       loan1.reload
-      loan1.state.should == Loan::Settled
-      loan1.invoice.should == invoice
-      loan1.modified_by.should == current_user
-      loan1.settled_on.should == Date.new(2012, 01, 07)
-      loan1.updated_at.to_i.should == time.to_i
+      expect(loan1.state).to eq(Loan::Settled)
+      expect(loan1.invoice).to eq(invoice)
+      expect(loan1.modified_by).to eq(current_user)
+      expect(loan1.settled_on).to eq(Date.new(2012, 01, 07))
+      expect(loan1.updated_at.to_i).to eq(time.to_i)
 
       loan3.reload
-      loan3.state.should == Loan::Settled
-      loan3.invoice.should == invoice
-      loan3.modified_by.should == current_user
-      loan3.settled_on.should == Date.new(2012, 01, 07)
-      loan3.updated_at.to_i.should == time.to_i
-      loan3.settled_amount.should == Money.new(500_10)
+      expect(loan3.state).to eq(Loan::Settled)
+      expect(loan3.invoice).to eq(invoice)
+      expect(loan3.modified_by).to eq(current_user)
+      expect(loan3.settled_on).to eq(Date.new(2012, 01, 07))
+      expect(loan3.updated_at.to_i).to eq(time.to_i)
+      expect(loan3.settled_amount).to eq(Money.new(500_10))
 
-      page.should have_content('BSPFDNH-01')
-      page.should_not have_content('3PEZRGB-01')
-      page.should have_content('LOGIHLJ-02')
-      page.should_not have_content('MF6XT4Z-01')
-      page.should_not have_content('HJD4JF8-01')
+      expect(page).to have_content('BSPFDNH-01')
+      expect(page).not_to have_content('3PEZRGB-01')
+      expect(page).to have_content('LOGIHLJ-02')
+      expect(page).not_to have_content('MF6XT4Z-01')
+      expect(page).not_to have_content('HJD4JF8-01')
 
-      page.should have_content('lenderref1')
+      expect(page).to have_content('lenderref1')
 
       should_log_loan_state_change(loan1, Loan::Settled, 18, current_user)
       should_log_loan_state_change(loan3, Loan::Settled, 18, current_user)
@@ -98,7 +98,7 @@ describe "loan settled" do
       fill_in_valid_details
       click_button 'Select Loans'
       click_button "Export CSV"
-      page.current_url.should == select_loans_invoices_url(format: 'csv')
+      expect(page.current_url).to eq(select_loans_invoices_url(format: 'csv'))
     end
   end
 
@@ -107,11 +107,11 @@ describe "loan settled" do
 
     click_button 'Select Loans'
 
-    page.should have_content('Name of the Lender submitting the invoice?')
-    page.should have_content("What is the lender's invoice reference?")
-    page.should have_content('What is the Demand Invoice Period quarter end date?')
-    page.should have_content('What is the Demand Invoice Period quarter end year?')
-    page.should have_content('On what date was the invoice received?')
+    expect(page).to have_content('Name of the Lender submitting the invoice?')
+    expect(page).to have_content("What is the lender's invoice reference?")
+    expect(page).to have_content('What is the Demand Invoice Period quarter end date?')
+    expect(page).to have_content('What is the Demand Invoice Period quarter end year?')
+    expect(page).to have_content('On what date was the invoice received?')
   end
 
   it "validate loans have been selected" do
@@ -129,7 +129,7 @@ describe "loan settled" do
     click_button 'Select Loans'
     click_button 'Settle Loans'
 
-    page.should have_content('No loans were selected.')
+    expect(page).to have_content('No loans were selected.')
   end
 
   it "show text if there are no demanded loans" do
@@ -145,7 +145,7 @@ describe "loan settled" do
 
     click_button 'Select Loans'
 
-    page.should have_content('There are no loans to settle.')
+    expect(page).to have_content('There are no loans to settle.')
   end
 
   private

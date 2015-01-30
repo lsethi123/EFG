@@ -11,35 +11,35 @@ describe Search do
 
   describe "setting search filters" do
     it "should remove blank values" do
-      search('business_name' => '').business_name.should be_nil
+      expect(search('business_name' => '').business_name).to be_nil
     end
   end
 
   describe "#sort_by" do
     it "should return the default" do
-      search.sort_by.should == Search::DefaultSortBy
+      expect(search.sort_by).to eq(Search::DefaultSortBy)
     end
 
     it "should return a valid, user supplied value" do
-      search('sort_by' => 'trading_name').sort_by.should == 'trading_name'
+      expect(search('sort_by' => 'trading_name').sort_by).to eq('trading_name')
     end
 
     it "should return the default, if passed an invalid value" do
-      search('sort_by' => 'fake_attribute').sort_by.should == Search::DefaultSortBy
+      expect(search('sort_by' => 'fake_attribute').sort_by).to eq(Search::DefaultSortBy)
     end
   end
 
   describe "#sort_order" do
     it "should return the default" do
-      search.sort_order.should == Search::DefaultSortOrder
+      expect(search.sort_order).to eq(Search::DefaultSortOrder)
     end
 
     it "should return a valid, user supplied value" do
-      search('sort_order' => 'ASC').sort_order.should == 'ASC'
+      expect(search('sort_order' => 'ASC').sort_order).to eq('ASC')
     end
 
     it "should return the default, if passed an invalid value" do
-      search('sort_by' => 'JUNK').sort_order.should == Search::DefaultSortOrder
+      expect(search('sort_by' => 'JUNK').sort_order).to eq(Search::DefaultSortOrder)
     end
   end
 
@@ -52,7 +52,7 @@ describe Search do
       let!(:user) { FactoryGirl.create(:lender_user, lender: lending_limit1.lender) }
 
       it "should return all of the user's lender's lending limits" do
-        search.lending_limits.should == [ lending_limit1 ]
+        expect(search.lending_limits).to eq([ lending_limit1 ])
       end
     end
 
@@ -60,7 +60,7 @@ describe Search do
       let(:user) { FactoryGirl.build(:auditor_user) }
 
       it "should return all lending limits when " do
-        search.lending_limits.should == [ lending_limit1, lending_limit2 ]
+        expect(search.lending_limits).to eq([ lending_limit1, lending_limit2 ])
       end
     end
   end
@@ -79,9 +79,9 @@ describe Search do
       it "should return all of the user's lender's users" do
         modified_by_users = search.modified_by_users
 
-        modified_by_users.size.should == 2
-        modified_by_users.should include(user)
-        modified_by_users.should include(lender_user1)
+        expect(modified_by_users.size).to eq(2)
+        expect(modified_by_users).to include(user)
+        expect(modified_by_users).to include(lender_user1)
       end
     end
 
@@ -91,9 +91,9 @@ describe Search do
       it "should return all lender users" do
         modified_by_users = search.modified_by_users
 
-        modified_by_users.size.should == 2
-        modified_by_users.should include(lender_user1)
-        modified_by_users.should include(lender_user2)
+        expect(modified_by_users.size).to eq(2)
+        expect(modified_by_users).to include(lender_user1)
+        expect(modified_by_users).to include(lender_user2)
       end
     end
   end
@@ -102,7 +102,7 @@ describe Search do
     let!(:user) { FactoryGirl.create(:lender_user) }
 
     it "should return array of lenders for the specified user" do
-      search.allowed_lenders.should == [ user.lender ]
+      expect(search.allowed_lenders).to eq([ user.lender ])
     end
   end
 
@@ -171,124 +171,124 @@ describe Search do
         let(:user) { FactoryGirl.create(:cfe_user) }
 
         it "should be allowed when the specified user can access multiple lenders" do
-          search('lender_id' => nil).results.should_not be_empty
+          expect(search('lender_id' => nil).results).not_to be_empty
         end
       end
     end
 
     it "should return loans by partial business name" do
-      search('business_name' => 'er-sl').results.should == [loan2]
+      expect(search('business_name' => 'er-sl').results).to eq([loan2])
     end
 
     it "should return loans by partial trading name" do
-      search('trading_name' => 'ce-int').results.should == [loan2]
+      expect(search('trading_name' => 'ce-int').results).to eq([loan2])
     end
 
     it "should return loans by partial company registration" do
-      search('company_registration' => '887').results.should == [loan2]
+      expect(search('company_registration' => '887').results).to eq([loan2])
     end
 
     it "should return loans by specific state" do
-      search('state' => Loan::Guaranteed).results.should == [loan2]
+      expect(search('state' => Loan::Guaranteed).results).to eq([loan2])
     end
 
     it "should return loans for specific lenders" do
       loan2.lender = FactoryGirl.create(:lender)
       loan2.save!
 
-      search('lender_id' => lender.id).results.should == [loan1]
+      expect(search('lender_id' => lender.id).results).to eq([loan1])
     end
 
     it "should return loans by specific lending limit" do
-      search('lending_limit_id' => [ loan2.lending_limit_id ]).results.should == [loan2]
+      expect(search('lending_limit_id' => [ loan2.lending_limit_id ]).results).to eq([loan2])
     end
 
     it "should return loans on or above a specific amount" do
-      search('amount_from' => Money.new(10_000_000_00)).results.should == [loan2]
+      expect(search('amount_from' => Money.new(10_000_000_00)).results).to eq([loan2])
     end
 
     it "should return loans on or below a specific amount" do
-      search('amount_to' => Money.new(9_000_000_00)).results.should == [loan1]
+      expect(search('amount_to' => Money.new(9_000_000_00)).results).to eq([loan1])
     end
 
     it "should return loans on or after a specific maturity date" do
-      search('maturity_date_from' => '10/05/2050').results.should == [loan2]
+      expect(search('maturity_date_from' => '10/05/2050').results).to eq([loan2])
     end
 
     it "should return loans on or before a specific maturity date" do
-      search('maturity_date_to' => '10/05/2049').results.should == [loan1]
+      expect(search('maturity_date_to' => '10/05/2049').results).to eq([loan1])
     end
 
     it "should return loans by specific loan reason" do
-      search('reason_id' => [ loan2.reason_id ]).results.should == [loan2]
+      expect(search('reason_id' => [ loan2.reason_id ]).results).to eq([loan2])
     end
 
     it "should return loans by partial postcode" do
-      search('postcode' => '4L').results.should == [loan2]
+      expect(search('postcode' => '4L').results).to eq([loan2])
     end
 
     it "should return loans on or after a specific updated at date" do
-      search('updated_at_from' => 1.day.from_now.strftime("%d/%m/%Y")).results.should == [loan2]
+      expect(search('updated_at_from' => 1.day.from_now.strftime("%d/%m/%Y")).results).to eq([loan2])
     end
 
     it "should return loans on or before a specific updated at date" do
-      search('updated_at_to' => 1.day.from_now.strftime("%d/%m/%Y")).results.should == [loan1]
+      expect(search('updated_at_to' => 1.day.from_now.strftime("%d/%m/%Y")).results).to eq([loan1])
     end
 
     it "should return loans by a specific modified by user" do
-      search('modified_by_id' => user.id).results.should == [loan2]
+      expect(search('modified_by_id' => user.id).results).to eq([loan2])
     end
 
     (1..5).each do |num|
       it "should return loans by partial generic field #{num}" do
-        search("generic#{num}" => "eric #{num}").results.should == [loan2]
+        expect(search("generic#{num}" => "eric #{num}").results).to eq([loan2])
       end
     end
 
     it "should return loans by partial lender reference" do
-      search("lender_reference" => "lenderref").results.should == [loan2]
+      expect(search("lender_reference" => "lenderref").results).to eq([loan2])
     end
 
     it "should sort loans by business name" do
       loan1.update_attribute(:business_name, "DEF")
       loan2.update_attribute(:business_name, "ABC")
 
-      search('sort_by' => 'business_name').results.should == [loan1, loan2]
+      expect(search('sort_by' => 'business_name').results).to eq([loan1, loan2])
     end
 
     it "should sort loans by trading name" do
       loan1.update_attribute(:trading_name, "DEF")
       loan2.update_attribute(:trading_name, "ABC")
 
-      search('sort_by' => 'trading_name').results.should == [loan1, loan2]
+      expect(search('sort_by' => 'trading_name').results).to eq([loan1, loan2])
     end
 
     it "should sort loans by postcode" do
       loan1.update_attribute(:postcode, 'EC1 ABC')
       loan2.update_attribute(:postcode, 'DA1 DEF')
 
-      search('sort_by' => 'postcode').results.should == [loan1, loan2]
+      expect(search('sort_by' => 'postcode').results).to eq([loan1, loan2])
     end
 
     it "should sort loans by maturity date" do
       loan1.update_attribute(:maturity_date, 1.day.ago)
       loan2.update_attribute(:maturity_date, 2.days.ago)
 
-      search('sort_by' => 'maturity_date').results.should == [loan1, loan2]
+      expect(search('sort_by' => 'maturity_date').results).to eq([loan1, loan2])
     end
 
     it "should sort loans by updated_at date" do
       loan1.update_attribute(:updated_at, 1.day.ago)
       loan2.update_attribute(:updated_at, 2.days.ago)
 
-      search('sort_by' => 'updated_at').results.should == [loan1, loan2]
+      expect(search('sort_by' => 'updated_at').results).to eq([loan1, loan2])
     end
 
     it "should sort loans by amount in ascending order" do
       loan1.update_attribute(:amount, Money.new(1000))
       loan2.update_attribute(:amount, Money.new(500))
 
-      search('sort_by' => 'amount', 'sort_order' => 'ASC').results.should == [loan2, loan1]
+      expect(search('sort_by' => 'amount', 'sort_order' => 'ASC').results).to eq([loan2, loan1])
     end
   end
 end

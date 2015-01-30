@@ -10,13 +10,13 @@ describe AccountDisabledController do
     it 'should render when user is disabled' do
       sign_in(disabled_user)
       get :show
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'should redirect to root path when user is not disabled' do
       sign_in(active_user)
       get :show
-      response.should redirect_to(root_url)
+      expect(response).to redirect_to(root_url)
     end
   end
 

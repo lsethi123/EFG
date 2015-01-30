@@ -21,12 +21,12 @@ describe 'LoanModifications' do
     end
 
     it 'includes all LoanModifications' do
-      page.all('table tbody tr').length.should == 4
+      expect(page.all('table tbody tr').length).to eq(4)
 
-      page.should have_content('Initial draw and guarantee')
-      page.should have_content('Extend term')
-      page.should have_content('Data correction')
-      page.should have_content('Lump sum repayment')
+      expect(page).to have_content('Initial draw and guarantee')
+      expect(page).to have_content('Extend term')
+      expect(page).to have_content('Data correction')
+      expect(page).to have_content('Lump sum repayment')
     end
   end
 
@@ -42,30 +42,30 @@ describe 'LoanModifications' do
       click_link 'Loan Changes'
       click_link 'Initial draw and guarantee'
 
-      page.should have_content('£5,000.00')
+      expect(page).to have_content('£5,000.00')
     end
 
     it 'includes new and old values for a LoanChange' do
       click_link 'Loan Changes'
       click_link 'Extend term'
 
-      page.should have_content('60')
-      page.should have_content('63')
+      expect(page).to have_content('60')
+      expect(page).to have_content('63')
     end
 
     it 'includes LoanChange#lump_sum_repayment' do
       click_link 'Loan Changes'
       click_link 'Lump sum repayment'
 
-      page.should have_content('£1,234.56')
+      expect(page).to have_content('£1,234.56')
     end
 
     it 'includes new and old values for a DataCorrection' do
       click_link 'Loan Changes'
       click_link 'Data correction'
 
-      page.should have_content('654321')
-      page.should have_content('123456')
+      expect(page).to have_content('654321')
+      expect(page).to have_content('123456')
     end
 
     it 'includes new and old values for a LendingLimit DataCorrection' do
@@ -76,8 +76,8 @@ describe 'LoanModifications' do
       click_link 'Loan Changes'
       page.all('table tbody a').first.click
 
-      page.should have_content(old_lending_limit.name)
-      page.should have_content('new lending limit')
+      expect(page).to have_content(old_lending_limit.name)
+      expect(page).to have_content('new lending limit')
     end
   end
 end

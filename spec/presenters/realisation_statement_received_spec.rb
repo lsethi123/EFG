@@ -6,42 +6,42 @@ describe RealisationStatementReceived do
 
     context "details" do
       it "must have a valid factory" do
-        realisation_statement_received.should be_valid
+        expect(realisation_statement_received).to be_valid
       end
 
       it "must have a lender" do
         realisation_statement_received.lender = nil
-        realisation_statement_received.should_not be_valid
+        expect(realisation_statement_received).not_to be_valid
       end
 
       it "must have a reference" do
         realisation_statement_received.reference = ''
-        realisation_statement_received.should_not be_valid
+        expect(realisation_statement_received).not_to be_valid
       end
 
       it "must have a period_covered_quarter" do
         realisation_statement_received.period_covered_quarter = ''
-        realisation_statement_received.should_not be_valid
+        expect(realisation_statement_received).not_to be_valid
       end
 
       it "must have a valid period_covered_quarter" do
         realisation_statement_received.period_covered_quarter = 'February'
-        realisation_statement_received.should_not be_valid
+        expect(realisation_statement_received).not_to be_valid
       end
 
       it "must have a period_covered_year" do
         realisation_statement_received.period_covered_year = ''
-        realisation_statement_received.should_not be_valid
+        expect(realisation_statement_received).not_to be_valid
       end
 
       it "must have a valid period_covered_year" do
         realisation_statement_received.period_covered_year = 'junk'
-        realisation_statement_received.should_not be_valid
+        expect(realisation_statement_received).not_to be_valid
       end
 
       it "must have a valid received_on" do
         realisation_statement_received.received_on = ''
-        realisation_statement_received.should_not be_valid
+        expect(realisation_statement_received).not_to be_valid
       end
     end
 
@@ -51,7 +51,7 @@ describe RealisationStatementReceived do
           recovery.realised = false
         end
 
-        realisation_statement_received.should_not be_valid(:save)
+        expect(realisation_statement_received).not_to be_valid(:save)
       end
 
       it "must have a creator" do
@@ -74,20 +74,20 @@ describe RealisationStatementReceived do
     it "should return recoveries within or prior to the specified quarter" do
       recoveries = realisation_statement_received.recoveries.map(&:recovery)
 
-      recoveries.size.should == 2
-      recoveries.should =~ [previous_quarter_recovery, specified_quarter_recovery]
+      expect(recoveries.size).to eq(2)
+      expect(recoveries).to match_array([previous_quarter_recovery, specified_quarter_recovery])
     end
 
     it 'does not include recoveries from other lenders' do
       other_lender_recovery = FactoryGirl.create(:recovery, recovered_on: Date.new(2012))
 
-      realisation_statement_received.recoveries.should_not include(other_lender_recovery)
+      expect(realisation_statement_received.recoveries).not_to include(other_lender_recovery)
     end
 
     it 'does not include already realised recoveries' do
       already_recovered_recovery = FactoryGirl.create(:recovery, loan: loan, realise_flag: true)
 
-      realisation_statement_received.recoveries.should_not include(already_recovered_recovery)
+      expect(realisation_statement_received.recoveries).not_to include(already_recovered_recovery)
     end
   end
 
@@ -112,8 +112,8 @@ describe RealisationStatementReceived do
       end
 
       it 'updates all loans to be realised to Realised state' do
-        loan1.reload.state.should == Loan::Realised
-        loan2.reload.state.should == Loan::Realised
+        expect(loan1.reload.state).to eq(Loan::Realised)
+        expect(loan2.reload.state).to eq(Loan::Realised)
       end
 
       it "logs the loan's state change" do
@@ -128,32 +128,32 @@ describe RealisationStatementReceived do
       end
 
       it 'updates realised_money_date on all loans' do
-        loan1.reload.realised_money_date.should == Date.current
-        loan2.reload.realised_money_date.should == Date.current
+        expect(loan1.reload.realised_money_date).to eq(Date.current)
+        expect(loan2.reload.realised_money_date).to eq(Date.current)
       end
 
       it 'creates loan realisation for each recovery' do
-        LoanRealisation.count.should == 3
+        expect(LoanRealisation.count).to eq(3)
       end
 
       it 'creates loan realisations with the same created by user as the realisation statement' do
         realisation_statement = realisation_statement_received.realisation_statement
         realisation_statement_received.realisation_statement.loan_realisations.each do |loan_realisation|
-          loan_realisation.created_by.should == realisation_statement.created_by
+          expect(loan_realisation.created_by).to eq(realisation_statement.created_by)
         end
       end
 
       it 'stores the realised amount on each new loan realisation' do
         realisation_statement = realisation_statement_received.realisation_statement
         realised_amounts = realisation_statement.loan_realisations.map(&:realised_amount)
-        realised_amounts.should =~ [Money.new(123_00), Money.new(456_00), Money.new(789_00)]
+        expect(realised_amounts).to match_array([Money.new(123_00), Money.new(456_00), Money.new(789_00)])
       end
 
       it 'associates the recoveries with the realisation statement' do
         realisation_statement = realisation_statement_received.realisation_statement
-        recovery1.reload.realisation_statement.should == realisation_statement
-        recovery2.reload.realisation_statement.should == realisation_statement
-        recovery3.reload.realisation_statement.should == realisation_statement
+        expect(recovery1.reload.realisation_statement).to eq(realisation_statement)
+        expect(recovery2.reload.realisation_statement).to eq(realisation_statement)
+        expect(recovery3.reload.realisation_statement).to eq(realisation_statement)
       end
     end
   end

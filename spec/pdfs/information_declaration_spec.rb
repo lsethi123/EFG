@@ -51,58 +51,58 @@ describe InformationDeclaration do
   describe "#render" do
 
     it "should contain a header" do
-      pdf_content.should include('Information Declaration')
-      pdf_content.should include("Lender organisation:Lender")
-      pdf_content.should include("Business name:ACME")
-      pdf_content.should include("EFG/SFLG reference:QWERTY+01")
-      pdf_content.should include("Loan amount:£12,345.67")
+      expect(pdf_content).to include('Information Declaration')
+      expect(pdf_content).to include("Lender organisation:Lender")
+      expect(pdf_content).to include("Business name:ACME")
+      expect(pdf_content).to include("EFG/SFLG reference:QWERTY+01")
+      expect(pdf_content).to include("Loan amount:£12,345.67")
     end
 
     it "should contain loan details" do
-      pdf_content.should include('QWERTY+01')
-      pdf_content.should include('ACME')
-      pdf_content.should include('ACME Trading')
-      pdf_content.should include('Partnership')
-      pdf_content.should include('B1234567890')
-      pdf_content.should include('£5,000,000.00')
-      pdf_content.should include('01-01-1999')
-      pdf_content.should include('ABC 123')
-      pdf_content.should include('£12,345.67')
-      pdf_content.should include('4 years, 6 months')
-      pdf_content.should include('Quarterly')
-      pdf_content.should include('A10.1.2')
-      pdf_content.should include('Foo')
-      pdf_content.should include("Category Name")
-      pdf_content.should include("Overdrafts")
-      pdf_content.should include('Equipment purchase')
-      pdf_content.should include('No')
-      pdf_content.should include('€1,234.56')
-      pdf_content.should include('Yes')
+      expect(pdf_content).to include('QWERTY+01')
+      expect(pdf_content).to include('ACME')
+      expect(pdf_content).to include('ACME Trading')
+      expect(pdf_content).to include('Partnership')
+      expect(pdf_content).to include('B1234567890')
+      expect(pdf_content).to include('£5,000,000.00')
+      expect(pdf_content).to include('01-01-1999')
+      expect(pdf_content).to include('ABC 123')
+      expect(pdf_content).to include('£12,345.67')
+      expect(pdf_content).to include('4 years, 6 months')
+      expect(pdf_content).to include('Quarterly')
+      expect(pdf_content).to include('A10.1.2')
+      expect(pdf_content).to include('Foo')
+      expect(pdf_content).to include("Category Name")
+      expect(pdf_content).to include("Overdrafts")
+      expect(pdf_content).to include('Equipment purchase')
+      expect(pdf_content).to include('No')
+      expect(pdf_content).to include('€1,234.56')
+      expect(pdf_content).to include('Yes')
     end
 
     it "should contain declaration text" do
-      pdf_content.should include(I18n.t('pdfs.information_declaration.declaration').gsub("\n", ''))
-      pdf_content.should include(I18n.t('pdfs.information_declaration.declaration_list').gsub("\n", ''))
-      pdf_content.should include(I18n.t('pdfs.information_declaration.declaration_important').gsub(/<\/?\w+>/, ''))
+      expect(pdf_content).to include(I18n.t('pdfs.information_declaration.declaration').gsub("\n", ''))
+      expect(pdf_content).to include(I18n.t('pdfs.information_declaration.declaration_list').gsub("\n", ''))
+      expect(pdf_content).to include(I18n.t('pdfs.information_declaration.declaration_important').gsub(/<\/?\w+>/, ''))
     end
 
     it "should contain signature text" do
-      pdf_content.scan(/Signed________/).size.should == 4
-      pdf_content.scan(/Print name________/).size.should == 4
-      pdf_content.scan(/Position________/).size.should == 4
-      pdf_content.scan(/Date________/).size.should == 4
+      expect(pdf_content.scan(/Signed________/).size).to eq(4)
+      expect(pdf_content.scan(/Print name________/).size).to eq(4)
+      expect(pdf_content.scan(/Position________/).size).to eq(4)
+      expect(pdf_content.scan(/Date________/).size).to eq(4)
 
-      pdf_content.should include(I18n.t('pdfs.information_declaration.signatories'))
+      expect(pdf_content).to include(I18n.t('pdfs.information_declaration.signatories'))
     end
 
     it "should contain page numbers" do
       page_count.times do |num|
-        pdf_content.should include("Page: #{num + 1} of #{page_count}")
+        expect(pdf_content).to include("Page: #{num + 1} of #{page_count}")
       end
     end
 
     it "should contain loan reference on every page" do
-      pdf_content.scan("Loan: QWERTY+01").size.should == page_count
+      expect(pdf_content.scan("Loan: QWERTY+01").size).to eq(page_count)
     end
 
   end

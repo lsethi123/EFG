@@ -10,12 +10,12 @@ describe "Session timeout" do
 
   it 'should redirect a user to the login page after a period of inactivity' do
     visit root_path
-    page.current_path.should == root_path
+    expect(page.current_path).to eq(root_path)
 
     timeout_user_session!
 
     visit root_path
-    page.current_path.should == new_user_session_path
+    expect(page.current_path).to eq(new_user_session_path)
   end
 
   private

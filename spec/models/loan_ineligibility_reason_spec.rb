@@ -6,7 +6,7 @@ describe LoanIneligibilityReason do
     let(:loan_ineligibility_reason) { FactoryGirl.build(:loan_ineligibility_reason) }
 
     it 'has a valid Factory' do
-      loan_ineligibility_reason.should be_valid
+      expect(loan_ineligibility_reason).to be_valid
     end
 
     it 'strictly requires a loan_id' do
@@ -18,7 +18,7 @@ describe LoanIneligibilityReason do
 
     it 'requires a reason' do
       loan_ineligibility_reason.reason = nil
-      loan_ineligibility_reason.should_not be_valid
+      expect(loan_ineligibility_reason).not_to be_valid
     end
   end
 

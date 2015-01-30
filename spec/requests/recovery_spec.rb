@@ -25,15 +25,15 @@ describe 'loan recovery' do
           visit loan_path(loan)
           click_link 'Recovery Made'
 
-          page.should have_content('£6,789.00')
-          page.should_not have_button('Submit')
+          expect(page).to have_content('£6,789.00')
+          expect(page).not_to have_button('Submit')
 
           expect {
             fill_in_valid_efg_recovery_details
             click_button 'Calculate'
 
-            page.should have_content('£1,500.00')
-            page.should have_content('£1,125.00')
+            expect(page).to have_content('£1,500.00')
+            expect(page).to have_content('£1,125.00')
           }.not_to change(Recovery, :count)
 
           expect {
@@ -42,7 +42,7 @@ describe 'loan recovery' do
 
           verify_recovery_and_loan
 
-          current_path.should == loan_path(loan)
+          expect(current_path).to eq(loan_path(loan))
         end
       end
     end
@@ -66,7 +66,7 @@ describe 'loan recovery' do
           click_button 'Submit'
         }.not_to change(Recovery, :count)
 
-        current_path.should == loan_recoveries_path(loan)
+        expect(current_path).to eq(loan_recoveries_path(loan))
       end
     end
   end
@@ -90,9 +90,9 @@ describe 'loan recovery' do
       visit loan_path(loan)
       click_link 'Recovery Made'
 
-      page.should have_content('£100,000.91')
-      page.should have_content('£86.16')
-      page.should_not have_button('Submit')
+      expect(page).to have_content('£100,000.91')
+      expect(page).to have_content('£86.16')
+      expect(page).not_to have_button('Submit')
 
       fill_in_valid_sflg_recovery_details
 
@@ -100,30 +100,30 @@ describe 'loan recovery' do
         click_button 'Calculate'
       }.not_to change(Recovery, :count)
 
-      page.should have_content('£175.28')
-      page.should have_content('£976.28')
+      expect(page).to have_content('£175.28')
+      expect(page).to have_content('£976.28')
 
       expect {
         click_button 'Submit'
       }.to change(Recovery, :count).by(1)
 
       recovery = Recovery.last
-      recovery.loan.should == loan
-      recovery.seq.should == 3
-      recovery.recovered_on.should == Date.current
-      recovery.total_proceeds_recovered.should == Money.new(100_000_91)
-      recovery.total_liabilities_behind.should == Money.new(123_00)
-      recovery.total_liabilities_after_demand.should == Money.new(234_00)
-      recovery.additional_interest_accrued.should == Money.new(345_00)
-      recovery.additional_break_costs.should == Money.new(456_00)
-      recovery.amount_due_to_dti.should == Money.new(976_28)
+      expect(recovery.loan).to eq(loan)
+      expect(recovery.seq).to eq(3)
+      expect(recovery.recovered_on).to eq(Date.current)
+      expect(recovery.total_proceeds_recovered).to eq(Money.new(100_000_91))
+      expect(recovery.total_liabilities_behind).to eq(Money.new(123_00))
+      expect(recovery.total_liabilities_after_demand).to eq(Money.new(234_00))
+      expect(recovery.additional_interest_accrued).to eq(Money.new(345_00))
+      expect(recovery.additional_break_costs).to eq(Money.new(456_00))
+      expect(recovery.amount_due_to_dti).to eq(Money.new(976_28))
 
       loan.reload
-      loan.state.should == Loan::Recovered
-      loan.recovery_on.should == Date.current
-      loan.modified_by.should == current_user
+      expect(loan.state).to eq(Loan::Recovered)
+      expect(loan.recovery_on).to eq(Date.current)
+      expect(loan.modified_by).to eq(current_user)
 
-      current_path.should == loan_path(loan)
+      expect(current_path).to eq(loan_path(loan))
     end
   end
 
@@ -141,8 +141,8 @@ describe 'loan recovery' do
       visit loan_path(loan)
       click_link 'Recovery Made'
 
-      page.should have_content('£2,531.25')
-      page.should_not have_button('Submit')
+      expect(page).to have_content('£2,531.25')
+      expect(page).not_to have_button('Submit')
 
       fill_in 'recovery_recovered_on', with: '1/5/12'
       fill_in 'recovery_total_liabilities_behind', with: '£123'
@@ -154,30 +154,30 @@ describe 'loan recovery' do
         click_button 'Calculate'
       }.not_to change(Recovery, :count)
 
-      page.should have_content('£170.83')
-      page.should have_content('£971.83')
+      expect(page).to have_content('£170.83')
+      expect(page).to have_content('£971.83')
 
       expect {
         click_button 'Submit'
       }.to change(Recovery, :count).by(1)
 
       recovery = Recovery.last
-      recovery.loan.should == loan
-      recovery.seq.should == 1
-      recovery.recovered_on.should == Date.new(2012, 5, 1)
-      recovery.total_proceeds_recovered.should == Money.new(2_531_25)
-      recovery.total_liabilities_behind.should == Money.new(123_00)
-      recovery.total_liabilities_after_demand.should == Money.new(234_00)
-      recovery.additional_interest_accrued.should == Money.new(345_00)
-      recovery.additional_break_costs.should == Money.new(456_00)
-      recovery.amount_due_to_dti.should == Money.new(971_83)
+      expect(recovery.loan).to eq(loan)
+      expect(recovery.seq).to eq(1)
+      expect(recovery.recovered_on).to eq(Date.new(2012, 5, 1))
+      expect(recovery.total_proceeds_recovered).to eq(Money.new(2_531_25))
+      expect(recovery.total_liabilities_behind).to eq(Money.new(123_00))
+      expect(recovery.total_liabilities_after_demand).to eq(Money.new(234_00))
+      expect(recovery.additional_interest_accrued).to eq(Money.new(345_00))
+      expect(recovery.additional_break_costs).to eq(Money.new(456_00))
+      expect(recovery.amount_due_to_dti).to eq(Money.new(971_83))
 
       loan.reload
-      loan.state.should == Loan::Recovered
-      loan.recovery_on.should == Date.new(2012, 5, 1)
-      loan.modified_by.should == current_user
+      expect(loan.state).to eq(Loan::Recovered)
+      expect(loan.recovery_on).to eq(Date.new(2012, 5, 1))
+      expect(loan.modified_by).to eq(current_user)
 
-      current_path.should == loan_path(loan)
+      expect(current_path).to eq(loan_path(loan))
     end
   end
 
@@ -185,19 +185,19 @@ describe 'loan recovery' do
 
     def verify_recovery_and_loan
       recovery = Recovery.last
-      recovery.loan.should == loan
-      recovery.seq.should == 1
-      recovery.recovered_on.should == Date.current
-      recovery.total_proceeds_recovered.should == Money.new(6_789_00)
-      recovery.outstanding_non_efg_debt.should == Money.new(2_500_00)
-      recovery.non_linked_security_proceeds.should == Money.new(3_000_00)
-      recovery.linked_security_proceeds.should == Money.new(1_000_00)
-      recovery.realisations_attributable.should == Money.new(1_500_00)
-      recovery.amount_due_to_dti.should == Money.new(1_125_00)
+      expect(recovery.loan).to eq(loan)
+      expect(recovery.seq).to eq(1)
+      expect(recovery.recovered_on).to eq(Date.current)
+      expect(recovery.total_proceeds_recovered).to eq(Money.new(6_789_00))
+      expect(recovery.outstanding_non_efg_debt).to eq(Money.new(2_500_00))
+      expect(recovery.non_linked_security_proceeds).to eq(Money.new(3_000_00))
+      expect(recovery.linked_security_proceeds).to eq(Money.new(1_000_00))
+      expect(recovery.realisations_attributable).to eq(Money.new(1_500_00))
+      expect(recovery.amount_due_to_dti).to eq(Money.new(1_125_00))
 
       loan.reload
-      loan.state.should == Loan::Recovered
-      loan.recovery_on.should == Date.current
-      loan.modified_by.should == current_user
+      expect(loan.state).to eq(Loan::Recovered)
+      expect(loan.recovery_on).to eq(Date.current)
+      expect(loan.modified_by).to eq(current_user)
     end
 end

@@ -7,7 +7,7 @@ describe AskAnExpert do
 
     it 'requires a message' do
       ask_an_expert.message = ''
-      ask_an_expert.should_not be_valid
+      expect(ask_an_expert).not_to be_valid
     end
 
     it 'strictly requires a user' do
@@ -19,10 +19,10 @@ describe AskAnExpert do
 
     it 'requires at least one "to" email' do
       ask_an_expert.expert_users = []
-      ask_an_expert.should_not be_valid
+      expect(ask_an_expert).not_to be_valid
 
       ask_an_expert.expert_users = [double(email: 'a@example.com')]
-      ask_an_expert.should be_valid
+      expect(ask_an_expert).to be_valid
     end
   end
 
@@ -35,12 +35,12 @@ describe AskAnExpert do
 
     it 'removes blank values' do
       ask_an_expert.expert_users = [expert2]
-      ask_an_expert.to.should == []
+      expect(ask_an_expert.to).to eq([])
     end
 
     it 'removes duplicates' do
       ask_an_expert.expert_users = [expert1, expert3, expert1]
-      ask_an_expert.to.should == %w(a@example.com b@example.com)
+      expect(ask_an_expert.to).to eq(%w(a@example.com b@example.com))
     end
   end
 end

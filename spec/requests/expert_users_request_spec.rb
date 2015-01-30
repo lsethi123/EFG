@@ -13,8 +13,8 @@ describe 'expert users' do
       visit root_path
       click_link 'Manage Experts'
 
-      page.should have_content(expert_user1.name)
-      page.should_not have_content(expert_user2.name)
+      expect(page).to have_content(expert_user1.name)
+      expect(page).not_to have_content(expert_user2.name)
     end
   end
 
@@ -30,16 +30,16 @@ describe 'expert users' do
       click_button 'Add Expert'
 
       expert = Expert.last!
-      expert.lender.should == lender
-      expert.user.should == lender_user2
+      expect(expert.lender).to eq(lender)
+      expect(expert.user).to eq(lender_user2)
 
-      lender_user2.should be_expert
+      expect(lender_user2).to be_expert
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LenderExpertAdded
-      admin_audit.auditable.should == lender_user2
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LenderExpertAdded)
+      expect(admin_audit.auditable).to eq(lender_user2)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 
@@ -51,14 +51,14 @@ describe 'expert users' do
       click_link 'Manage Experts'
       click_button 'Remove'
 
-      lender.experts.count.should == 0
-      expert_user.should_not be_expert
+      expect(lender.experts.count).to eq(0)
+      expect(expert_user).not_to be_expert
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::LenderExpertRemoved
-      admin_audit.auditable.should == expert_user
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eq(AdminAudit::LenderExpertRemoved)
+      expect(admin_audit.auditable).to eq(expert_user)
+      expect(admin_audit.modified_by).to eq(current_user)
+      expect(admin_audit.modified_on).to eq(Date.current)
     end
   end
 end

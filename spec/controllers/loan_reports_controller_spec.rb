@@ -15,7 +15,7 @@ describe LoanReportsController do
 
       it "should allow access" do
         dispatch
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
@@ -26,7 +26,7 @@ describe LoanReportsController do
 
       it "should allow access" do
         dispatch
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
@@ -63,7 +63,7 @@ describe LoanReportsController do
 
       it "should allow access" do
         dispatch
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
@@ -74,7 +74,7 @@ describe LoanReportsController do
 
       it "should allow access" do
         dispatch
-        response.should be_success
+        expect(response).to be_success
       end
     end
 

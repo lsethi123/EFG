@@ -6,30 +6,30 @@ describe EligibilityDecisionEmail do
     let(:eligibility_decision_email) { FactoryGirl.build(:eligibility_decision_email) }
 
     it "should have a valid factory" do
-      eligibility_decision_email.should be_valid
+      expect(eligibility_decision_email).to be_valid
     end
 
     it "must have an email" do
       eligibility_decision_email.email = nil
-      eligibility_decision_email.should_not be_valid
+      expect(eligibility_decision_email).not_to be_valid
     end
 
     it "must have a valid email address" do
       eligibility_decision_email.email = "wrong"
-      eligibility_decision_email.should_not be_valid
+      expect(eligibility_decision_email).not_to be_valid
       eligibility_decision_email.email = "wrong@wrong"
-      eligibility_decision_email.should_not be_valid
+      expect(eligibility_decision_email).not_to be_valid
       eligibility_decision_email.email = "@wrong.com"
-      eligibility_decision_email.should_not be_valid
+      expect(eligibility_decision_email).not_to be_valid
       eligibility_decision_email.email = "wr ong@wrong.com"
-      eligibility_decision_email.should_not be_valid
+      expect(eligibility_decision_email).not_to be_valid
       eligibility_decision_email.email = "right@right.com"
-      eligibility_decision_email.should be_valid
+      expect(eligibility_decision_email).to be_valid
     end
 
     it "must have a loan" do
       eligibility_decision_email.loan = nil
-      eligibility_decision_email.should_not be_valid
+      expect(eligibility_decision_email).not_to be_valid
     end
   end
 

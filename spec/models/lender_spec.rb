@@ -5,52 +5,52 @@ describe Lender do
     let(:lender) { FactoryGirl.build(:lender) }
 
     it 'has a valid factory' do
-      lender.should be_valid
+      expect(lender).to be_valid
     end
 
     it 'requires a name' do
       lender.name = ''
-      lender.should_not be_valid
+      expect(lender).not_to be_valid
     end
 
     it 'requires an organisation_reference_code' do
       lender.organisation_reference_code = ''
-      lender.should_not be_valid
+      expect(lender).not_to be_valid
     end
 
     it 'requires a unique organisation_reference_code' do
       lender.save!
       new_lender = FactoryGirl.build(:lender, organisation_reference_code: lender.organisation_reference_code)
-      new_lender.should_not be_valid
+      expect(new_lender).not_to be_valid
     end
 
     it 'requires a primary_contact_name' do
       lender.primary_contact_name = ''
-      lender.should_not be_valid
+      expect(lender).not_to be_valid
     end
 
     it 'requires a primary_contact_phone' do
       lender.primary_contact_phone = ''
-      lender.should_not be_valid
+      expect(lender).not_to be_valid
     end
 
     it 'requires a primary_contact_email' do
       lender.primary_contact_email = ''
-      lender.should_not be_valid
+      expect(lender).not_to be_valid
     end
 
     it 'requires can_use_add_cap' do
       lender.can_use_add_cap = ''
-      lender.should_not be_valid
+      expect(lender).not_to be_valid
     end
 
     it 'requires the EFG loan_scheme value if not blank' do
       lender.loan_scheme = nil
-      lender.should be_valid
+      expect(lender).to be_valid
       lender.loan_scheme = '!'
-      lender.should_not be_valid
+      expect(lender).not_to be_valid
       lender.loan_scheme = Lender::EFG_SCHEME
-      lender.should be_valid
+      expect(lender).to be_valid
     end
   end
 
@@ -66,23 +66,23 @@ describe Lender do
     end
 
     it do
-      lender.current_annual_lending_limit_allocation.should == Money.new(9_000_00)
+      expect(lender.current_annual_lending_limit_allocation).to eq(Money.new(9_000_00))
     end
 
     it do
-      lender.current_specific_lending_limit_allocation.should == Money.new(4_000_00)
+      expect(lender.current_specific_lending_limit_allocation).to eq(Money.new(4_000_00))
     end
   end
 
   describe '#can_access_all_loan_schemes?' do
     it 'should return true when lender has no loan_scheme' do
       lender = FactoryGirl.build(:lender, loan_scheme: nil)
-      lender.can_access_all_loan_schemes?.should == true
+      expect(lender.can_access_all_loan_schemes?).to eq(true)
     end
 
     it 'should return false when lender has specific loan_scheme' do
       lender = FactoryGirl.build(:lender, loan_scheme: 'E')
-      lender.can_access_all_loan_schemes?.should == false
+      expect(lender.can_access_all_loan_schemes?).to eq(false)
     end
   end
 

@@ -15,7 +15,7 @@ describe 'Loan details' do
 
     click_link "Export CSV"
 
-    page.current_url.should == loan_url(loan, format: 'csv')
+    expect(page.current_url).to eq(loan_url(loan, format: 'csv'))
   end
 
   it 'can export loan data as CSV from loan details page' do
@@ -23,7 +23,7 @@ describe 'Loan details' do
 
     click_link "Export CSV"
 
-    page.current_url.should == details_loan_url(loan, format: 'csv')
+    expect(page.current_url).to eq(details_loan_url(loan, format: 'csv'))
   end
 
 end

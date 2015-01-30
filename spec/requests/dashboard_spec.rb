@@ -46,31 +46,31 @@ describe 'lender dashboard' do
       it "should display high, medium and low priority loan alerts" do
         visit root_path
 
-        page.should have_css "#not_drawn_loan_alerts a.high-priority .total-loans", text: "1"
-        page.should have_css "#not_drawn_loan_alerts a.medium-priority .total-loans", text: "1"
-        page.should have_css "#not_drawn_loan_alerts a.low-priority .total-loans", text: "1"
+        expect(page).to have_css "#not_drawn_loan_alerts a.high-priority .total-loans", text: "1"
+        expect(page).to have_css "#not_drawn_loan_alerts a.medium-priority .total-loans", text: "1"
+        expect(page).to have_css "#not_drawn_loan_alerts a.low-priority .total-loans", text: "1"
 
         find("#not_drawn_loan_alerts a.high-priority").click
-        page.should have_content(high_priority_loan.reference)
-        page.should_not have_content(medium_priority_loan.reference)
-        page.should_not have_content(low_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
 
         visit root_path
 
         find("#not_drawn_loan_alerts a.medium-priority").click
-        page.should have_content(medium_priority_loan.reference)
-        page.should_not have_content(high_priority_loan.reference)
-        page.should_not have_content(low_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
 
         visit root_path
 
         find("#not_drawn_loan_alerts a.low-priority").click
-        page.should have_content(low_priority_loan.reference)
-        page.should_not have_content(medium_priority_loan.reference)
-        page.should_not have_content(high_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
       end
     end
 
@@ -130,34 +130,34 @@ describe 'lender dashboard' do
       it "should display high, medium and low priority loan alerts" do
         visit root_path
 
-        page.should have_css "#not_demanded_loan_alerts a.high-priority .total-loans", text: "1"
-        page.should have_css "#not_demanded_loan_alerts a.medium-priority .total-loans", text: "1"
-        page.should have_css "#not_demanded_loan_alerts a.low-priority .total-loans", text: "1"
+        expect(page).to have_css "#not_demanded_loan_alerts a.high-priority .total-loans", text: "1"
+        expect(page).to have_css "#not_demanded_loan_alerts a.medium-priority .total-loans", text: "1"
+        expect(page).to have_css "#not_demanded_loan_alerts a.low-priority .total-loans", text: "1"
 
         find("#not_demanded_loan_alerts a.high-priority").click
-        page.should have_content(high_priority_loan.reference)
-        page.should_not have_content(medium_priority_loan.reference)
-        page.should_not have_content(low_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
-        page.should_not have_content(loan_not_in_alerts2.reference)
+        expect(page).to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
+        expect(page).not_to have_content(loan_not_in_alerts2.reference)
 
         visit root_path
 
         find("#not_demanded_loan_alerts a.medium-priority").click
-        page.should have_content(medium_priority_loan.reference)
-        page.should_not have_content(high_priority_loan.reference)
-        page.should_not have_content(low_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
-        page.should_not have_content(loan_not_in_alerts2.reference)
+        expect(page).to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
+        expect(page).not_to have_content(loan_not_in_alerts2.reference)
 
         visit root_path
 
         find("#not_demanded_loan_alerts a.low-priority").click
-        page.should have_content(low_priority_loan.reference)
-        page.should_not have_content(medium_priority_loan.reference)
-        page.should_not have_content(high_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
-        page.should_not have_content(loan_not_in_alerts2.reference)
+        expect(page).to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
+        expect(page).not_to have_content(loan_not_in_alerts2.reference)
       end
     end
 
@@ -204,31 +204,31 @@ describe 'lender dashboard' do
         skip "Removed due to unexplained failure in the Dev VM / CI environments"
         visit root_path
 
-        page.should have_css("#not_progressed_loan_alerts a.high-priority .total-loans", text: "1"), page.body
-        page.should have_css("#not_progressed_loan_alerts a.medium-priority .total-loans", text: "1"), page.body
-        page.should have_css("#not_progressed_loan_alerts a.low-priority .total-loans", text: "1"), page.body
+        expect(page).to have_css("#not_progressed_loan_alerts a.high-priority .total-loans", text: "1"), page.body
+        expect(page).to have_css("#not_progressed_loan_alerts a.medium-priority .total-loans", text: "1"), page.body
+        expect(page).to have_css("#not_progressed_loan_alerts a.low-priority .total-loans", text: "1"), page.body
 
         find("#not_progressed_loan_alerts a.high-priority").click
-        page.should have_content(high_priority_loan.reference)
-        page.should_not have_content(medium_priority_loan.reference)
-        page.should_not have_content(low_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
 
         visit root_path
 
         find("#not_progressed_loan_alerts a.medium-priority").click
-        page.should have_content(medium_priority_loan.reference)
-        page.should_not have_content(high_priority_loan.reference)
-        page.should_not have_content(low_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
 
         visit root_path
 
         find("#not_progressed_loan_alerts a.low-priority").click
-        page.should have_content(low_priority_loan.reference)
-        page.should_not have_content(medium_priority_loan.reference)
-        page.should_not have_content(high_priority_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).to have_content(low_priority_loan.reference)
+        expect(page).not_to have_content(medium_priority_loan.reference)
+        expect(page).not_to have_content(high_priority_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
       end
     end
 
@@ -302,40 +302,40 @@ describe 'lender dashboard' do
       it "should display high, medium and low priority loan alerts" do
         visit root_path
 
-        page.should have_css "#not_closed_loan_alerts a.high-priority .total-loans", text: "2"
-        page.should have_css "#not_closed_loan_alerts a.medium-priority .total-loans", text: "2"
-        page.should have_css "#not_closed_loan_alerts a.low-priority .total-loans", text: "2"
+        expect(page).to have_css "#not_closed_loan_alerts a.high-priority .total-loans", text: "2"
+        expect(page).to have_css "#not_closed_loan_alerts a.medium-priority .total-loans", text: "2"
+        expect(page).to have_css "#not_closed_loan_alerts a.low-priority .total-loans", text: "2"
 
         find("#not_closed_loan_alerts a.high-priority").click
-        page.should have_content(high_priority_efg_loan.reference)
-        page.should have_content(high_priority_legacy_loan.reference)
-        page.should_not have_content(medium_priority_efg_loan.reference)
-        page.should_not have_content(medium_priority_legacy_loan.reference)
-        page.should_not have_content(low_priority_efg_loan.reference)
-        page.should_not have_content(low_priority_legacy_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).to have_content(high_priority_efg_loan.reference)
+        expect(page).to have_content(high_priority_legacy_loan.reference)
+        expect(page).not_to have_content(medium_priority_efg_loan.reference)
+        expect(page).not_to have_content(medium_priority_legacy_loan.reference)
+        expect(page).not_to have_content(low_priority_efg_loan.reference)
+        expect(page).not_to have_content(low_priority_legacy_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
 
         visit root_path
 
         find("#not_closed_loan_alerts a.medium-priority").click
-        page.should_not have_content(high_priority_efg_loan.reference)
-        page.should_not have_content(high_priority_legacy_loan.reference)
-        page.should have_content(medium_priority_efg_loan.reference)
-        page.should have_content(medium_priority_legacy_loan.reference)
-        page.should_not have_content(low_priority_efg_loan.reference)
-        page.should_not have_content(low_priority_legacy_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).not_to have_content(high_priority_efg_loan.reference)
+        expect(page).not_to have_content(high_priority_legacy_loan.reference)
+        expect(page).to have_content(medium_priority_efg_loan.reference)
+        expect(page).to have_content(medium_priority_legacy_loan.reference)
+        expect(page).not_to have_content(low_priority_efg_loan.reference)
+        expect(page).not_to have_content(low_priority_legacy_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
 
         visit root_path
 
         find("#not_closed_loan_alerts a.low-priority").click
-        page.should_not have_content(high_priority_efg_loan.reference)
-        page.should_not have_content(high_priority_legacy_loan.reference)
-        page.should_not have_content(medium_priority_efg_loan.reference)
-        page.should_not have_content(medium_priority_legacy_loan.reference)
-        page.should have_content(low_priority_efg_loan.reference)
-        page.should have_content(low_priority_legacy_loan.reference)
-        page.should_not have_content(loan_not_in_alerts.reference)
+        expect(page).not_to have_content(high_priority_efg_loan.reference)
+        expect(page).not_to have_content(high_priority_legacy_loan.reference)
+        expect(page).not_to have_content(medium_priority_efg_loan.reference)
+        expect(page).not_to have_content(medium_priority_legacy_loan.reference)
+        expect(page).to have_content(low_priority_efg_loan.reference)
+        expect(page).to have_content(low_priority_legacy_loan.reference)
+        expect(page).not_to have_content(loan_not_in_alerts.reference)
       end
     end
   end
@@ -347,7 +347,7 @@ describe 'lender dashboard' do
 
     it 'should show correct welcome message' do
       visit root_path
-      page.should have_content "Welcome #{user.first_name}"
+      expect(page).to have_content "Welcome #{user.first_name}"
     end
   end
 
@@ -358,7 +358,7 @@ describe 'lender dashboard' do
 
     it 'should show correct welcome message' do
       visit root_path
-      page.should have_content "Welcome back, #{user.first_name}"
+      expect(page).to have_content "Welcome back, #{user.first_name}"
     end
   end
 
@@ -407,15 +407,15 @@ describe 'lender dashboard' do
         visit root_path
 
         within '.dashboard-widgets.primary' do
-          page.should have_content(lending_limit1.name)
-          page.should have_content('Allocation: £1,000,000')
-          page.should have_content('Usage: £250,000')
-          page.should have_content('Utilisation: 25.00%')
+          expect(page).to have_content(lending_limit1.name)
+          expect(page).to have_content('Allocation: £1,000,000')
+          expect(page).to have_content('Usage: £250,000')
+          expect(page).to have_content('Utilisation: 25.00%')
 
-          page.should have_content(lending_limit2.name)
-          page.should have_content('Allocation: £3,000,000')
-          page.should have_content('Usage: £800,000')
-          page.should have_content('Utilisation: 26.67%')
+          expect(page).to have_content(lending_limit2.name)
+          expect(page).to have_content('Allocation: £3,000,000')
+          expect(page).to have_content('Usage: £800,000')
+          expect(page).to have_content('Utilisation: 26.67%')
         end
       end
     end
@@ -431,10 +431,10 @@ describe 'lender dashboard' do
         visit root_path
 
         within '.dashboard-widgets.secondary' do
-          page.should have_content('Phase 1')
-          page.should have_content('Claim Limit: £1,000,000')
-          page.should have_content('Amount Remaining: £500,000')
-          page.should have_content('Percentage Remaining: 50%')
+          expect(page).to have_content('Phase 1')
+          expect(page).to have_content('Claim Limit: £1,000,000')
+          expect(page).to have_content('Amount Remaining: £500,000')
+          expect(page).to have_content('Percentage Remaining: 50%')
         end
       end
     end

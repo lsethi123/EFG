@@ -31,20 +31,20 @@ describe 'Claim Limit Phase 6' do
 
   describe "#total_amount" do
     it "returns the cumulative drawn amount (65% drawn amount for Type F & H loans) at 75% for first one hundred thousand and 15% for the remainder" do
-      claim_limit.total_amount.should == Money.new(99_750_00)
+      expect(claim_limit.total_amount).to eq(Money.new(99_750_00))
     end
   end
 
   describe "#amount_remaining" do
     # £99,750 (claim limit) + £1000 (total pre-claim realisations) - £9,375 (total settled amount)
     it "returns the claim limit amount + pre-claim limit realisations - total settled amount" do
-      claim_limit.amount_remaining.should == Money.new(91_375_00)
+      expect(claim_limit.amount_remaining).to eq(Money.new(91_375_00))
     end
   end
 
   describe "#percentage_remaining" do
     it "returns the percentage of remaining claim limit" do
-      claim_limit.percentage_remaining.should == 92
+      expect(claim_limit.percentage_remaining).to eq(92)
     end
   end
 

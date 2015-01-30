@@ -47,7 +47,7 @@ describe DocumentsController do
     it 'renders PDF document' do
       dispatch
 
-      response.content_type.should == 'application/pdf'
+      expect(response.content_type).to eq('application/pdf')
     end
   end
 end

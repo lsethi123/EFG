@@ -29,12 +29,12 @@ describe LoanChange do
 
     it 'must not have a negative amount_drawn' do
       loan_change.amount_drawn = '-1'
-      loan_change.should_not be_valid
+      expect(loan_change).not_to be_valid
     end
 
     it 'must not have a negative lump_sum_repayment' do
       loan_change.lump_sum_repayment = '-1'
-      loan_change.should_not be_valid
+      expect(loan_change).not_to be_valid
     end
   end
 
@@ -45,8 +45,8 @@ describe LoanChange do
       change1 = FactoryGirl.create(:loan_change, loan: loan)
       change2 = FactoryGirl.create(:loan_change, loan: loan)
 
-      change1.seq.should == 1
-      change2.seq.should == 2
+      expect(change1.seq).to eq(1)
+      expect(change2.seq).to eq(2)
     end
   end
 end

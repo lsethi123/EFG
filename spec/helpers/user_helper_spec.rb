@@ -8,13 +8,13 @@ describe UserHelper do
 
       context 'and no action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(user).should == lender_lender_user_path(lender, user)
+          expect(polymorphic_user_path(user)).to eq(lender_lender_user_path(lender, user))
         end
       end
 
       context 'and an action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(:edit, user).should == edit_lender_lender_user_path(lender, user)
+          expect(polymorphic_user_path(:edit, user)).to eq(edit_lender_lender_user_path(lender, user))
         end
       end
     end
@@ -24,13 +24,13 @@ describe UserHelper do
 
       context 'and no action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(user).should == cfe_user_path(user)
+          expect(polymorphic_user_path(user)).to eq(cfe_user_path(user))
         end
       end
 
       context 'and an action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(:edit, user).should == edit_cfe_user_path(user)
+          expect(polymorphic_user_path(:edit, user)).to eq(edit_cfe_user_path(user))
         end
       end
     end

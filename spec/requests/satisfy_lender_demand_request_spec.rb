@@ -13,14 +13,14 @@ describe 'satisfy lender demand' do
     click_button 'Submit'
 
     loan.reload
-    loan.state.should == Loan::Guaranteed
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Guaranteed)
+    expect(loan.modified_by).to eq(current_user)
 
     loan_change = loan.loan_changes.last!
-    loan_change.change_type.should == ChangeType::LenderDemandSatisfied
-    loan_change.created_by.should == current_user
-    loan_change.date_of_change.should == Date.new(2013, 3, 28)
-    loan_change.modified_date.should == Date.current
+    expect(loan_change.change_type).to eq(ChangeType::LenderDemandSatisfied)
+    expect(loan_change.created_by).to eq(current_user)
+    expect(loan_change.date_of_change).to eq(Date.new(2013, 3, 28))
+    expect(loan_change.modified_date).to eq(Date.current)
 
     should_log_loan_state_change(loan, Loan::Guaranteed, 9, current_user)
   end
@@ -30,7 +30,7 @@ describe 'satisfy lender demand' do
     click_link 'Lender Demand Satisfied'
     click_button 'Submit'
 
-    loan.reload.state.should == Loan::LenderDemand
+    expect(loan.reload.state).to eq(Loan::LenderDemand)
   end
 
   private

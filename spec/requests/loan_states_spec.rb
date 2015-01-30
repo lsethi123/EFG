@@ -28,7 +28,7 @@ describe 'loan states' do
         'offered'     => { legacy_sflg: "0", sflg: "1", efg: "0", total: "1" },
         'guaranteed'  => { legacy_sflg: "0", sflg: "0", efg: "1", total: "1" }
       }.each do |state, expected_counts|
-        counts(state).should == expected_counts.values
+        expect(counts(state)).to eq(expected_counts.values)
       end
     end
 
@@ -43,7 +43,7 @@ describe 'loan states' do
         'offered'     => { legacy_sflg: "0", sflg: "1", efg: "0", total: "1" },
         'guaranteed'  => { legacy_sflg: "0", sflg: "0", efg: "1", total: "1" }
       }.each do |state, expected_counts|
-        counts(state).should == expected_counts.values
+        expect(counts(state)).to eq(expected_counts.values)
       end
     end
   end
@@ -66,7 +66,7 @@ describe 'loan states' do
       dispatch(id: 'completed')
 
       names = page.all('tbody tr td:nth-child(2)').map(&:text)
-      names.should == %w(ACME Foo)
+      expect(names).to eq(%w(ACME Foo))
     end
 
     it 'does not include loans from other states' do
@@ -75,7 +75,7 @@ describe 'loan states' do
       dispatch(id: 'completed')
 
       names = page.all('tbody tr td:nth-child(2)').map(&:text)
-      names.should_not include('Bar')
+      expect(names).not_to include('Bar')
     end
 
     it 'does not include loans from another lender' do
@@ -84,7 +84,7 @@ describe 'loan states' do
       dispatch(id: 'completed')
 
       names = page.all('tbody tr td:nth-child(2)').map(&:text)
-      names.should_not include('Baz')
+      expect(names).not_to include('Baz')
     end
 
     it "filters loans by scheme" do
@@ -94,10 +94,10 @@ describe 'loan states' do
       dispatch(id: 'completed', scheme: 'efg')
 
       names = page.all('tbody tr td:nth-child(2)').map(&:text)
-      names.should include('ACME')
-      names.should include('Foo')
-      names.should_not include('Bar')
-      names.should_not include('Woot')
+      expect(names).to include('ACME')
+      expect(names).to include('Foo')
+      expect(names).not_to include('Bar')
+      expect(names).not_to include('Woot')
     end
 
     it 'can export loan data as CSV' do
@@ -105,7 +105,7 @@ describe 'loan states' do
 
       click_link "Export CSV"
 
-      page.current_url.should == loan_state_url(id: 'completed', format: 'csv')
+      expect(page.current_url).to eq(loan_state_url(id: 'completed', format: 'csv'))
     end
 
     it 'exports loan data as a CSV with a scheme filter' do
@@ -113,7 +113,7 @@ describe 'loan states' do
 
       click_link "Export CSV"
 
-      page.current_url.should == loan_state_url(id: 'completed', format: 'csv', scheme: 'efg')
+      expect(page.current_url).to eq(loan_state_url(id: 'completed', format: 'csv', scheme: 'efg'))
     end
   end
 end

@@ -5,7 +5,7 @@ describe Expert do
     let(:expert) { FactoryGirl.build(:expert) }
 
     it 'has a valid factory' do
-      expert.should be_valid
+      expect(expert).to be_valid
     end
 
     it 'strictly requires a user' do

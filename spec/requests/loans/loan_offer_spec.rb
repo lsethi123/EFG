@@ -21,12 +21,12 @@ describe 'loan offer' do
 
     loan = Loan.last
 
-    current_path.should == loan_path(loan)
+    expect(current_path).to eq(loan_path(loan))
 
-    loan.state.should == Loan::Offered
-    loan.facility_letter_date.should == Date.current
-    loan.facility_letter_sent.should == true
-    loan.modified_by.should == current_user
+    expect(loan.state).to eq(Loan::Offered)
+    expect(loan.facility_letter_date).to eq(Date.current)
+    expect(loan.facility_letter_sent).to eq(true)
+    expect(loan.modified_by).to eq(current_user)
 
     should_log_loan_state_change(loan, Loan::Offered, 5, current_user)
   end
@@ -34,13 +34,13 @@ describe 'loan offer' do
   it 'does not continue with invalid values' do
     dispatch
 
-    loan.state.should == Loan::Completed
+    expect(loan.state).to eq(Loan::Completed)
     expect {
       click_button 'Submit'
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == loan_offer_path(loan)
+    expect(current_path).to eq(loan_offer_path(loan))
   end
 
   context "with an unavailable lending limit" do
@@ -50,14 +50,14 @@ describe 'loan offer' do
     it "prompts to change the lending limit" do
       dispatch
 
-      page.should have_content 'Lending Limit Unavailable'
+      expect(page).to have_content 'Lending Limit Unavailable'
 
       select 'The Next Great Lending Limit', from: 'update_loan_lending_limit[new_lending_limit_id]'
       click_button 'Submit'
 
       loan.reload
-      loan.lending_limit.should == new_lending_limit
-      loan.modified_by.should == current_user
+      expect(loan.lending_limit).to eq(new_lending_limit)
+      expect(loan.modified_by).to eq(current_user)
     end
   end
 
@@ -69,12 +69,12 @@ describe 'loan offer' do
       dispatch
 
       expected_text = I18n.t('premium_schedule.not_yet_generated')
-      page.should have_content(expected_text)
+      expect(page).to have_content(expected_text)
 
       page.fill_in :premium_schedule_initial_draw_year, with: '2014'
       click_button 'Submit'
 
-      page.current_url.should == new_loan_offer_url(loan)
+      expect(page.current_url).to eq(new_loan_offer_url(loan))
     end
   end
 end

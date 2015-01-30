@@ -16,9 +16,9 @@ describe "User audit" do
 
     current_user.reload
     user_audit = current_user.user_audits.last
-    user_audit.function.should == UserAudit::INITIAL_LOGIN
-    user_audit.modified_by.should == current_user
-    user_audit.password.should == current_user.encrypted_password
+    expect(user_audit.function).to eq(UserAudit::INITIAL_LOGIN)
+    expect(user_audit.modified_by).to eq(current_user)
+    expect(user_audit.password).to eq(current_user.encrypted_password)
 
     # subsequent login should not create user audit record
     click_link "Logout"
@@ -47,9 +47,9 @@ describe "User audit" do
 
     current_user.reload
     user_audit = current_user.user_audits.last
-    user_audit.function.should == UserAudit::PASSWORD_CHANGED
-    user_audit.modified_by.should == current_user
-    user_audit.password.should == current_user.encrypted_password
+    expect(user_audit.function).to eq(UserAudit::PASSWORD_CHANGED)
+    expect(user_audit.modified_by).to eq(current_user)
+    expect(user_audit.password).to eq(current_user.encrypted_password)
   end
 
   it "should create new audit record when user first sets their password" do
@@ -74,9 +74,9 @@ describe "User audit" do
 
     current_user.reload
     user_audit2 = current_user.user_audits.last
-    user_audit2.function.should == UserAudit::INITIAL_LOGIN
-    user_audit2.modified_by.should == current_user
-    user_audit2.password.should == current_user.encrypted_password
+    expect(user_audit2.function).to eq(UserAudit::INITIAL_LOGIN)
+    expect(user_audit2.modified_by).to eq(current_user)
+    expect(user_audit2.password).to eq(current_user.encrypted_password)
 
     # resetting password again should not create user audit record
 

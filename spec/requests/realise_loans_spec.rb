@@ -38,13 +38,13 @@ describe 'Realise loans' do
 
     select_loans
 
-    page.should have_content('BSPFDNH-01')
-    page.should have_content('3PEZRGB-01')
-    page.should have_content('HJDS743-01')
-    page.should_not have_content('LOGIHLJ-02') # loan after quarter cut off date
-    page.should_not have_content('HJD4JF8-01') # loan belongs to different lender
+    expect(page).to have_content('BSPFDNH-01')
+    expect(page).to have_content('3PEZRGB-01')
+    expect(page).to have_content('HJDS743-01')
+    expect(page).not_to have_content('LOGIHLJ-02') # loan after quarter cut off date
+    expect(page).not_to have_content('HJD4JF8-01') # loan belongs to different lender
 
-    page.should have_content('lenderref1')
+    expect(page).to have_content('lenderref1')
 
     within "#realise_recovery_#{recovery1.id}" do
       find('input[type=checkbox][name$="[realised]"]').set(true)
@@ -60,36 +60,36 @@ describe 'Realise loans' do
 
     click_button 'Realise Loans'
 
-    page.should have_content('The following loans have been realised')
-    page.should have_content(loan1.reference)
-    page.should have_content(loan2.reference)
-    page.should have_content(loan2.reference)
-    page.should have_content(loan6.reference)
-    page.should_not have_content(loan3.reference)
-    page.should_not have_content(loan5.reference)
+    expect(page).to have_content('The following loans have been realised')
+    expect(page).to have_content(loan1.reference)
+    expect(page).to have_content(loan2.reference)
+    expect(page).to have_content(loan2.reference)
+    expect(page).to have_content(loan6.reference)
+    expect(page).not_to have_content(loan3.reference)
+    expect(page).not_to have_content(loan5.reference)
 
-    page.should have_content(loan1.lender_reference)
+    expect(page).to have_content(loan1.lender_reference)
 
     loan1.reload
-    loan1.state.should == Loan::Realised
-    loan1.modified_by.should == current_user
+    expect(loan1.state).to eq(Loan::Realised)
+    expect(loan1.modified_by).to eq(current_user)
 
     loan2.reload
-    loan2.state.should == Loan::Realised
-    loan2.modified_by.should == current_user
+    expect(loan2.state).to eq(Loan::Realised)
+    expect(loan2.modified_by).to eq(current_user)
 
     loan6.reload
-    loan6.state.should == Loan::Realised
-    loan6.modified_by.should == current_user
+    expect(loan6.state).to eq(Loan::Realised)
+    expect(loan6.modified_by).to eq(current_user)
     expect(loan6.loan_realisations.last.post_claim_limit).to eql(true)
 
-    loan3.reload.state.should == Loan::Recovered
-    loan5.reload.state.should == Loan::Eligible
+    expect(loan3.reload.state).to eq(Loan::Recovered)
+    expect(loan5.reload.state).to eq(Loan::Eligible)
   end
 
   it 'should validate select loans form' do
     click_button 'Select Loans'
-    page.should have_content("can't be blank")
+    expect(page).to have_content("can't be blank")
   end
 
   it 'should validate loans have been selected' do
@@ -102,7 +102,7 @@ describe 'Realise loans' do
 
     click_button 'Realise Loans'
 
-    page.should have_content('No recoveries were selected.')
+    expect(page).to have_content('No recoveries were selected.')
   end
 
   it 'should show error text when there are no loans to recover' do
@@ -116,7 +116,7 @@ describe 'Realise loans' do
     fill_in 'realisation_statement_received_received_on', with: '20/05/2010'
     click_button 'Select Loans'
 
-    page.should have_content('There are no recoveries to realise.')
+    expect(page).to have_content('There are no recoveries to realise.')
   end
 
   it 'can export loan data as CSV' do
@@ -124,7 +124,7 @@ describe 'Realise loans' do
 
     click_button "Export CSV"
 
-    page.current_url.should == select_loans_realise_loans_url(format: 'csv')
+    expect(page.current_url).to eq(select_loans_realise_loans_url(format: 'csv'))
   end
 
   private
