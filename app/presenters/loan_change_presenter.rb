@@ -38,14 +38,6 @@ class LoanChangePresenter
     @date_of_change = QuickDateFormatter.parse(value)
   end
 
-  def includes_capital_repayment_fields?
-    false
-  end
-
-  def includes_tranche_drawdown_fields?
-    false
-  end
-
   def loan_change
     @loan_change ||= loan.loan_changes.new
   end
