@@ -48,6 +48,27 @@ describe 'Reprofile draws loan change' do
     end
   end
 
+  context 'when a tranche drawdown is set but initial draw amount is not' do
+    it 'renders validation error' do
+      visit loan_path(loan)
+
+      click_link 'Change Amount or Terms'
+      click_link 'Reprofile Draws'
+
+      fill_in :date_of_change, '11/9/10'
+      fill_in :second_draw_amount, '5,000.00'
+      fill_in :second_draw_months, '6'
+
+      Timecop.freeze(2010, 9, 1) do
+        click_button 'Submit'
+      end
+
+      within '.loan_change_initial_draw_amount' do
+        expect(page).to have_content("must not be blank")
+      end
+    end
+  end
+
   private
 
   def dispatch
