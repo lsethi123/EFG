@@ -17,7 +17,7 @@ describe RepaymentDurationValidator do
   subject(:record) { klass.new }
 
   before do
-    record.stub(
+    allow(record).to receive_messages(
       loan: loan,
       repayment_duration: repayment_duration
     )

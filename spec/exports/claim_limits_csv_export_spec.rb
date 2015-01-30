@@ -10,7 +10,7 @@ describe ClaimLimitsCsvExport do
   let(:claim_limits_csv_export) { ClaimLimitsCsvExport.new([ claim_limit_calculator ]) }
 
   before do
-    claim_limit_calculator.stub(
+    allow(claim_limit_calculator).to receive_messages(
       amount_remaining: Money.new(50_000_00),
       cumulative_drawn_amount: Money.new(150_000_00),
       pre_claim_realisations_amount: Money.new(1_000_00),

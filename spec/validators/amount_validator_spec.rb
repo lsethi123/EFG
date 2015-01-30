@@ -11,7 +11,7 @@ describe AmountValidator do
   subject(:record) { klass.new }
 
   before do
-    record.stub(amount: amount)
+    allow(record).to receive_messages(amount: amount)
   end
 
   context 'when amount is nil' do

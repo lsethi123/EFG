@@ -71,7 +71,7 @@ describe BulkLendingLimits do
     let(:lender) { double(Lender, id: 1) }
 
     before do
-      Lender.stub_chain(:active, :order_by_name).and_return([lender])
+      allow(Lender).to receive_message_chain(:active, :order_by_name).and_return([lender])
     end
 
     let(:bulk_lending_limits) { BulkLendingLimits.new(attributes) }
@@ -96,7 +96,7 @@ describe BulkLendingLimits do
     let(:bulk_lending_limits) { BulkLendingLimits.new }
     let(:lender) { double(Lender) }
 
-    before { Lender.stub_chain(:active, :order_by_name).and_return([lender]) }
+    before { allow(Lender).to receive_message_chain(:active, :order_by_name).and_return([lender]) }
 
     subject { bulk_lending_limits.lenders }
 

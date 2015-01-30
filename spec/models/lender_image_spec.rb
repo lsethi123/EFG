@@ -12,14 +12,14 @@ describe LenderLogo do
   describe '#exists?' do
     context 'when the image does not exist on disk' do
       it 'returns false' do
-        logo.stub_chain(:path, :exist?).and_return false
+        allow(logo).to receive_message_chain(:path, :exist?).and_return false
         expect(logo.exists?).to eql(false)
       end
     end
 
     context 'when the image does exist on disk' do
       it 'returns true' do
-        logo.stub_chain(:path, :exist?).and_return true
+        allow(logo).to receive_message_chain(:path, :exist?).and_return true
         expect(logo.exists?).to eql(true)
       end
     end

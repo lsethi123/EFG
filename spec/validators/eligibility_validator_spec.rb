@@ -23,7 +23,7 @@ describe EligibilityValidator do
   subject(:record) { klass.new }
 
   before do
-    record.stub(
+    allow(record).to receive_messages(
       collateral_exhausted: collateral_exhausted,
       not_insolvent: not_insolvent,
       previous_borrowing: previous_borrowing,

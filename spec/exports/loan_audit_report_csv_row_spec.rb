@@ -34,7 +34,7 @@ describe LoanAuditReportCsvRow do
       )
 
       # stub custom fields that are created by LoanAuditReport SQL query
-      loan.stub(
+      allow(loan).to receive_messages(
         lender_reference_code: 'DEF',
         loan_created_by: user.username,
         loan_modified_by: user.username,
@@ -86,13 +86,13 @@ describe LoanAuditReportCsvRow do
     end
 
     it "should have 'Check eligibility' when loan_function is Accept" do
-      loan.stub(loan_state_change_event_id: LoanEvent::Accept.id)
+      allow(loan).to receive_messages(loan_state_change_event_id: LoanEvent::Accept.id)
 
       expect(row[29]).to eq('Check eligibility')
     end
 
     it "should have 'Check eligibility' when loan_function is Reject" do
-      loan.stub(loan_state_change_event_id: LoanEvent::Reject.id)
+      allow(loan).to receive_messages(loan_state_change_event_id: LoanEvent::Reject.id)
 
       expect(row[29]).to eq('Check eligibility')
     end

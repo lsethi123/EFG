@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'loans/details' do
 
   shared_examples "rendered loan_details" do
-    before { loan.stub(id: 1) if loan.new_record? }
+    before { allow(loan).to receive_messages(id: 1) if loan.new_record? }
 
     let(:all_details) {
       %w(

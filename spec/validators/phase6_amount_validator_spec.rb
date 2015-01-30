@@ -12,7 +12,7 @@ describe Phase6AmountValidator do
   subject(:record) { klass.new }
 
   before do
-    record.stub(
+    allow(record).to receive_messages(
       amount: amount,
       repayment_duration: repayment_duration
     )
