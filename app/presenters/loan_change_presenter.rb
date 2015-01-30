@@ -51,7 +51,7 @@ class LoanChangePresenter
   end
 
   def premium_schedule
-    @premium_schedule ||= loan.premium_schedules.last.dup.tap do |premium_schedule|
+    @premium_schedule ||= new_premium_schedule.tap do |premium_schedule|
       premium_schedule.calc_type = PremiumSchedule::RESCHEDULE_TYPE
       premium_schedule.initial_draw_amount = nil
       premium_schedule.seq = nil
@@ -97,6 +97,11 @@ class LoanChangePresenter
   end
 
   private
+
+    def new_premium_schedule
+      loan.premium_schedules.empty? ? loan.premium_schedules.new : loan.premium_schedules.last.dup
+    end
+
     def initial_draw_date
       loan.initial_draw_change.date_of_change
     end
