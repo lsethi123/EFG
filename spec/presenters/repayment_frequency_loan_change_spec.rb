@@ -34,17 +34,17 @@ describe RepaymentFrequencyLoanChange do
 
     context "with number" do
       let(:value) { 1 }
-      it { should == 1 }
+      it { should eq(1) }
     end
 
     context "with string" do
       let(:value) { '1' }
-      it { should == 1 }
+      it { should eq(1) }
     end
 
     context "with blank" do
       let(:value) { ' ' }
-      it { should == nil }
+      it { should eq(nil) }
     end
   end
 

@@ -56,6 +56,6 @@ describe LenderLendingLimit do
 
     subject { lender_lending_limit.allocation }
 
-    it { should == Money.new(12345) }
+    it { should eq(Money.new(12345)) }
   end
 end

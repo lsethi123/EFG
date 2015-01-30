@@ -28,7 +28,7 @@ describe VerdeTransfer do
         subject { loan }
         before { loan.reload }
 
-        its(:lender) { should == new_lender }
+        its(:lender) { should eq(new_lender) }
 
         context "loan state change" do
           subject { loan.state_changes.last }

@@ -594,7 +594,7 @@ describe Loan do
       let(:loan) { FactoryGirl.build(:loan, :sflg) }
 
       it do
-        should == Phase5Rules
+        should eq(Phase5Rules)
       end
     end
 
@@ -607,7 +607,7 @@ describe Loan do
         let(:phase_id) { 5 }
 
         it do
-          should == Phase5Rules
+          should eq(Phase5Rules)
         end
       end
 
@@ -615,7 +615,7 @@ describe Loan do
         let(:phase_id) { 6 }
 
         it do
-          should == Phase6Rules
+          should eq(Phase6Rules)
         end
       end
     end

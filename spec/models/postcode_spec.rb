@@ -37,32 +37,32 @@ describe Postcode do
 
     context 'correctly formatted' do
       let(:value) { 'EC1R 4RP' }
-      it { should == 'EC1R 4RP' }
+      it { should eq('EC1R 4RP') }
     end
 
     context 'lower case' do
       let(:value) { 'ec1r 4rp' }
-      it { should == 'EC1R 4RP' }
+      it { should eq('EC1R 4RP') }
     end
 
     context 'no space' do
       let(:value) { 'EC1R4RP' }
-      it { should == 'EC1R 4RP' }
+      it { should eq('EC1R 4RP') }
     end
 
     context 'transposed' do
       let(:value) { 'ECIR 4RP' }
-      it { should == 'EC1R 4RP' }
+      it { should eq('EC1R 4RP') }
     end
 
     context 'invalid' do
       let(:value) { 'invalid' }
-      it { should == 'invalid' }
+      it { should eq('invalid') }
     end
 
     context 'nil' do
       let(:value) { nil }
-      it { should == '' }
+      it { should eq('') }
     end
   end
 end

@@ -13,7 +13,7 @@ describe Phase6StateAidCalculator do
       )
     }
 
-    it { should == Money.new(96_595_20, 'EUR') }
+    it { should eq(Money.new(96_595_20, 'EUR')) }
   end
 
   context "8 year loan" do
@@ -25,7 +25,7 @@ describe Phase6StateAidCalculator do
       )
     }
 
-    it { should == Money.new(64_396_80, 'EUR') }
+    it { should eq(Money.new(64_396_80, 'EUR')) }
   end
 
   context "10 year loan" do
@@ -37,7 +37,7 @@ describe Phase6StateAidCalculator do
       )
     }
 
-    it { should == Money.new(32_198_41, 'EUR') }
+    it { should eq(Money.new(32_198_41, 'EUR')) }
   end
 
   context 'nil amount' do
@@ -49,7 +49,7 @@ describe Phase6StateAidCalculator do
       )
     }
 
-    it { should == Money.new(0, 'EUR') }
+    it { should eq(Money.new(0, 'EUR')) }
   end
 
   context 'nil repayment_duration' do
@@ -61,6 +61,6 @@ describe Phase6StateAidCalculator do
       )
     }
 
-    it { should == Money.new(0, 'EUR') }
+    it { should eq(Money.new(0, 'EUR')) }
   end
 end
