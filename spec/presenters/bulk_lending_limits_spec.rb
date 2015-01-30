@@ -147,7 +147,7 @@ describe BulkLendingLimits do
     let(:phase) { Phase.find(5) }
     let(:user) { FactoryGirl.create(:cfe_admin) }
 
-    before { AdminAudit.stub(:log) }
+    before { allow(AdminAudit).to receive(:log) }
 
     let(:bulk_lending_limits) do
       bulk_lending_limits = BulkLendingLimits.new(attributes)

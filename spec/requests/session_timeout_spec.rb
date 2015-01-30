@@ -21,7 +21,7 @@ describe "Session timeout" do
   private
 
   def timeout_user_session!
-    Warden::Proxy.any_instance.stub(:session).
+    allow_any_instance_of(Warden::Proxy).to receive(:session).
       and_return({ 'last_request_at' => (Devise.timeout_in + 1.second).ago })
   end
 

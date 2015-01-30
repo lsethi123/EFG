@@ -19,8 +19,8 @@ describe LumpSumRepaymentLoanChange do
       end
 
       it 'must not be greater than the cumulative_drawn_amount (including previous repayments)' do
-        loan.stub(:cumulative_drawn_amount).and_return(Money.new(6_000_00))
-        loan.stub(:cumulative_lump_sum_amount).and_return(Money.new(1_000_00))
+        allow(loan).to receive(:cumulative_drawn_amount).and_return(Money.new(6_000_00))
+        allow(loan).to receive(:cumulative_lump_sum_amount).and_return(Money.new(1_000_00))
 
         presenter.lump_sum_repayment = '5,000.01'
         expect(presenter).not_to be_valid

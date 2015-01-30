@@ -34,7 +34,7 @@ describe LoanReference do
     end
 
     it "should not end in E+{numbers}" do
-      LoanReference.stub(:random_string).and_return('AABBCCE', 'DDEEFFE', 'ABCDEFG')
+      allow(LoanReference).to receive(:random_string).and_return('AABBCCE', 'DDEEFFE', 'ABCDEFG')
 
       expect(LoanReference.generate).to eq('ABCDEFG+01')
     end

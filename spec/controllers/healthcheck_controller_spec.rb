@@ -8,7 +8,7 @@ describe HealthcheckController do
     end
 
     it "should fail when the database isn't available" do
-      Lender.stub(:count).and_raise(Mysql2::Error.new("Database unavailable"))
+      allow(Lender).to receive(:count).and_raise(Mysql2::Error.new("Database unavailable"))
 
       expect {
         get :index

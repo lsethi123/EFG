@@ -77,7 +77,7 @@ describe "Claim Limit Phase 1" do
 
     context "when claim limit is 0" do
       before do
-        claim_limit.stub(:total_amount).and_return(0)
+        allow(claim_limit).to receive(:total_amount).and_return(0)
       end
 
       it "returns 0" do
@@ -87,7 +87,7 @@ describe "Claim Limit Phase 1" do
 
     context "when claim_limit_remaining is 0" do
       before do
-        claim_limit.stub(:amount_remaining).and_return(0)
+        allow(claim_limit).to receive(:amount_remaining).and_return(0)
       end
 
       it "returns 100" do

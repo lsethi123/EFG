@@ -127,12 +127,12 @@ describe LoanEligibilityCheck do
     let(:validator) { double(validate: nil) }
 
     before do
-      loan_eligibility_check.stub(:eligibility_validator).and_return(validator)
+      allow(loan_eligibility_check).to receive(:eligibility_validator).and_return(validator)
     end
 
     context 'when there are *no* eligibility errors' do
       before do
-        loan_eligibility_check.stub(:ineligibility_reasons).and_return([])
+        allow(loan_eligibility_check).to receive(:ineligibility_reasons).and_return([])
       end
 
       it 'sets the state to Eligible' do
@@ -151,7 +151,7 @@ describe LoanEligibilityCheck do
 
     context 'when there *are* eligibility errors' do
       before do
-        loan_eligibility_check.stub(:ineligibility_reasons).and_return(['Reason 1', 'Reason 2'])
+        allow(loan_eligibility_check).to receive(:ineligibility_reasons).and_return(['Reason 1', 'Reason 2'])
       end
 
       it "should set the state to Rejected if its not eligible" do

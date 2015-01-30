@@ -7,9 +7,9 @@ describe 'Claim Limit Phase 4' do
   let(:claim_limit) { Phase4ClaimLimitCalculator.new(lender) }
 
   before do
-    claim_limit.stub(:cumulative_drawn_amount).and_return(Money.new(300_000_00))
-    claim_limit.stub(:settled_amount).and_return(Money.new(10_000_00))
-    claim_limit.stub(:pre_claim_realisations_amount).and_return(Money.new(1_000_00))
+    allow(claim_limit).to receive(:cumulative_drawn_amount).and_return(Money.new(300_000_00))
+    allow(claim_limit).to receive(:settled_amount).and_return(Money.new(10_000_00))
+    allow(claim_limit).to receive(:pre_claim_realisations_amount).and_return(Money.new(1_000_00))
   end
 
   describe "#total_amount" do

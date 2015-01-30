@@ -422,9 +422,9 @@ describe 'lender dashboard' do
 
     context "with Claim Limits" do
       before do
-        Phase1ClaimLimitCalculator.any_instance.stub(:total_amount).and_return(Money.new(1_000_000_00))
-        Phase1ClaimLimitCalculator.any_instance.stub(:amount_remaining).and_return(Money.new(500_000_00))
-        Phase1ClaimLimitCalculator.any_instance.stub(:percentage_remaining).and_return(50)
+        allow_any_instance_of(Phase1ClaimLimitCalculator).to receive(:total_amount).and_return(Money.new(1_000_000_00))
+        allow_any_instance_of(Phase1ClaimLimitCalculator).to receive(:amount_remaining).and_return(Money.new(500_000_00))
+        allow_any_instance_of(Phase1ClaimLimitCalculator).to receive(:percentage_remaining).and_return(50)
       end
 
       it "should display Claim Limit summary" do

@@ -71,7 +71,7 @@ describe Loan do
 
   describe ".by_reference scope" do
     before(:each) do
-      LoanReference.stub(:generate).and_return("ABC123", "ABC12345")
+      allow(LoanReference).to receive(:generate).and_return("ABC123", "ABC12345")
     end
 
     let!(:loan1) { FactoryGirl.create(:loan) }
@@ -174,7 +174,7 @@ describe Loan do
     it "should be unique" do
       FactoryGirl.create(:loan, reference: 'ABC234')
       FactoryGirl.create(:loan, reference: 'DEF456')
-      LoanReference.stub(:generate).and_return('ABC234', 'DEF456', 'GHF789')
+      allow(LoanReference).to receive(:generate).and_return('ABC234', 'DEF456', 'GHF789')
 
       loan.save!
 

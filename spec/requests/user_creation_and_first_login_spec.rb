@@ -12,7 +12,7 @@ describe 'User creation and first login' do
   let(:raw_reset_password_token) { reset_password_token[0] }
   let(:encrypted_reset_password_token) { reset_password_token[1] }
 
-  before { Devise.token_generator.stub(:generate).and_return(reset_password_token) }
+  before { allow(Devise.token_generator).to receive(:generate).and_return(reset_password_token) }
 
   it do
     # cfe admin creates new lender admin

@@ -56,8 +56,8 @@ describe LoanAuditReportCsvExport do
     let(:parsed_csv) { CSV.parse(loan_audit_report_csv_export.generate) }
 
     before(:each) do
-      loan_audit_report_csv_export.stub(:csv_row).and_return(loan_audit_report_mock)
-      Loan.any_instance.stub(:loan_state_change_to_state).and_return(Loan::Guaranteed)
+      allow(loan_audit_report_csv_export).to receive(:csv_row).and_return(loan_audit_report_mock)
+      allow_any_instance_of(Loan).to receive(:loan_state_change_to_state).and_return(Loan::Guaranteed)
     end
 
     it "should return a row for the header and each loan" do

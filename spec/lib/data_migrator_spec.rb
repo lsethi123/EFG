@@ -23,7 +23,7 @@ describe "DataMigrator" do
     end
 
     it "runs each migration in a transaction" do
-      DataMigrationRecord.stub(:create!)
+      allow(DataMigrationRecord).to receive(:create!)
       expect(ActiveRecord::Base.connection).to receive(:transaction).and_yield
       expect(MyData).to receive(:migrate!)
       migrator.run
