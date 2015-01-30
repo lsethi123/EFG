@@ -46,7 +46,7 @@ group :development, :test do
   gem 'brakeman', '2.0.0'
   gem 'ci_reporter', '1.8.4'
   gem 'parallel_tests', '0.16.10'
-  gem 'rspec-rails', '2.99.0'
+  gem 'rspec-rails', '3.1.0'
   gem 'simplecov-rcov', '0.2.3'
 end
 
@@ -56,7 +56,7 @@ group :test do
   gem 'launchy', '2.1.0'
   gem 'pdf-reader', '1.1.1'
   gem 'rspec-collection_matchers', '1.1.2'
-  gem 'rspec-its', '1.0.1'
+  gem 'rspec-its', '1.1.0'
   gem 'timecop', '0.5.9.1'
 end
 
